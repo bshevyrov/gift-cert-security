@@ -1,7 +1,5 @@
-package com.epam.esm.veiw;
+package com.epam.esm.veiw.model;
 
-import com.epam.esm.veiw.dto.TagDTO;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;

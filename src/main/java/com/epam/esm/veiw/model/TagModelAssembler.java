@@ -1,4 +1,4 @@
-package com.epam.esm.veiw;
+package com.epam.esm.veiw.model;
 
 import com.epam.esm.veiw.controller.GiftCertificateController;
 import com.epam.esm.veiw.controller.TagController;
