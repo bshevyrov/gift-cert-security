@@ -2,10 +2,7 @@ package com.epam.esm.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Entity that represent gift_certificate table.
@@ -33,13 +30,16 @@ public class GiftCertificate extends BaseEntity {
             joinColumns = { @JoinColumn(name = "gift_certificate_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
-    private Set<Tag> tags=new HashSet<>();
 
-    public Set<Tag> getTags() {
+    private List<Tag> tags;
+
+    @OneToMany(mappedBy = "order_item")
+    private List<Order> orders;
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
