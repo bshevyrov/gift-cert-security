@@ -1,25 +1,45 @@
 package com.epam.esm.entity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Entity that represent gift_certificate table.
  */
+@Entity
+@Table(name = "gift_certificate")
 public class GiftCertificate extends BaseEntity {
+    @Column
     private String description;
-    private double price;
-    private int duration;
-    private LocalDateTime createDate;
-    private LocalDateTime lastUpdateDate;
-    private List<Tag> tags;
+    @Column
 
-    public List<Tag> getTags() {
+    private double price;
+    @Column
+
+    private int duration;
+    @Column(name = "create_date")
+
+    private LocalDateTime createDate;
+    @Column(name = "last_update_date")
+
+    private LocalDateTime lastUpdateDate;
+    @ManyToMany
+    @JoinTable(
+            name = "gift_certificate_has_tag",
+            joinColumns = { @JoinColumn(name = "gift_certificate_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
+    )
+    private Set<Tag> tags=new HashSet<>();
+
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 

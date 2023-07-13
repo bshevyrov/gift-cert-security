@@ -3,9 +3,10 @@ package com.epam.esm.service;
 import com.epam.esm.entity.BaseEntity;
 
 import java.util.List;
+import java.util.Set;
 
 public interface BaseService<E extends BaseEntity> {
-    long create(E entity);
+    E create(E entity);
 
     E findById(long id);
 

@@ -33,8 +33,10 @@ public class TagFacadeImpl implements TagFacade {
      * @return id
      */
     @Override
-    public long create(TagDTO tagDTO) {
-        return tagService.create(tagMapper.toModel(tagDTO));
+    public TagDTO create(TagDTO tagDTO) {
+        return tagMapper.toDTO(
+                tagService.create(
+                        tagMapper.toModel(tagDTO)));
     }
 
     /**

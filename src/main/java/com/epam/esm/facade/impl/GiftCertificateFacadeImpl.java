@@ -1,14 +1,17 @@
 package com.epam.esm.facade.impl;
 
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.facade.GiftCertificateFacade;
 import com.epam.esm.mapper.GiftCertificateListMapper;
 import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.mapper.TagListMapper;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
-import com.epam.esm.veiw.SearchRequest;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -42,8 +45,10 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      * @return id
      */
     @Override
-    public long create(GiftCertificateDTO giftCertificateDTO) {
-        return giftCertificateService.create(giftCertificateMapper.toModel(giftCertificateDTO));
+    public GiftCertificateDTO create(GiftCertificateDTO giftCertificateDTO) {
+        return giftCertificateMapper.toDTO(
+                giftCertificateService.create(
+                        giftCertificateMapper.toModel(giftCertificateDTO)));
     }
 
     /**
@@ -54,9 +59,9 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      */
     @Override
     public GiftCertificateDTO findById(long id) {
-        GiftCertificateDTO giftCertificateDTO = giftCertificateMapper.toDTO(giftCertificateService.findById(id));
-        giftCertificateDTO.setTags(tagListMapper.toDTOList(tagService.findAllByGiftCertificateId(id)));
-        return giftCertificateDTO;
+
+        return giftCertificateMapper.toDTO(giftCertificateService.findById(id));
+
     }
 
     /**
@@ -74,12 +79,15 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      * Method consume sort searchRequest.
      * Produce list of dto object.
      *
-     * @param searchRequest sort and search parameters
+     * @param pageable sort and search parameters
      * @return list of dtos
      */
     @Override
-    public List<GiftCertificateDTO> findAll(SearchRequest searchRequest) {
-        return giftCertificateListMapper.toDTOList(giftCertificateService.findAll(searchRequest));
+    public Page<GiftCertificateDTO> findAll(Pageable pageable) {
+
+        Page<GiftCertificate> entities =
+                giftCertificateService.findAll(pageable);
+        return new PageImpl<>(giftCertificateListMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());
     }
 
     /**
@@ -101,4 +109,6 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
     public void delete(long id) {
         giftCertificateService.delete(id);
     }
+
+
 }

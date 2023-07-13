@@ -1,16 +1,20 @@
 package com.epam.esm.entity;
 
-import org.springframework.stereotype.Component;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
 /**
  * Parent of all entity.
  */
-@Component
+@MappedSuperclass
 public abstract class BaseEntity {
-
+    @Id
+    @Column
     private long id;
+    @Column
     private String name;
 
 

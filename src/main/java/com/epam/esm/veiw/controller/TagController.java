@@ -45,7 +45,7 @@ public class TagController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<TagDTO> create(@RequestBody TagDTO tagDTO, UriComponentsBuilder ucb) {
-        long tagId = tagFacade.create(tagDTO);
+        long tagId = tagFacade.create(tagDTO).getId();
         HttpHeaders headers = new HttpHeaders();
         URI locationUri = ucb.path("/tags/")
                 .path(String.valueOf(tagId))

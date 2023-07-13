@@ -11,4 +11,5 @@ public class TagDTO extends BaseDTO {
         super();
         super.setName(name);
     }
+
 }

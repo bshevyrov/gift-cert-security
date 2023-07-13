@@ -1,7 +1,5 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.GiftCertificateDAO;
-import com.epam.esm.dao.TagDAO;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
@@ -9,6 +7,7 @@ import com.epam.esm.exception.tag.TagExistException;
 import com.epam.esm.exception.tag.TagIdException;
 import com.epam.esm.exception.tag.TagNameException;
 import com.epam.esm.exception.tag.TagNotFoundException;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.service.TagService;
 import com.epam.esm.util.InputVerification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,9 @@ import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
-    private final TagDAO tagDAO;
-    private final GiftCertificateDAO giftCertificateDAO;
-
     @Autowired
-    public TagServiceImpl(TagDAO tagDAO, GiftCertificateDAO giftCertificateDAO) {
-        this.tagDAO = tagDAO;
-        this.giftCertificateDAO = giftCertificateDAO;
-    }
+    private TagRepository tagRepository;
+
 
     /**
      * Method creates tag.
@@ -43,14 +37,14 @@ public class TagServiceImpl implements TagService {
      * @return id fon created object
      */
     @Override
-    public long create(Tag tag) {
+    public Tag create(Tag tag) {
         if (!InputVerification.verifyName(tag.getName())) {
             throw new TagNameException(tag.getName());
         }
-        if (!tagDAO.existByName(tag.getName())) {
+        if (!tagRepository.existsByName(tag.getName())) {
             throw new TagExistException(tag.getName());
         }
-        return tagDAO.create(tag);
+        return tagRepository.save(tag);
     }
 
     /**
@@ -68,10 +62,7 @@ public class TagServiceImpl implements TagService {
         if (!InputVerification.verifyId(id)) {
             throw new TagIdException(id);
         }
-        if (!tagDAO.existById(id)) {
-            throw new TagNotFoundException(id);
-        }
-        return tagDAO.findById(id);
+        return tagRepository.findById(id).orElseThrow(() -> new TagNotFoundException(id));
     }
 
     /**
@@ -81,7 +72,7 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public List<Tag> findAll() {
-        return tagDAO.findAll();
+        return (List<Tag>) tagRepository.findAll();
     }
 
     /**
@@ -110,10 +101,10 @@ public class TagServiceImpl implements TagService {
         if (!InputVerification.verifyId(id)) {
             throw new TagIdException(id);
         }
-        if (!tagDAO.existById(id)) {
+        if (!tagRepository.existsById(id)) {
             throw new TagNotFoundException(id);
         }
-        tagDAO.deleteById(id);
+        tagRepository.deleteById(id);
     }
 
     /**
@@ -127,14 +118,14 @@ public class TagServiceImpl implements TagService {
      * @return List of tags
      */
 
-    @Override
+/*    @Override
     public List<Tag> findAllByGiftCertificateId(long id) {
         if (!InputVerification.verifyId(id)) {
             throw new GiftCertificateIdException(id);
         }
-        if (!giftCertificateDAO.existById(id)) {
+        if (!tagRepository.existsById(id)) {
             throw new GiftCertificateNotFoundException(id);
         }
-        return tagDAO.findAllByGiftCertificateId(id);
-    }
+        return tagRepository.findAllByGiftCertificates_id(id);
+    }*/
 }

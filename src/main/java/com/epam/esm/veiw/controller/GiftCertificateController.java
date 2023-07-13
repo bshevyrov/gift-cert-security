@@ -5,10 +5,17 @@ import com.epam.esm.exception.giftcertificate.GiftCertificateUpdateException;
 import com.epam.esm.exception.tag.TagNameException;
 import com.epam.esm.facade.GiftCertificateFacade;
 import com.epam.esm.veiw.Error;
-import com.epam.esm.veiw.SearchRequest;
+import com.epam.esm.veiw.GiftCertificateModel;
+import com.epam.esm.veiw.GiftCertificateModelAssembler;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 /**
  * GiftCertificateController class is the REST controller which consumes JSON as the request, forwards to relevant
@@ -27,11 +33,26 @@ import java.util.List;
 @RequestMapping(value = "/gifts",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-public class GiftController {
+public class GiftCertificateController {
+
+
+    @Autowired
+    private GiftCertificateModelAssembler giftCertificateModelAssembler;
+
+    @Autowired
+    private PagedResourcesAssembler<GiftCertificateDTO> pagedResourcesAssembler;
+//    @Autowired
+
+//    @Autowired
+//    private BaseModelAssembler baseModelAssembler;
+//
+//    @Autowired
+//    private PagedResourcesAssembler<BaseEntity> pagedResourcesAssembler;
+
     private final GiftCertificateFacade giftCertificateFacade;
 
     @Autowired
-    public GiftController(GiftCertificateFacade giftCertificateFacade) {
+    public GiftCertificateController(GiftCertificateFacade giftCertificateFacade) {
         this.giftCertificateFacade = giftCertificateFacade;
     }
 
@@ -45,7 +66,7 @@ public class GiftController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<GiftCertificateDTO> create(@RequestBody GiftCertificateDTO giftCertificateDTO, UriComponentsBuilder ucb) {
-        long id = giftCertificateFacade.create(giftCertificateDTO);
+        long id = giftCertificateFacade.create(giftCertificateDTO).getId();
 
         HttpHeaders headers = new HttpHeaders();
         URI locationUri = ucb.path("/gifts/")
@@ -73,14 +94,27 @@ public class GiftController {
      * Method consumes URL params from web request
      * Produces set of response objects based on web request params
      *
-     * @param searchRequest object, which holds URL request params for search
+     * @param pageable object, which holds URL request params for search
      * @return {@link  GiftCertificateDTO} as the result of search based on URL params
      */
     @RequestMapping(method = RequestMethod.GET,
             value = "")
-    public List<GiftCertificateDTO> findAll(SearchRequest searchRequest) {
-        return giftCertificateFacade.findAll(searchRequest);
+    public ResponseEntity<  CollectionModel<GiftCertificateModel> > findAll(Pageable pageable) {
+        Page<GiftCertificateDTO> all = giftCertificateFacade.findAll(pageable);
+        CollectionModel<GiftCertificateModel> pagedModel =
+//                pagedResourcesAssembler.toCollectionModel(all);
+
+               pagedResourcesAssembler .toModel(all, giftCertificateModelAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
+//        Response response = new Response(page.getContent().toString(),page.getPageable());
+////        response.add(linkTo(GiftController.class).toUri(uri).withSelfRel());
+//
+//        CollectionModel<GiftCertificateDTO> result = CollectionModel.of(page.getContent(),
+//                linkTo(GiftController.class).withSelfRel());
+//        return result;
+//        }
+
 
     /**
      * Method consumes URL param.

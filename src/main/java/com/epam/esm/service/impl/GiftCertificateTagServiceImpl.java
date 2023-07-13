@@ -1,3 +1,4 @@
+/*
 package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.GiftCertificateDAO;
@@ -14,22 +15,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+*/
 /**
  * * Used  to manipulate GiftCertificateTag objects and collecting data.
- */
+ *//*
+
 @Service
 public class GiftCertificateTagServiceImpl implements GiftCertificateTagService {
-    private final GiftCertificateTagDAO giftCertificateTagDAO;
-    private final GiftCertificateDAO giftCertificateDAO;
-    private final TagDAO tagDAO;
 
-    public GiftCertificateTagServiceImpl(GiftCertificateTagDAO giftCertificateTagDAO, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO) {
-        this.giftCertificateTagDAO = giftCertificateTagDAO;
-        this.giftCertificateDAO = giftCertificateDAO;
-        this.tagDAO = tagDAO;
-    }
-
-    /**
+    */
+/**
      * Method create relationship between tag and giftCertificate.
      * Checks if giftCertificate id valid
      * - if false throw {@link  GiftCertificateIdException}
@@ -42,7 +37,8 @@ public class GiftCertificateTagServiceImpl implements GiftCertificateTagService 
      *
      * @param giftCertificateTag entity with tag and giftCertificate ids
      * @return null
-     */
+     *//*
+
     @Override
     public long create(GiftCertificateTag giftCertificateTag) {
         if (!InputVerification.verifyId(giftCertificateTag.getGiftCertificateId())) {
@@ -62,51 +58,60 @@ public class GiftCertificateTagServiceImpl implements GiftCertificateTagService 
         return giftCertificateTagDAO.create(giftCertificateTag);
     }
 
-    /**
+    */
+/**
      * Guaranteed to throw an exception and leave.
      *
      * @throws UnsupportedOperationException always
      * @deprecated Unsupported operation.
-     */
+     *//*
+
     @Override
     @Deprecated
     public GiftCertificateTag findById(long id) {
         throw new UnsupportedOperationException();
     }
 
-    /**
+    */
+/**
      * Guaranteed to throw an exception and leave.
      *
      * @throws UnsupportedOperationException always
      * @deprecated Unsupported operation.
-     */
+     *//*
+
     @Override
     @Deprecated
     public List<GiftCertificateTag> findAll() {
         throw new UnsupportedOperationException();
     }
 
-    /**
+    */
+/**
      * Guaranteed to throw an exception and leave.
      *
      * @throws UnsupportedOperationException always
      * @deprecated Unsupported operation.
-     */
+     *//*
+
     @Override
     @Deprecated
     public void delete(long id) {
         throw new UnsupportedOperationException();
     }
 
-    /**
+    */
+/**
      * Guaranteed to throw an exception and leave.
      *
      * @throws UnsupportedOperationException always
      * @deprecated Unsupported operation.
-     */
+     *//*
+
     @Override
     @Deprecated
     public void update(GiftCertificateTag giftCertificateTag) {
         throw new UnsupportedOperationException();
     }
 }
+*/
