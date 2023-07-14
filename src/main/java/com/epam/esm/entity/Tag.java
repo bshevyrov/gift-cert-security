@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -21,13 +23,26 @@ public class Tag extends BaseEntity {
         super.setName(name);
     }
     @ManyToMany(mappedBy = "tags")
-    private Set<GiftCertificate> giftCertificates = new HashSet<>();
+    private List<GiftCertificate> giftCertificates ;
 
-    public Set<GiftCertificate> getGiftCertificates() {
+    public List<GiftCertificate> getGiftCertificates() {
         return giftCertificates;
     }
 
-    public void setGiftCertificates(Set<GiftCertificate> giftCertificates) {
+    public void setGiftCertificates(List<GiftCertificate> giftCertificates) {
         this.giftCertificates = giftCertificates;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return Objects.equals(giftCertificates, tag.giftCertificates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(giftCertificates);
     }
 }

@@ -1,5 +1,7 @@
 package com.epam.esm.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -9,6 +11,7 @@ import java.util.*;
  */
 @Entity
 @Table(name = "gift_certificate")
+@DynamicUpdate
 public class GiftCertificate extends BaseEntity {
     @Column
     private String description;
@@ -24,7 +27,7 @@ public class GiftCertificate extends BaseEntity {
     @Column(name = "last_update_date")
 
     private LocalDateTime lastUpdateDate;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "gift_certificate_has_tag",
             joinColumns = { @JoinColumn(name = "gift_certificate_id")},
@@ -92,5 +95,19 @@ public class GiftCertificate extends BaseEntity {
     }
 
     public GiftCertificate() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GiftCertificate that = (GiftCertificate) o;
+        return Double.compare(that.price, price) == 0 && duration == that.duration && Objects.equals(description, that.description) && Objects.equals(createDate, that.createDate) && Objects.equals(lastUpdateDate, that.lastUpdateDate) && Objects.equals(tags, that.tags) && Objects.equals(orderItems, that.orderItems);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), description, price, duration, createDate, lastUpdateDate, tags, orderItems);
     }
 }

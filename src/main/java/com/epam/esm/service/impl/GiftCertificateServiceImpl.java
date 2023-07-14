@@ -1,26 +1,23 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.GiftCertificateTag;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.tag.TagNameException;
 import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.util.InputVerification;
-import com.epam.esm.veiw.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Used  to manipulate GiftCertificate objects and collecting data.
@@ -28,9 +25,9 @@ import java.util.Set;
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Autowired
-private GiftCertificateRepository giftCertificateRepository;
-
-
+    private GiftCertificateRepository giftCertificateRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
 
     /**
@@ -60,10 +57,26 @@ private GiftCertificateRepository giftCertificateRepository;
             }
         });
         return giftCertificateId;*/
+       /* if(!giftCertificate.getTags().isEmpty()){
+            List<Tag> tags = giftCertificate.getTags();
+            giftCertificate.setTags(new ArrayList<>());
+            tags.forEach(tag -> {
+                if (!InputVerification.verifyName(tag.getName())) {
+                    throw new TagNameException(tag.getName());
+                }
+                if (!tagRepository.existsByName(tag.getName())) {
+                    giftCertificate.getTags().add(tagRepository.save(tag));
+                }
+            });
+        }*/
         giftCertificate.getTags().forEach(tag -> {
-                    if (!InputVerification.verifyName(tag.getName())) {
-                        throw new TagNameException(tag.getName());
-                    }});
+            if (!InputVerification.verifyName(tag.getName())) {
+                throw new TagNameException(tag.getName());
+            }
+//            if (!tagRepository.existsByName(tag.getName())) {
+//                giftCertificate.getTags().add(tagRepository.save(tag));
+//            }
+        });
         return giftCertificateRepository.save(giftCertificate);
     }
 
@@ -81,8 +94,8 @@ private GiftCertificateRepository giftCertificateRepository;
         if (!InputVerification.verifyId(id)) {
             throw new GiftCertificateIdException(id);
         }
-        return giftCertificateRepository.findById(id).orElseThrow(()->
-                             new GiftCertificateNotFoundException(id));
+        return giftCertificateRepository.findById(id).orElseThrow(() ->
+                new GiftCertificateNotFoundException(id));
 //        if (!InputVerification.verifyId(id)) {
 //            throw new GiftCertificateIdException(id);
 //        }
@@ -119,7 +132,7 @@ private GiftCertificateRepository giftCertificateRepository;
         giftCertificateList.forEach(giftCertificate -> giftCertificate.setTags((Set<Tag>) tagDAO.findAllByGiftCertificateId(giftCertificate.getId())));
         return giftCertificateList;*/
 //        Pageable pageable = PageRequest.of(0,2);
-        return giftCertificateRepository.findAll(pageable );
+        return giftCertificateRepository.findAll(pageable);
     }
 
     /**
@@ -166,7 +179,7 @@ private GiftCertificateRepository giftCertificateRepository;
 //        }
 //        giftCertificate.setTags(null);
 //        giftCertificateDAO.update(giftCertificate);
-                if (!InputVerification.verifyId(giftCertificate.getId())) {
+        if (!InputVerification.verifyId(giftCertificate.getId())) {
             throw new GiftCertificateIdException(giftCertificate.getId());
         }
         if (!giftCertificateRepository.existsById(giftCertificate.getId())) {
