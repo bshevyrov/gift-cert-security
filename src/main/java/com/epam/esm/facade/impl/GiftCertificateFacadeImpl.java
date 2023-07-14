@@ -7,6 +7,7 @@ import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.mapper.TagListMapper;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
+import com.epam.esm.util.UpdateRequestUtils;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -97,7 +98,9 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      */
     @Override
     public void update(GiftCertificateDTO giftCertificateDTO) {
-        giftCertificateService.update(giftCertificateMapper.toModel(giftCertificateDTO));
+        GiftCertificateDTO byId = giftCertificateMapper.toDTO(giftCertificateService.findById(giftCertificateDTO.getId()));
+        UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateDTO,byId);
+        giftCertificateService.update(giftCertificateMapper.toModel(byId));
     }
 
     /**

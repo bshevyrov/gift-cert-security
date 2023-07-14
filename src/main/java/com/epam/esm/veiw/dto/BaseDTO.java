@@ -1,10 +1,14 @@
 package com.epam.esm.veiw.dto;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
 /**
  * BaseDTO is the superclass to all DtoRequest entities
  */
+@Component
 public abstract class BaseDTO {
 
     private Long id;

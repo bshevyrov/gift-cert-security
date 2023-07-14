@@ -1,6 +1,8 @@
 package com.epam.esm.veiw.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;

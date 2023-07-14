@@ -73,9 +73,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             if (!InputVerification.verifyName(tag.getName())) {
                 throw new TagNameException(tag.getName());
             }
-//            if (!tagRepository.existsByName(tag.getName())) {
-//                giftCertificate.getTags().add(tagRepository.save(tag));
-//            }
         });
         return giftCertificateRepository.save(giftCertificate);
     }
