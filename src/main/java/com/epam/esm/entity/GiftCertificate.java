@@ -33,8 +33,8 @@ public class GiftCertificate extends BaseEntity {
 
     private List<Tag> tags;
 
-    @OneToMany(mappedBy = "order_item")
-    private List<Order> orders;
+    @OneToMany(mappedBy = "giftCertificate")
+    private List<OrderItem> orderItems;
     public List<Tag> getTags() {
         return tags;
     }
@@ -83,30 +83,12 @@ public class GiftCertificate extends BaseEntity {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        GiftCertificate that = (GiftCertificate) o;
-        return Double.compare(that.price, price) == 0 && duration == that.duration && Objects.equals(description, that.description) && Objects.equals(createDate, that.createDate) && Objects.equals(lastUpdateDate, that.lastUpdateDate) && Objects.equals(tags, that.tags);
+    public List<OrderItem> getOrders() {
+        return orderItems;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), description, price, duration, createDate, lastUpdateDate, tags);
-    }
-
-    @Override
-    public String toString() {
-        return "GiftCertificate{" +
-                "description='" + description + '\'' +
-                ", price=" + price +
-                ", duration=" + duration +
-                ", createDate=" + createDate +
-                ", lastUpdateDate=" + lastUpdateDate +
-                ", tags=" + tags +
-                "} " + super.toString();
+    public void setOrders(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public GiftCertificate() {

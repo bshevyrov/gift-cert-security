@@ -13,7 +13,7 @@ public class Order extends AbstractEntity{
     private Customer customer;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItemList;
+    private List<OrderItem> orderItems;
     @Column(name = "create_time")
     private LocalDateTime createTime;
 
@@ -26,11 +26,11 @@ public class Order extends AbstractEntity{
     }
 
     public List<OrderItem> getOrderItemList() {
-        return orderItemList;
+        return orderItems;
     }
 
     public void setOrderItemList(List<OrderItem> orderItemList) {
-        this.orderItemList = orderItemList;
+        this.orderItems = orderItemList;
     }
 
     public LocalDateTime getCreateTime() {

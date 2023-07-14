@@ -8,7 +8,7 @@ import java.util.List;
 public class OrderItem extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "gift_certificate_id")
-    private GiftCertificate giftCertificates;
+    private GiftCertificate giftCertificate;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -17,11 +17,11 @@ public class OrderItem extends AbstractEntity{
     private int quantity;
 
     public GiftCertificate getGiftCertificates() {
-        return giftCertificates;
+        return giftCertificate;
     }
 
-    public void setGiftCertificates(GiftCertificate giftCertificates) {
-        this.giftCertificates = giftCertificates;
+    public void setGiftCertificates(GiftCertificate giftCertificate) {
+        this.giftCertificate = giftCertificate;
     }
 
     public Order getOrder() {

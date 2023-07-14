@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GiftCertificateRepository extends PagingAndSortingRepository<GiftCertificate, Long> {
     Page<GiftCertificate> findAll(Pageable pageable);
+
 }
