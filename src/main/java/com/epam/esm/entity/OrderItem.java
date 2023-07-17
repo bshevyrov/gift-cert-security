@@ -13,8 +13,10 @@ public class OrderItem extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-    @Column(name = "quantity")
     private int quantity;
+
+    public OrderItem() {
+    }
 
     public GiftCertificate getGiftCertificates() {
         return giftCertificate;

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table
 public class Order extends AbstractEntity{
 
     @ManyToOne
@@ -16,6 +16,9 @@ public class Order extends AbstractEntity{
     private List<OrderItem> orderItems;
     @Column(name = "create_time")
     private LocalDateTime createTime;
+
+    public Order() {
+    }
 
     public Customer getCustomer() {
         return customer;

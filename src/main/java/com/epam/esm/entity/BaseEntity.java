@@ -12,7 +12,6 @@ import java.util.Objects;
 @MappedSuperclass
 public abstract class BaseEntity extends AbstractEntity{
 
-    @Column
     private String name;
 
 
