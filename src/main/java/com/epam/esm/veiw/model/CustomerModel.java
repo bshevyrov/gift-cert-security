@@ -2,15 +2,10 @@ package com.epam.esm.veiw.model;
 
 import org.springframework.hateoas.RepresentationModel;
 
-
-/**
- * The ResponseModel class extends the Hateoas Representation Model and is required if we want to convert the Customer
- * Entity to a pagination format
-
-**/
-public class TagModel extends RepresentationModel<TagModel> {
+public class CustomerModel extends RepresentationModel<CustomerModel> {
     private long id;
     private String name;
+
 
     public long getId() {
         return id;
@@ -28,6 +23,4 @@ public class TagModel extends RepresentationModel<TagModel> {
         this.name = name;
     }
 
-
 }
-

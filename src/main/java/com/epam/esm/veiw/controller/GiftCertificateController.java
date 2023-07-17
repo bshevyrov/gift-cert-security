@@ -102,7 +102,7 @@ public class GiftCertificateController {
         CollectionModel<GiftCertificateModel> pagedModel =
 //                pagedResourcesAssembler.toCollectionModel(all);
 
-               pagedResourcesAssembler .toModel(all, giftCertificateModelAssembler);
+               pagedResourcesAssembler.toModel(all, giftCertificateModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 //        Response response = new Response(page.getContent().toString(),page.getPageable());
