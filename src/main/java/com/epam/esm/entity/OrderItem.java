@@ -16,6 +16,9 @@ public class OrderItem extends AbstractEntity{
     @Column(name = "quantity")
     private int quantity;
 
+    public OrderItem() {
+    }
+
     public GiftCertificate getGiftCertificates() {
         return giftCertificate;
     }

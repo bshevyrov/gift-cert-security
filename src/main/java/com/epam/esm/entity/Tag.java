@@ -12,18 +12,15 @@ import java.util.Set;
  * Entity that represent tag table.
  */
 @Entity
-@Table(name = "tag")
+@Table
 
 public class Tag extends BaseEntity {
-    public Tag() {
-    }
 
-    public Tag(String name) {
-        super();
-        super.setName(name);
-    }
     @ManyToMany(mappedBy = "tags")
     private List<GiftCertificate> giftCertificates ;
+
+    public Tag() {
+    }
 
     public List<GiftCertificate> getGiftCertificates() {
         return giftCertificates;
