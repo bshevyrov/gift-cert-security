@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpHeaders;
@@ -97,7 +98,7 @@ public class GiftCertificateController {
      */
     @RequestMapping(method = RequestMethod.GET,
             value = "")
-    public ResponseEntity<  CollectionModel<GiftCertificateModel> > findAll(Pageable pageable) {
+    public ResponseEntity<  CollectionModel<GiftCertificateModel> > findAll(@PageableDefault Pageable pageable) {
         Page<GiftCertificateDTO> all = giftCertificateFacade.findAll(pageable);
         CollectionModel<GiftCertificateModel> pagedModel =
 //                pagedResourcesAssembler.toCollectionModel(all);

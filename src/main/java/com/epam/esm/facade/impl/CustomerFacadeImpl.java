@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+@Component
 
 public class CustomerFacadeImpl implements CustomerFacade {
     private final CustomerService customerService;
@@ -53,6 +56,6 @@ public class CustomerFacadeImpl implements CustomerFacade {
     @Override
     public Page<CustomerDTO> findAll(Pageable pageable) {
         Page<Customer> all = customerService.findAll(pageable);
-        return new PageImpl<>(customerListMapper.toDTOList(all.getContent()),pageable,all.getTotalElements());
+        return new PageImpl<>(customerListMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
     }
 }

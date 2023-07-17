@@ -14,7 +14,7 @@ public class Order extends AbstractEntity{
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
-    @Column(name = "create_time")
+    @Column(name = "creation_time")
     private LocalDateTime createTime;
 
     public Order() {

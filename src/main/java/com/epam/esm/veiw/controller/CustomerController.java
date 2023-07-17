@@ -7,6 +7,7 @@ import com.epam.esm.veiw.model.CustomerModelAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
@@ -16,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/users",
+@RequestMapping(value = "/customers",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
@@ -41,7 +42,7 @@ public class CustomerController {
 
     @RequestMapping(value = "",
             method = RequestMethod.GET)
-    public ResponseEntity<CollectionModel<CustomerModel>> findAll(@RequestParam Pageable pageable) {
+    public ResponseEntity<CollectionModel<CustomerModel>> findAll(@PageableDefault Pageable pageable) {
         Page<CustomerDTO> all = customerFacade.findAll(pageable);
         PagedModel<CustomerModel> pagedModel = pagedResourcesAssembler.toModel(all, customerModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);

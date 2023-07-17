@@ -1,6 +1,8 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.Customer;
+import com.epam.esm.exception.customer.CustomerIdException;
+import com.epam.esm.exception.customer.CustomerNotFoundException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
 import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.repository.CustomerRepository;
