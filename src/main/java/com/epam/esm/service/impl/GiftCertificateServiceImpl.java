@@ -1,12 +1,10 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.tag.TagNameException;
 import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.TagRepository;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.util.InputVerification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +21,12 @@ import java.util.List;
  */
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
+    private final GiftCertificateRepository giftCertificateRepository;
     @Autowired
-    private GiftCertificateRepository giftCertificateRepository;
-    @Autowired
-    private TagRepository tagRepository;
+
+    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository) {
+        this.giftCertificateRepository = giftCertificateRepository;
+    }
 
 
     /**

@@ -2,9 +2,7 @@ package com.epam.esm.facade.impl;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.facade.GiftCertificateFacade;
-import com.epam.esm.mapper.GiftCertificateListMapper;
 import com.epam.esm.mapper.GiftCertificateMapper;
-import com.epam.esm.mapper.TagListMapper;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import com.epam.esm.util.UpdateRequestUtils;
@@ -24,19 +22,13 @@ import java.util.List;
 public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
 
     private final GiftCertificateMapper giftCertificateMapper;
-    private final GiftCertificateListMapper giftCertificateListMapper;
     private final GiftCertificateService giftCertificateService;
-    private final TagListMapper tagListMapper;
-    private final TagService tagService;
 
 
     @Autowired
-    public GiftCertificateFacadeImpl(GiftCertificateMapper giftCertificateMapper, GiftCertificateListMapper giftCertificateListMapper, GiftCertificateService giftCertificateService, TagListMapper tagListMapper, TagService tagService) {
+    public GiftCertificateFacadeImpl(GiftCertificateMapper giftCertificateMapper,  GiftCertificateService giftCertificateService) {
         this.giftCertificateMapper = giftCertificateMapper;
-        this.giftCertificateListMapper = giftCertificateListMapper;
         this.giftCertificateService = giftCertificateService;
-        this.tagListMapper = tagListMapper;
-        this.tagService = tagService;
     }
 
     /**
@@ -88,7 +80,7 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
 
         Page<GiftCertificate> entities =
                 giftCertificateService.findAll(pageable);
-        return new PageImpl<>(giftCertificateListMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());
+        return new PageImpl<>(giftCertificateMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());
     }
 
     /**

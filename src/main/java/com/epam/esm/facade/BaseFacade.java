@@ -1,10 +1,11 @@
 package com.epam.esm.facade;
 
+import com.epam.esm.veiw.dto.AbstractDTO;
 import com.epam.esm.veiw.dto.BaseDTO;
 
 import java.util.List;
 
-public interface BaseFacade<E extends BaseDTO> {
+public interface BaseFacade<E extends AbstractDTO> {
     E create(E entity);
 
     E findById(long id);

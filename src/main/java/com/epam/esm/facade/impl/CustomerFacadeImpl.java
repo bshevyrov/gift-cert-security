@@ -2,7 +2,6 @@ package com.epam.esm.facade.impl;
 
 import com.epam.esm.entity.Customer;
 import com.epam.esm.facade.CustomerFacade;
-import com.epam.esm.mapper.CustomerListMapper;
 import com.epam.esm.mapper.CustomerMapper;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.veiw.dto.CustomerDTO;
@@ -18,13 +17,11 @@ import java.util.List;
 
 public class CustomerFacadeImpl implements CustomerFacade {
     private final CustomerService customerService;
-    private final CustomerListMapper customerListMapper;
     private final CustomerMapper customerMapper;
 
     @Autowired
-    public CustomerFacadeImpl(CustomerService customerService, CustomerListMapper customerListMapper, CustomerMapper customerMapper) {
+    public CustomerFacadeImpl(CustomerService customerService, CustomerMapper customerMapper) {
         this.customerService = customerService;
-        this.customerListMapper = customerListMapper;
         this.customerMapper = customerMapper;
     }
 
@@ -56,6 +53,6 @@ public class CustomerFacadeImpl implements CustomerFacade {
     @Override
     public Page<CustomerDTO> findAll(Pageable pageable) {
         Page<Customer> all = customerService.findAll(pageable);
-        return new PageImpl<>(customerListMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
+        return new PageImpl<>(customerMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
     }
 }

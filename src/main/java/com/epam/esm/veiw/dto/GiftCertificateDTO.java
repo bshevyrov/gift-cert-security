@@ -18,14 +18,18 @@ public class GiftCertificateDTO extends BaseDTO {
     private LocalDateTime createDate;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime lastUpdateDate;
-    private List<TagDTO> tags;
 
-    public List<TagDTO> getTags() {
-        return tags;
+
+    private List<TagDTO> tagDTOList;
+    public GiftCertificateDTO() {
     }
 
-    public void setTags(List<TagDTO> tags) {
-        this.tags = tags;
+    public List<TagDTO> getTagDTOList() {
+        return tagDTOList;
+    }
+
+    public void setTagDTOList(List<TagDTO> tagDTOList) {
+        this.tagDTOList = tagDTOList;
     }
 
     public String getDescription() {
@@ -69,8 +73,6 @@ public class GiftCertificateDTO extends BaseDTO {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public GiftCertificateDTO() {
-    }
 
 
 }

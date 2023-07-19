@@ -18,11 +18,11 @@ public class OrderItem extends AbstractEntity{
     public OrderItem() {
     }
 
-    public GiftCertificate getGiftCertificates() {
+    public GiftCertificate getGiftCertificate() {
         return giftCertificate;
     }
 
-    public void setGiftCertificates(GiftCertificate giftCertificate) {
+    public void setGiftCertificate(GiftCertificate giftCertificate) {
         this.giftCertificate = giftCertificate;
     }
 

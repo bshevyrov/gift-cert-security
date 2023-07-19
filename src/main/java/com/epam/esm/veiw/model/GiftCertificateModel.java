@@ -19,7 +19,7 @@ public class GiftCertificateModel extends RepresentationModel<GiftCertificateMod
     private int duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
-    private List<TagModel> tags;
+    private List<TagModel> tagModelList;
 
 
     public long getId() {
@@ -78,12 +78,12 @@ public class GiftCertificateModel extends RepresentationModel<GiftCertificateMod
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<TagModel> getTags() {
-        return tags;
+    public List<TagModel> getTagModelList() {
+        return tagModelList;
     }
 
-    public void setTags(List<TagModel> tags) {
-        this.tags = tags;
+    public void setTagModelList(List<TagModel> tagModelList) {
+        this.tagModelList = tagModelList;
     }
 }
 

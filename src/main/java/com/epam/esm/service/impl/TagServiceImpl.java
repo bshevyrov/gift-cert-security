@@ -1,8 +1,6 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
-import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.tag.TagExistException;
 import com.epam.esm.exception.tag.TagIdException;
 import com.epam.esm.exception.tag.TagNameException;
@@ -22,8 +20,12 @@ import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
+    private  final TagRepository tagRepository;
     @Autowired
-    private TagRepository tagRepository;
+
+    public TagServiceImpl(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
 
 
     /**

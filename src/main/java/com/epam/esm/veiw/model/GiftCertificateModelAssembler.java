@@ -29,7 +29,7 @@ public class GiftCertificateModelAssembler extends RepresentationModelAssemblerS
         GiftCertificateModel model = new GiftCertificateModel();
 
         BeanUtils.copyProperties(entity, model);
-        model.setTags(toTagModel(entity.getTags()));
+        model.setTagModelList(toTagModel(entity.getTagDTOList()));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findById(entity.getId())).withSelfRel());
         return model;
     }

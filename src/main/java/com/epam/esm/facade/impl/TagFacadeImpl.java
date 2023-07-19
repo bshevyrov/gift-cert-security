@@ -1,7 +1,6 @@
 package com.epam.esm.facade.impl;
 
 import com.epam.esm.facade.TagFacade;
-import com.epam.esm.mapper.TagListMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.service.TagService;
 import com.epam.esm.veiw.dto.TagDTO;
@@ -16,13 +15,11 @@ import java.util.List;
 @Component
 public class TagFacadeImpl implements TagFacade {
     private final TagMapper tagMapper;
-    private final TagListMapper tagListMapper;
     private final TagService tagService;
 
     @Autowired
-    public TagFacadeImpl(TagMapper tagMapper, TagListMapper tagListMapper, TagService tagService) {
+    public TagFacadeImpl(TagMapper tagMapper, TagService tagService) {
         this.tagMapper = tagMapper;
-        this.tagListMapper = tagListMapper;
         this.tagService = tagService;
     }
 
@@ -57,7 +54,7 @@ public class TagFacadeImpl implements TagFacade {
      */
     @Override
     public List<TagDTO> findAll() {
-        return tagListMapper.toDTOList(tagService.findAll());
+        return tagMapper.toDTOList(tagService.findAll());
     }
 
     /**
