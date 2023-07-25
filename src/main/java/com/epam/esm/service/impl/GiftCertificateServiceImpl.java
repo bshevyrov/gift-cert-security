@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.GiftCertificateEntity;
 import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.tag.TagNameException;
@@ -37,12 +37,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * - if true add tag id to giftCertificate
      * - if false create new tag and add id of this tag to gift certificate
      *
-     * @param giftCertificate object for creation
+     * @param giftCertificateEntity object for creation
      * @return id fon created object
      */
     @Override
     @Transactional(rollbackFor = {SQLException.class})
-    public GiftCertificate create(GiftCertificate giftCertificate) {
+    public GiftCertificateEntity create(GiftCertificateEntity giftCertificateEntity) {
        /* long giftCertificateId = giftCertificateDAO.create(giftCertificate);
         giftCertificate.getTags().forEach(tag -> {
             if (!InputVerification.verifyName(tag.getName())) {
@@ -68,12 +68,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 }
             });
         }*/
-        giftCertificate.getTags().forEach(tag -> {
+        giftCertificateEntity.getTagEntities().forEach(tag -> {
             if (!InputVerification.verifyName(tag.getName())) {
                 throw new TagNameException(tag.getName());
             }
         });
-        return giftCertificateRepository.save(giftCertificate);
+        return giftCertificateRepository.save(giftCertificateEntity);
     }
 
     /**
@@ -83,10 +83,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * - if false - throws {@link GiftCertificateNotFoundException} exception
      *
      * @param id requested parameter
-     * @return {@link  GiftCertificate} found object
+     * @return {@link  GiftCertificateEntity} found object
      */
     @Override
-    public GiftCertificate findById(long id) {
+    public GiftCertificateEntity findById(long id) {
         if (!InputVerification.verifyId(id)) {
             throw new GiftCertificateIdException(id);
         }
@@ -112,7 +112,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Override
     @Deprecated
-    public List<GiftCertificate> findAll() {
+    public List<GiftCertificateEntity> findAll() {
         throw new UnsupportedOperationException();
     }
 
@@ -123,7 +123,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * @return List of objects
      */
     @Override
-    public Page<GiftCertificate> findAll(Pageable pageable) {
+    public Page<GiftCertificateEntity> findAll(Pageable pageable) {
         /*List<GiftCertificate> giftCertificateList = giftCertificateRepository.findAll(searchRequest);
         giftCertificateList.forEach(giftCertificate -> giftCertificate.setTags((Set<Tag>) tagDAO.findAllByGiftCertificateId(giftCertificate.getId())));
         return giftCertificateList;*/
@@ -147,11 +147,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * - if true adds tag id to giftCertificate and creates relation between tag and giftCertificate
      * - if false creates new tag and adds tag id to giftCertificate, creates relation between tag and giftCertificate
      *
-     * @param giftCertificate candidate for update
+     * @param giftCertificateEntity candidate for update
      */
     @Override
     @Transactional(rollbackFor = {SQLException.class})
-    public void update(GiftCertificate giftCertificate) {
+    public void update(GiftCertificateEntity giftCertificateEntity) {
 //        if (!InputVerification.verifyId(giftCertificate.getId())) {
 //            throw new GiftCertificateIdException(giftCertificate.getId());
 //        }
@@ -175,13 +175,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 //        }
 //        giftCertificate.setTags(null);
 //        giftCertificateDAO.update(giftCertificate);
-        if (!InputVerification.verifyId(giftCertificate.getId())) {
-            throw new GiftCertificateIdException(giftCertificate.getId());
+        if (!InputVerification.verifyId(giftCertificateEntity.getId())) {
+            throw new GiftCertificateIdException(giftCertificateEntity.getId());
         }
-        if (!giftCertificateRepository.existsById(giftCertificate.getId())) {
-            throw new GiftCertificateNotFoundException(giftCertificate.getId());
+        if (!giftCertificateRepository.existsById(giftCertificateEntity.getId())) {
+            throw new GiftCertificateNotFoundException(giftCertificateEntity.getId());
         }
-        giftCertificateRepository.save(giftCertificate);
+        giftCertificateRepository.save(giftCertificateEntity);
     }
 
     /**

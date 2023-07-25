@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.Order;
+import com.epam.esm.entity.OrderEntity;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +19,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order create(Order entity) {
+    public OrderEntity create(OrderEntity entity) {
         return null;
     }
 
     @Override
-    public Order findById(long id) {
+    public OrderEntity findById(long id) {
         return null;
     }
 
     @Override
-    public List<Order> findAll() {
+    public List<OrderEntity> findAll() {
         return null;
     }
 
     @Override
-    public void update(Order entity) {
+    public void update(OrderEntity entity) {
 
     }
 
@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> findAllByCustomerId(Long id, Pageable pageable) {
+    public Page<OrderEntity> findAllByCustomerId(Long id, Pageable pageable) {
         return orderRepository.findAllByCustomer_Id(id,pageable);
     }
 }

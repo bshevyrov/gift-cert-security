@@ -1,10 +1,8 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.Customer;
+import com.epam.esm.entity.CustomerEntity;
 import com.epam.esm.exception.customer.CustomerIdException;
 import com.epam.esm.exception.customer.CustomerNotFoundException;
-import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
-import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.repository.CustomerRepository;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.util.InputVerification;
@@ -23,12 +21,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer create(Customer entity) {
+    public CustomerEntity create(CustomerEntity entity) {
         return null;
     }
 
     @Override
-    public Customer findById(long id) {
+    public CustomerEntity findById(long id) {
 
         if(!InputVerification.verifyId(id)){
             throw new CustomerIdException(id);
@@ -37,12 +35,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> findAll() {
+    public List<CustomerEntity> findAll() {
         return null;
     }
 
     @Override
-    public void update(Customer entity) {
+    public void update(CustomerEntity entity) {
 
     }
 
@@ -52,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Page<Customer> findAll(Pageable pageable) {
+    public Page<CustomerEntity> findAll(Pageable pageable) {
         return customerRepository.findAll(pageable);
     }
 }

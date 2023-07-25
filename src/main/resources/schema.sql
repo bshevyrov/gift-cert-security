@@ -18,11 +18,11 @@ CREATE SCHEMA IF NOT EXISTS `gift_card` DEFAULT CHARACTER SET utf8mb4 COLLATE ut
 USE `gift_card` ;
 
 -- -----------------------------------------------------
--- Table `gift_card`.`customer`
+-- Table `gift_card`.`customerEntity`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `gift_card`.`customer` ;
+DROP TABLE IF EXISTS `gift_card`.`customerEntity` ;
 
-CREATE TABLE IF NOT EXISTS `gift_card`.`customer` (
+CREATE TABLE IF NOT EXISTS `gift_card`.`customerEntity` (
                                                       `id` INT NOT NULL AUTO_INCREMENT,
                                                       `name` VARCHAR(45) NOT NULL,
                                                       PRIMARY KEY (`id`))
@@ -52,11 +52,11 @@ CREATE TABLE IF NOT EXISTS `gift_card`.`gift_certificate` (
 
 
 -- -----------------------------------------------------
--- Table `gift_card`.`tag`
+-- Table `gift_card`.`tagEntity`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `gift_card`.`tag` ;
+DROP TABLE IF EXISTS `gift_card`.`tagEntity` ;
 
-CREATE TABLE IF NOT EXISTS `gift_card`.`tag` (
+CREATE TABLE IF NOT EXISTS `gift_card`.`tagEntity` (
                                                  `id` INT NOT NULL AUTO_INCREMENT,
                                                  `name` VARCHAR(45) NULL DEFAULT NULL,
                                                  PRIMARY KEY (`id`))
@@ -81,17 +81,17 @@ CREATE TABLE IF NOT EXISTS `gift_card`.`gift_certificate_has_tag` (
                                                                               REFERENCES `gift_card`.`gift_certificate` (`id`),
                                                                       CONSTRAINT `fk_new_table_has_tag_tag1`
                                                                           FOREIGN KEY (`tag_id`)
-                                                                              REFERENCES `gift_card`.`tag` (`id`))
+                                                                              REFERENCES `gift_card`.`tagEntity` (`id`))
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `gift_card`.`order`
+-- Table `gift_card`.`orderEntity`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `gift_card`.`order` ;
+DROP TABLE IF EXISTS `gift_card`.`orderEntity` ;
 
-CREATE TABLE IF NOT EXISTS `gift_card`.`order` (
+CREATE TABLE IF NOT EXISTS `gift_card`.`orderEntity` (
                                                    `id` INT NOT NULL AUTO_INCREMENT,
                                                    `customer_id` INT NOT NULL,
                                                    `creation_time` DATETIME NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `gift_card`.`order` (
                                                    INDEX `fk_order_customer1_idx` (`customer_id` ASC) VISIBLE,
                                                    CONSTRAINT `fk_order_customer1`
                                                        FOREIGN KEY (`customer_id`)
-                                                           REFERENCES `gift_card`.`customer` (`id`))
+                                                           REFERENCES `gift_card`.`customerEntity` (`id`))
     ENGINE = InnoDB
     AUTO_INCREMENT = 2
     DEFAULT CHARACTER SET = utf8mb4
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `gift_card`.`order_item` (
                                                                 REFERENCES `gift_card`.`gift_certificate` (`id`),
                                                         CONSTRAINT `fk_order_item_order1`
                                                             FOREIGN KEY (`order_id`)
-                                                                REFERENCES `gift_card`.`order` (`id`))
+                                                                REFERENCES `gift_card`.`orderEntity` (`id`))
     ENGINE = InnoDB
     AUTO_INCREMENT = 3
     DEFAULT CHARACTER SET = utf8mb4

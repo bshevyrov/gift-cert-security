@@ -1,10 +1,9 @@
 package com.epam.esm.facade.impl;
 
-import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.GiftCertificateEntity;
 import com.epam.esm.facade.GiftCertificateFacade;
 import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.TagService;
 import com.epam.esm.util.UpdateRequestUtils;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +77,7 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
     @Override
     public Page<GiftCertificateDTO> findAll(Pageable pageable) {
 
-        Page<GiftCertificate> entities =
+        Page<GiftCertificateEntity> entities =
                 giftCertificateService.findAll(pageable);
         return new PageImpl<>(giftCertificateMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());
     }

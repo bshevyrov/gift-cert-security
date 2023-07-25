@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.entity.TagEntity;
 import com.epam.esm.exception.tag.TagExistException;
 import com.epam.esm.exception.tag.TagIdException;
 import com.epam.esm.exception.tag.TagNameException;
@@ -35,18 +35,18 @@ public class TagServiceImpl implements TagService {
      * Checks if tag with this name exist
      * - if true throws TagExistException
      *
-     * @param tag object for creation
+     * @param tagEntity object for creation
      * @return id fon created object
      */
     @Override
-    public Tag create(Tag tag) {
-        if (!InputVerification.verifyName(tag.getName())) {
-            throw new TagNameException(tag.getName());
+    public TagEntity create(TagEntity tagEntity) {
+        if (!InputVerification.verifyName(tagEntity.getName())) {
+            throw new TagNameException(tagEntity.getName());
         }
-        if (!tagRepository.existsByName(tag.getName())) {
-            throw new TagExistException(tag.getName());
+        if (!tagRepository.existsByName(tagEntity.getName())) {
+            throw new TagExistException(tagEntity.getName());
         }
-        return tagRepository.save(tag);
+        return tagRepository.save(tagEntity);
     }
 
     /**
@@ -60,7 +60,7 @@ public class TagServiceImpl implements TagService {
      * @return tag entity
      */
     @Override
-    public Tag findById(long id) {
+    public TagEntity findById(long id) {
         if (!InputVerification.verifyId(id)) {
             throw new TagIdException(id);
         }
@@ -73,8 +73,8 @@ public class TagServiceImpl implements TagService {
      * @return List of tags
      */
     @Override
-    public List<Tag> findAll() {
-        return (List<Tag>) tagRepository.findAll();
+    public List<TagEntity> findAll() {
+        return (List<TagEntity>) tagRepository.findAll();
     }
 
     /**
@@ -85,7 +85,7 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     @Deprecated
-    public void update(Tag tag) {
+    public void update(TagEntity tagEntity) {
         throw new UnsupportedOperationException();
     }
 

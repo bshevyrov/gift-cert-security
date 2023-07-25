@@ -1,6 +1,6 @@
 package com.epam.esm.facade.impl;
 
-import com.epam.esm.entity.Order;
+import com.epam.esm.entity.OrderEntity;
 import com.epam.esm.facade.OrderFacade;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.service.OrderService;
@@ -50,7 +50,7 @@ public class OrderFacadeImpl implements OrderFacade {
 
     @Override
     public Page<OrderDTO> findAllByCustomerId(long id, Pageable pageable) {
-       Page<Order> orders= orderService.findAllByCustomerId(id,pageable);
+       Page<OrderEntity> orders= orderService.findAllByCustomerId(id,pageable);
         return new PageImpl<>(orderMapper.toDTOList(orders.getContent()),pageable,orders.getTotalElements());
     }
 }

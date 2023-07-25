@@ -1,6 +1,6 @@
 package com.epam.esm.facade.impl;
 
-import com.epam.esm.entity.Customer;
+import com.epam.esm.entity.CustomerEntity;
 import com.epam.esm.facade.CustomerFacade;
 import com.epam.esm.mapper.CustomerMapper;
 import com.epam.esm.service.CustomerService;
@@ -52,7 +52,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 
     @Override
     public Page<CustomerDTO> findAll(Pageable pageable) {
-        Page<Customer> all = customerService.findAll(pageable);
+        Page<CustomerEntity> all = customerService.findAll(pageable);
         return new PageImpl<>(customerMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
     }
 }

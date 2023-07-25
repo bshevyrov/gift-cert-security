@@ -1,5 +1,5 @@
 INSERT INTO gift_certificate
-VALUES ( 1, 'First Client', 'Special promotion for first customer', 100, '2023-04-29 22:07:01'
+VALUES ( 1, 'First Client', 'Special promotion for first customerEntity', 100, '2023-04-29 22:07:01'
        , '2023-04-29 22:07:01', 66),
        ( 2, 'Initial promotion campaign -1', 'Promotion for new customers.', 20, '2023-04-28 22:10:17'
        , '2023-04-28 22:10:17', 7),
@@ -21,7 +21,7 @@ VALUES ( 1, 'First Client', 'Special promotion for first customer', 100, '2023-0
        , '2023-04-28 22:10:17', 7),
        ( 11, 'Initial promotion campaign -10', 'Promotion for new customers.', 20, '2023-04-28 22:10:17'
        , '2023-04-28 22:10:17', 7);
-INSERT INTO tag
+INSERT INTO tagEntity
 VALUES (1, 'birthday'),
        (2, 'vip'),
        (3, 'promo'),
@@ -38,12 +38,12 @@ VALUES (1, 2),
        (8, 3),
        (9, 3),
        (10, 3);
-INSERT INTO customer
+INSERT INTO customerEntity
 VALUES (2, 'Alex'),
        (3, 'Vlad'),
        (4, 'Bohdan'),
        (5, 'Denis');
-INSERT INTO `order`
+INSERT INTO `orderEntity`
 VALUES (1, 2, '2023-07-14 02:00:22'),
        (2, 3, '2023-07-17 00:29:17'),
        (3, 3, '2023-07-17 03:31:35'),
