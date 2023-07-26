@@ -1,78 +1,41 @@
 package com.epam.esm.veiw.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * GiftCertificateDTO is the data class, which used for data transportation .
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class GiftCertificateDTO extends BaseDTO {
+    @NonNull
+    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$")
     private String description;
+    @NonNull
+    @Min(0)
     private double price;
+    @NonNull
+    @Min(1)
     private int duration;
+    @Nullable
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createDate;
+    @Nullable
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime lastUpdateDate;
-
-
-    private List<TagDTO> tagDTOList;
-    public GiftCertificateDTO() {
-    }
-
-    public List<TagDTO> getTagDTOList() {
-        return tagDTOList;
-    }
-
-    public void setTagDTOList(List<TagDTO> tagDTOList) {
-        this.tagDTOList = tagDTOList;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDateTime getLastUpdateDate() {
-
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
-
+    @JsonProperty("tags")
+    @Valid
+    private List<TagDTO> tagDTOS;
 
 }

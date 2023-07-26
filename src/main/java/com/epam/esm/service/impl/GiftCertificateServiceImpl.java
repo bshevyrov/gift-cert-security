@@ -22,6 +22,7 @@ import java.util.List;
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateRepository giftCertificateRepository;
+
     @Autowired
 
     public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository) {

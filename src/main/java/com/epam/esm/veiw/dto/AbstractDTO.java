@@ -1,19 +1,10 @@
 package com.epam.esm.veiw.dto;
 
-import org.springframework.stereotype.Component;
+import lombok.Data;
+import org.springframework.lang.Nullable;
 
-@Component
+@Data
 public abstract class AbstractDTO {
+    @Nullable
     private long id;
-
-    public AbstractDTO() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }
