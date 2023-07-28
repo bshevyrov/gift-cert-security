@@ -1,7 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.entity.AbstractEntity;
-import com.epam.esm.entity.BaseEntity;
+import com.epam.esm.persistence.entity.entity.AbstractEntity;
 
 import java.util.List;
 

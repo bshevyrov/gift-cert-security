@@ -1,6 +1,6 @@
 package com.epam.esm.veiw.controller;
 
-import com.epam.esm.facade.TagFacade;
+import com.epam.esm.veiw.facade.TagFacade;
 import com.epam.esm.veiw.dto.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -48,10 +48,10 @@ public class TagController {
      */
     @PostMapping
     public ResponseEntity<TagDTO> create(@RequestBody @Valid TagDTO tagDTO, UriComponentsBuilder ucb) {
-        long tagId = tagFacade.create(tagDTO);
+        TagDTO currentTag = tagFacade.create(tagDTO);
         HttpHeaders headers = new HttpHeaders();
         URI locationUri = ucb.path("/tags/")
-                .path(String.valueOf(tagId))
+                .path(String.valueOf(currentTag.getId()))
                 .build().toUri();
 
         headers.setLocation(locationUri);

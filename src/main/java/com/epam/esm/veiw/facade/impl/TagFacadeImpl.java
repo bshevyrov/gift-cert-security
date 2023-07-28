@@ -1,6 +1,6 @@
-package com.epam.esm.facade.impl;
+package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.facade.TagFacade;
+import com.epam.esm.veiw.facade.TagFacade;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.service.TagService;
 import com.epam.esm.veiw.dto.TagDTO;
@@ -33,7 +33,7 @@ public class TagFacadeImpl implements TagFacade {
     public TagDTO create(TagDTO tagDTO) {
         return tagMapper.toDTO(
                 tagService.create(
-                        tagMapper.toModel(tagDTO)));
+                        tagMapper.toEntity(tagDTO)));
     }
 
     /**
@@ -64,7 +64,7 @@ public class TagFacadeImpl implements TagFacade {
      */
     @Override
     public void update(TagDTO tagDTO) {
-        tagService.update(tagMapper.toModel(tagDTO));
+        tagService.update(tagMapper.toEntity(tagDTO));
     }
 
     /**

@@ -1,6 +1,6 @@
-package com.epam.esm.repository;
+package com.epam.esm.persistence.repository;
 
-import com.epam.esm.entity.BaseEntity;
+import com.epam.esm.persistence.entity.entity.BaseEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 @Repository

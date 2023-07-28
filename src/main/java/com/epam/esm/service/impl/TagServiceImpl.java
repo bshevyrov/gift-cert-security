@@ -1,14 +1,14 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.TagEntity;
+import com.epam.esm.persistence.entity.entity.TagEntity;
 import com.epam.esm.exception.tag.TagExistException;
-import com.epam.esm.exception.tag.TagIdException;
-import com.epam.esm.exception.tag.TagNameException;
+
 import com.epam.esm.exception.tag.TagNotFoundException;
-import com.epam.esm.repository.TagRepository;
+import com.epam.esm.persistence.repository.TagRepository;
 import com.epam.esm.service.TagService;
-import com.epam.esm.util.InputVerification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,18 +20,20 @@ import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
-    private  final TagRepository tagRepository;
+    private final MessageSource messageSource;
+    private final TagRepository tagRepository;
+
     @Autowired
 
-    public TagServiceImpl(TagRepository tagRepository) {
+    public TagServiceImpl(MessageSource messageSource, TagRepository tagRepository) {
+        this.messageSource = messageSource;
         this.tagRepository = tagRepository;
     }
 
 
     /**
      * Method creates tag.
-     * Checks if tag have valid name
-     * - if false throws{@link  TagNameException}
+
      * Checks if tag with this name exist
      * - if true throws TagExistException
      *
@@ -40,19 +42,18 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagEntity create(TagEntity tagEntity) {
-        if (!InputVerification.verifyName(tagEntity.getName())) {
-            throw new TagNameException(tagEntity.getName());
-        }
-        if (!tagRepository.existsByName(tagEntity.getName())) {
-            throw new TagExistException(tagEntity.getName());
+
+        if (tagRepository.existsByName(tagEntity.getName())) {
+            throw new TagExistException(messageSource.getMessage("tag.exist.exception",
+                    new Object[]{tagEntity.getName()},
+                    LocaleContextHolder.getLocale()));
         }
         return tagRepository.save(tagEntity);
     }
 
     /**
      * Method return tag that was found by id
-     * Checks if tag have valid id
-     * - if false throws{@link  TagIdException}
+
      * Checks if tag with this name exist
      * - if false throws TagNotFoundException
      *
@@ -61,10 +62,11 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public TagEntity findById(long id) {
-        if (!InputVerification.verifyId(id)) {
-            throw new TagIdException(id);
-        }
-        return tagRepository.findById(id).orElseThrow(() -> new TagNotFoundException(id));
+
+        return tagRepository.findById(id)
+                .orElseThrow(() -> new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
+                        new Object[]{id},
+                        LocaleContextHolder.getLocale())));
     }
 
     /**
@@ -100,11 +102,11 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public void delete(long id) {
-        if (!InputVerification.verifyId(id)) {
-            throw new TagIdException(id);
-        }
+
         if (!tagRepository.existsById(id)) {
-            throw new TagNotFoundException(id);
+            throw new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
+                    new Object[]{id},
+                    LocaleContextHolder.getLocale()));
         }
         tagRepository.deleteById(id);
     }

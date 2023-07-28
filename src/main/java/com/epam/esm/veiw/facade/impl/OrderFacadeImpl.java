@@ -1,7 +1,7 @@
-package com.epam.esm.facade.impl;
+package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.entity.OrderEntity;
-import com.epam.esm.facade.OrderFacade;
+import com.epam.esm.persistence.entity.entity.OrderEntity;
+import com.epam.esm.veiw.facade.OrderFacade;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.veiw.dto.OrderDTO;

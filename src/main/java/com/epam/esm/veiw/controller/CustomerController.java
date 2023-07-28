@@ -1,7 +1,7 @@
 package com.epam.esm.veiw.controller;
 
-import com.epam.esm.facade.CustomerFacade;
-import com.epam.esm.facade.OrderFacade;
+import com.epam.esm.veiw.facade.CustomerFacade;
+import com.epam.esm.veiw.facade.OrderFacade;
 import com.epam.esm.veiw.dto.CustomerDTO;
 import com.epam.esm.veiw.dto.OrderDTO;
 import com.epam.esm.veiw.model.CustomerModel;

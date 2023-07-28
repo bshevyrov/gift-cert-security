@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * GiftCertificateDTO is the data class, which used for data transportation .
  */
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class GiftCertificateDTO extends BaseDTO {
     @NonNull

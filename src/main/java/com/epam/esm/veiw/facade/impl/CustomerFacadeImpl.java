@@ -1,7 +1,7 @@
-package com.epam.esm.facade.impl;
+package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.entity.CustomerEntity;
-import com.epam.esm.facade.CustomerFacade;
+import com.epam.esm.persistence.entity.entity.CustomerEntity;
+import com.epam.esm.veiw.facade.CustomerFacade;
 import com.epam.esm.mapper.CustomerMapper;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.veiw.dto.CustomerDTO;

@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.persistence.entity.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,8 +15,8 @@ public class OrderEntity extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerEntity customerEntity;
-    @OneToMany(mappedBy = "order")
-    private List<OrderItemEntity> orderItemEntityList;
+    @OneToMany(mappedBy = "orderEntity")
+    private List<OrderItemEntity> orderItemEntities;
     @Column(name = "creation_time")
     private LocalDateTime createTime;
 }

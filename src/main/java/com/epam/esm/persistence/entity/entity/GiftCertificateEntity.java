@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.persistence.entity.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +31,6 @@ public class GiftCertificateEntity extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
     private List<TagEntity> tagEntities;
-    @OneToMany(mappedBy = "giftCertificate")
+    @OneToMany(mappedBy = "giftCertificateEntity")
     private List<OrderItemEntity> orderItemEntities;
 }

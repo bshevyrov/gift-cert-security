@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.persistence.entity.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,6 +16,6 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TagEntity extends BaseEntity {
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tagEntities")
     private List<GiftCertificateEntity> giftCertificateEntities;
 }

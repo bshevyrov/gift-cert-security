@@ -1,13 +1,9 @@
 package com.epam.esm;
 
-import com.epam.esm.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.core.env.ConfigurableEnvironment;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
 
 public class ServletInitializer extends SpringBootServletInitializer {
 

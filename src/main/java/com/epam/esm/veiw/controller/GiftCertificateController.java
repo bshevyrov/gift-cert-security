@@ -1,6 +1,6 @@
 package com.epam.esm.veiw.controller;
 
-import com.epam.esm.facade.GiftCertificateFacade;
+import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import com.epam.esm.veiw.model.GiftCertificateModel;
 import com.epam.esm.veiw.model.GiftCertificateModelAssembler;
@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.net.URI;
-import java.util.List;
 
 /**
  * GiftCertificateController class is the REST controller which consumes JSON as the request, forwards to relevant
@@ -79,10 +78,11 @@ public class GiftCertificateController {
 
     @PostMapping
     public ResponseEntity<GiftCertificateDTO> create(@RequestBody @Validated GiftCertificateDTO giftCertificateDTO, UriComponentsBuilder ucb) {
-        long id = giftCertificateFacade.create(giftCertificateDTO);
+        GiftCertificateDTO currentGiftCertificate = giftCertificateFacade.create(giftCertificateDTO);
 
         HttpHeaders headers = new HttpHeaders();
-        URI locationUri = ucb.path("/gifts/").path(String.valueOf(id)).build().toUri();
+        URI locationUri = ucb.path("/gifts/").path(String.valueOf(currentGiftCertificate.getId()))
+                .build().toUri();
 
         headers.setLocation(locationUri);
         return new ResponseEntity<>(headers, HttpStatus.CREATED);

@@ -1,13 +1,15 @@
-package com.epam.esm.repository;
+package com.epam.esm.persistence.repository;
 
-import com.epam.esm.entity.TagEntity;
+import com.epam.esm.persistence.entity.entity.TagEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TagRepository extends PagingAndSortingRepository<TagEntity, Long> {
     boolean existsByName(String name);
-    Page<TagEntity> findAllByGiftCertificates(GiftCertificateRepository giftCertificateRepository, Pageable pageable);
+    @Query(value = "SELECT gc.tagEntities FROM  GiftCertificateEntity gc WHERE gc.id=?1")
+    Page<TagEntity> findAllByGiftCertificateEntityId(Long id, Pageable pageable);
 }

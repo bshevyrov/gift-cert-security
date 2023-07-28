@@ -30,7 +30,7 @@ private final GiftCertificateModelAssembler giftCertificateModelAssembler;
         OrderModel model = new OrderModel();
 
         BeanUtils.copyProperties(entity, model);
-        model.setOrderItemModelList(toOrderItemModel(entity.getOrderItemDTOList()));
+        model.setOrderItemModelList(toOrderItemModel(entity.getOrderItemDTOS()));
 //        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerController.class).findAllOrders(entity.getCustomerDTO().getId())).withSelfRel());
         return model;
     }

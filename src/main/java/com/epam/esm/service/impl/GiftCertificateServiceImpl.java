@@ -1,13 +1,12 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.GiftCertificateEntity;
-import com.epam.esm.exception.giftcertificate.GiftCertificateIdException;
+import com.epam.esm.persistence.entity.entity.GiftCertificateEntity;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
-import com.epam.esm.exception.tag.TagNameException;
-import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.persistence.repository.GiftCertificateRepository;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.util.InputVerification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,19 +20,19 @@ import java.util.List;
  */
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
+    private final MessageSource messageSource;
     private final GiftCertificateRepository giftCertificateRepository;
 
     @Autowired
 
-    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository) {
+    public GiftCertificateServiceImpl(MessageSource messageSource, GiftCertificateRepository giftCertificateRepository) {
+        this.messageSource = messageSource;
         this.giftCertificateRepository = giftCertificateRepository;
     }
 
 
     /**
      * Method creates gift certificate.
-     * Checks if tag have valid name
-     * - if false throws{@link  TagNameException}
      * Checks if tag with this name exist
      * - if true add tag id to giftCertificate
      * - if false create new tag and add id of this tag to gift certificate
@@ -69,11 +68,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 }
             });
         }*/
-        giftCertificateEntity.getTagEntities().forEach(tag -> {
-            if (!InputVerification.verifyName(tag.getName())) {
-                throw new TagNameException(tag.getName());
-            }
-        });
+//        giftCertificateEntity.getTagEntities().forEach(tag -> {
+//            if (!InputVerification.verifyName(tag.getName())) {
+//                throw new TagNameException(tag.getName());
+//            }
+//        });
         return giftCertificateRepository.save(giftCertificateEntity);
     }
 
@@ -88,11 +87,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Override
     public GiftCertificateEntity findById(long id) {
-        if (!InputVerification.verifyId(id)) {
-            throw new GiftCertificateIdException(id);
-        }
+//        if (!InputVerification.verifyId(id)) {
+//            throw new GiftCertificateIdException(id);
+//        }
         return giftCertificateRepository.findById(id).orElseThrow(() ->
-                new GiftCertificateNotFoundException(id));
+                new GiftCertificateNotFoundException(messageSource.getMessage("пшаесукешашсфеу.notfound.exceptoion",
+                        new Object[]{id},
+                        LocaleContextHolder.getLocale())));
 //        if (!InputVerification.verifyId(id)) {
 //            throw new GiftCertificateIdException(id);
 //        }
@@ -136,7 +137,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Method updates gift certificate.
      * Checks if giftCertificate  if id valid:
      * - if true proceed to next operation
-     * * - if false thrown {@link GiftCertificateIdException}
      * Checks if giftCertificate  is exists by id:
      * - if true proceed to next operation
      * - if false throws GiftCertificateNotFoundException exception
@@ -176,19 +176,20 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 //        }
 //        giftCertificate.setTags(null);
 //        giftCertificateDAO.update(giftCertificate);
-        if (!InputVerification.verifyId(giftCertificateEntity.getId())) {
-            throw new GiftCertificateIdException(giftCertificateEntity.getId());
-        }
+//        if (!InputVerification.verifyId(giftCertificateEntity.getId())) {
+//            throw new GiftCertificateIdException(giftCertificateEntity.getId());
+//        }
         if (!giftCertificateRepository.existsById(giftCertificateEntity.getId())) {
-            throw new GiftCertificateNotFoundException(giftCertificateEntity.getId());
+            throw new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
+                    new Object[]{giftCertificateEntity.getId()},
+                    LocaleContextHolder.getLocale()));
         }
         giftCertificateRepository.save(giftCertificateEntity);
     }
 
     /**
      * Method deletes gift certificate
-     * Checks if gift certificate id is valid:
-     * - if false throws {@link  GiftCertificateIdException}
+     * <p>
      * Checks if gift certificate exists by id:
      * - if true - deletes from database
      * - if false - throws GiftCertificateNotFoundException exception
@@ -197,11 +198,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Override
     public void delete(long id) {
-        if (!InputVerification.verifyId(id)) {
-            throw new GiftCertificateIdException(id);
-        }
+
         if (!giftCertificateRepository.existsById(id)) {
-            throw new GiftCertificateNotFoundException(id);
+            throw new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
+                    new Object[]{id},
+                    LocaleContextHolder.getLocale()));
         }
         giftCertificateRepository.deleteById(id);
     }

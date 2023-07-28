@@ -1,7 +1,7 @@
-package com.epam.esm.facade.impl;
+package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.entity.GiftCertificateEntity;
-import com.epam.esm.facade.GiftCertificateFacade;
+import com.epam.esm.persistence.entity.entity.GiftCertificateEntity;
+import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.util.UpdateRequestUtils;
@@ -40,7 +40,7 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
     public GiftCertificateDTO create(GiftCertificateDTO giftCertificateDTO) {
         return giftCertificateMapper.toDTO(
                 giftCertificateService.create(
-                        giftCertificateMapper.toModel(giftCertificateDTO)));
+                        giftCertificateMapper.toEntity(giftCertificateDTO)));
     }
 
     /**
@@ -91,7 +91,7 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
     public void update(GiftCertificateDTO giftCertificateDTO) {
         GiftCertificateDTO byId = giftCertificateMapper.toDTO(giftCertificateService.findById(giftCertificateDTO.getId()));
         UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateDTO,byId);
-        giftCertificateService.update(giftCertificateMapper.toModel(byId));
+        giftCertificateService.update(giftCertificateMapper.toEntity(byId));
     }
 
     /**
