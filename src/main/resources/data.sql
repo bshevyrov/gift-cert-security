@@ -21,7 +21,7 @@ VALUES ( 1, 'First Client', 'Special promotion for first customerEntity', 100, '
        , '2023-04-28 22:10:17', 7),
        ( 11, 'Initial promotion campaign -10', 'Promotion for new customers.', 20, '2023-04-28 22:10:17'
        , '2023-04-28 22:10:17', 7);
-INSERT INTO tagEntity
+INSERT INTO tag
 VALUES (1, 'birthday'),
        (2, 'vip'),
        (3, 'promo'),
@@ -38,16 +38,17 @@ VALUES (1, 2),
        (8, 3),
        (9, 3),
        (10, 3);
-INSERT INTO customerEntity
+INSERT INTO customer
 VALUES (2, 'Alex'),
        (3, 'Vlad'),
        (4, 'Bohdan'),
        (5, 'Denis');
-INSERT INTO `orderEntity`
-VALUES (1, 2, '2023-07-14 02:00:22'),
-       (2, 3, '2023-07-17 00:29:17'),
-       (3, 3, '2023-07-17 03:31:35'),
-       (4, 4, '2023-07-16 08:23:01');
+INSERT INTO `order`
+VALUES (1, 2, '2023-07-14 02:00:22',0),
+       (5, 2, '2023-07-14 02:00:21',0),
+       (2, 3, '2023-07-17 00:29:17',0),
+       (3, 3, '2023-07-17 03:31:35',0),
+       (4, 4, '2023-07-16 08:23:01',0);
 
 INSERT INTO order_item
 VALUES (1, 2, 1, 1),

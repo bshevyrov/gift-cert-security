@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.persistence.entity.entity.OrderEntity;
+import com.epam.esm.persistence.entity.OrderEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

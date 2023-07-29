@@ -1,6 +1,6 @@
 package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.persistence.entity.entity.OrderEntity;
+import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.veiw.facade.OrderFacade;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.service.OrderService;
@@ -51,6 +51,8 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     public Page<OrderDTO> findAllByCustomerId(long id, Pageable pageable) {
        Page<OrderEntity> orders= orderService.findAllByCustomerId(id,pageable);
-        return new PageImpl<>(orderMapper.toDTOList(orders.getContent()),pageable,orders.getTotalElements());
+        List<OrderEntity> content = orders.getContent();
+        List<OrderDTO> orderDTOS = orderMapper.toDTOList(orders.getContent());
+        return new PageImpl<>(orderDTOS,pageable,orders.getTotalElements());
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.esm.mapper;
 
-import com.epam.esm.persistence.entity.entity.OrderItemEntity;
+import com.epam.esm.persistence.entity.OrderItemEntity;
 import com.epam.esm.veiw.dto.OrderItemDTO;
 import org.mapstruct.Mapper;
 

@@ -22,15 +22,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//UTILS
-    //model to dto mapper
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    //
+
     //dot.env reader
     implementation 'io.github.cdimascio:dotenv-java:2.3.2'
     //
@@ -41,13 +37,16 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
-    //
-    //Validation annotation
-    implementation 'javax.validation:validation-api:2.0.1.Final'
-
 
 //
-	implementation 'com.mysql:mysql-connector-j:8.0.33'
+    //UTILS
+    //model to dto mapper
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    //
+    implementation 'com.mysql:mysql-connector-j:8.0.33'
 
 }
 

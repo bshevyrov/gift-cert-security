@@ -1,15 +1,18 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.persistence.entity.entity.OrderEntity;
+import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.persistence.repository.OrderRepository;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
+@Transactional
+
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 

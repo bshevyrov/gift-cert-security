@@ -1,11 +1,11 @@
 package com.epam.esm.veiw.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
+
 @Data
-@NoArgsConstructor
 public abstract class AbstractDTO {
     @Nullable
     private long id;

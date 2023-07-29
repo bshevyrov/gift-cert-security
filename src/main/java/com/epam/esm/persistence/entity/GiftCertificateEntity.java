@@ -1,10 +1,12 @@
-package com.epam.esm.persistence.entity.entity;
+package com.epam.esm.persistence.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,17 +15,29 @@ import java.util.List;
  */
 @Entity
 @Table(name = "gift_certificate")
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @DynamicUpdate
 public class GiftCertificateEntity extends BaseEntity {
+
+    @NotEmpty(message = "Internal error with field description.")
+    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$",message = "Internal error with field description.")
     private String description;
+
+    @Min(value = 0,message = "Internal error with field price.")
     private double price;
+
+    @Min(value = 1 ,message = "Internal error with field duration.")
     private int duration;
+
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "gift_certificate_has_tag",
@@ -31,6 +45,4 @@ public class GiftCertificateEntity extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
     private List<TagEntity> tagEntities;
-    @OneToMany(mappedBy = "giftCertificateEntity")
-    private List<OrderItemEntity> orderItemEntities;
 }

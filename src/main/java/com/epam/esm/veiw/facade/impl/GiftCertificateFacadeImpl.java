@@ -1,6 +1,6 @@
 package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.persistence.entity.entity.GiftCertificateEntity;
+import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.service.GiftCertificateService;

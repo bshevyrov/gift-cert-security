@@ -1,6 +1,6 @@
 package com.epam.esm.persistence.repository;
 
-import com.epam.esm.persistence.entity.entity.GiftCertificateEntity;
+import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;

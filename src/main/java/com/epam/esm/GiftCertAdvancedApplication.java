@@ -4,19 +4,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.epam.esm.repository")
+//@EnableJpaRepositories("com.epam.esm.persistence.repository")
 @EnableSpringDataWebSupport
 public class GiftCertAdvancedApplication {
-
-
-
     public static void main(String[] args) {
         SpringApplication.run(GiftCertAdvancedApplication.class, args);
     }
-
-
 }
 
 

@@ -1,8 +1,7 @@
-package com.epam.esm.persistence.entity.entity;
+package com.epam.esm.persistence.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +10,6 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @Data
-@NoArgsConstructor
 public abstract class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -31,6 +31,7 @@ import java.net.URI;
 @RequestMapping(value = "/gifts",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
+@Validated
 public class GiftCertificateController {
 
 
@@ -77,7 +78,7 @@ public class GiftCertificateController {
 
 
     @PostMapping
-    public ResponseEntity<GiftCertificateDTO> create(@RequestBody @Validated GiftCertificateDTO giftCertificateDTO, UriComponentsBuilder ucb) {
+    public ResponseEntity<GiftCertificateDTO> create(@Valid @RequestBody  GiftCertificateDTO giftCertificateDTO, UriComponentsBuilder ucb) {
         GiftCertificateDTO currentGiftCertificate = giftCertificateFacade.create(giftCertificateDTO);
 
         HttpHeaders headers = new HttpHeaders();

@@ -1,20 +1,16 @@
 package com.epam.esm.veiw.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OrderDTO extends AbstractDTO {
+    private CustomerDTO customerDTO;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createTime;
-    private List<OrderItemDTO> orderItemDTOS;
-    private CustomerDTO customerDTO;
-
-
+    private double cost;
 }

@@ -6,11 +6,15 @@ import com.epam.esm.exception.tag.TagExistException;
 import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.veiw.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class catch exceptions which might occur during code execution.
@@ -57,5 +61,18 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleException(ConstraintViolationException e) {
         return new ErrorResponse(Integer.parseInt(HttpStatus.INTERNAL_SERVER_ERROR.value() + "00"), e.getConstraintViolations().iterator().next().getPropertyPath().toString());
 
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

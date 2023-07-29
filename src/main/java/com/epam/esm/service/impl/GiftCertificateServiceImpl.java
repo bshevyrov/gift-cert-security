@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.persistence.entity.entity.GiftCertificateEntity;
+import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.persistence.repository.GiftCertificateRepository;
 import com.epam.esm.service.GiftCertificateService;
@@ -19,6 +19,8 @@ import java.util.List;
  * Used  to manipulate GiftCertificate objects and collecting data.
  */
 @Service
+@Transactional
+
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final MessageSource messageSource;
     private final GiftCertificateRepository giftCertificateRepository;

@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.persistence.entity.entity.TagEntity;
+import com.epam.esm.persistence.entity.TagEntity;
 import com.epam.esm.exception.tag.TagExistException;
 
 import com.epam.esm.exception.tag.TagNotFoundException;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ import java.util.List;
  */
 
 @Service
+@Transactional(rollbackFor = {Exception.class})
+
 public class TagServiceImpl implements TagService {
     private final MessageSource messageSource;
     private final TagRepository tagRepository;

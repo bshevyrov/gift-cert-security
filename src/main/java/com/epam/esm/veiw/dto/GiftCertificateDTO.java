@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,14 +22,12 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class GiftCertificateDTO extends BaseDTO {
-    @NonNull
-    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$")
+    @NotEmpty(message = "Description can`t be empty.")
+    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$", message = "Illegal chars in decription/ Only letters and whitespaces allowed.")
     private String description;
-    @NonNull
-    @Min(0)
+    @Positive(message = "Price can`t be less zero.")
     private double price;
-    @NonNull
-    @Min(1)
+    @Positive(message = "Duration can`t be less one day.")
     private int duration;
     @Nullable
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")

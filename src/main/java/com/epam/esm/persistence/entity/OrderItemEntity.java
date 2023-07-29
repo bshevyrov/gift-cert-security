@@ -1,22 +1,20 @@
-package com.epam.esm.persistence.entity.entity;
+package com.epam.esm.persistence.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "order_item")
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class OrderItemEntity extends AbstractEntity {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gift_certificate_id")
     private GiftCertificateEntity giftCertificateEntity;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity orderEntity;
     private int quantity;

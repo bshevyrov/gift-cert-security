@@ -1,22 +1,25 @@
-package com.epam.esm.persistence.entity.entity;
+package com.epam.esm.persistence.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "\"order\"")
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OrderEntity extends AbstractEntity {
-    @ManyToOne
+    @ManyToOne(
+//            fetch = FetchType.LAZY
+    )
     @JoinColumn(name = "customer_id")
     private CustomerEntity customerEntity;
-    @OneToMany(mappedBy = "orderEntity")
-    private List<OrderItemEntity> orderItemEntities;
+    //    @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
+//    private List<OrderItemEntity> orderItemEntities;
     @Column(name = "creation_time")
     private LocalDateTime createTime;
+    private double cost;
 }

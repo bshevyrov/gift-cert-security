@@ -1,6 +1,6 @@
 package com.epam.esm.mapper;
 
-import com.epam.esm.persistence.entity.entity.GiftCertificateEntity;
+import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import org.mapstruct.Mapper;
 

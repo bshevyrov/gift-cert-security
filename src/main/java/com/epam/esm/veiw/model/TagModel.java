@@ -1,5 +1,7 @@
 package com.epam.esm.veiw.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 
@@ -8,26 +10,11 @@ import org.springframework.hateoas.RepresentationModel;
  * Entity to a pagination format
 
 **/
+@Getter
+@Setter
 public class TagModel extends RepresentationModel<TagModel> {
     private long id;
     private String name;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
 }
 

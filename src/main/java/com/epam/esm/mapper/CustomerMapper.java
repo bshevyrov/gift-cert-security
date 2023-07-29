@@ -1,6 +1,6 @@
 package com.epam.esm.mapper;
 
-import com.epam.esm.persistence.entity.entity.CustomerEntity;
+import com.epam.esm.persistence.entity.CustomerEntity;
 import com.epam.esm.veiw.dto.CustomerDTO;
 import org.mapstruct.Mapper;
 
