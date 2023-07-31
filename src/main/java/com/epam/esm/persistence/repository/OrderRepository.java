@@ -2,6 +2,7 @@ package com.epam.esm.persistence.repository;
 
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.persistence.entity.OrderItemEntity;
+import com.epam.esm.util.CustomQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,7 @@ public interface OrderRepository extends PagingAndSortingRepository<OrderEntity,
     @Query("SELECT o.createTime FROM OrderEntity o WHERE o.id=?1")
     LocalDateTime getCreateTimeByOrderId(Long orderId);
 
+
+    @Query(CustomQuery.GET_POPULAR_ORDER)
+    OrderEntity getPopularOrderByCustomerId(Long id);
 }

@@ -93,12 +93,13 @@ public class CustomerController {
         List<OrderItemDTO> all = orderItemFacade.createAll(orderItemDTOS);
 
         HttpHeaders headers = new HttpHeaders();
-        URI locationUri = ucb.path("{id}/orders").path(String.valueOf(all.get(0).getOrderDTO().getId()))
+        URI locationUri = ucb.path("/customer/"+id+"/orders/").path(String.valueOf(all.get(0).getOrderDTO().getId()))
                 .build().toUri();
 
         headers.setLocation(locationUri);
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
 
     }
+    @GetMapping
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
@@ -22,5 +23,6 @@ public class OrderItemDTO extends AbstractDTO {
     private GiftCertificateDTO giftCertificateDTO;
     @Valid
     private OrderDTO orderDTO;
+    @Positive
     private int quantity;
 }
