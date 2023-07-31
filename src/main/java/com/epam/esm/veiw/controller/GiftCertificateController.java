@@ -28,7 +28,7 @@ import java.net.URI;
  * method in facade and produces JSON as the result of model's operations.
  */
 @RestController
-@RequestMapping(value = "/gifts",
+@RequestMapping(value = "/v1/gifts",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
@@ -78,7 +78,8 @@ public class GiftCertificateController {
 
 
     @PostMapping
-    public ResponseEntity<GiftCertificateDTO> create(@Valid @RequestBody  GiftCertificateDTO giftCertificateDTO, UriComponentsBuilder ucb) {
+    public ResponseEntity<GiftCertificateDTO> create(@Valid @RequestBody  GiftCertificateDTO giftCertificateDTO,
+                                                     UriComponentsBuilder ucb) {
         GiftCertificateDTO currentGiftCertificate = giftCertificateFacade.create(giftCertificateDTO);
 
         HttpHeaders headers = new HttpHeaders();

@@ -1,6 +1,10 @@
 package com.epam.esm.persistence.entity;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -23,17 +27,19 @@ import java.util.List;
 public class GiftCertificateEntity extends BaseEntity {
 
     @NotEmpty(message = "Internal error with field description.")
-    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$",message = "Internal error with field description.")
+    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$", message = "Internal error with field description.")
     private String description;
 
-    @Min(value = 0,message = "Internal error with field price.")
+    @Min(value = 0, message = "Internal error with field price.")
     private double price;
 
-    @Min(value = 1 ,message = "Internal error with field duration.")
+    @Min(value = 1, message = "Internal error with field duration.")
     private int duration;
 
+@CreationTimestamp
     @Column(name = "create_date")
     private LocalDateTime createDate;
+    @CreationTimestamp
 
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;

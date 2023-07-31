@@ -1,7 +1,9 @@
 package com.epam.esm.persistence.entity;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ public class OrderEntity extends AbstractEntity {
     private CustomerEntity customerEntity;
     //    @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
 //    private List<OrderItemEntity> orderItemEntities;
+    @CreationTimestamp
     @Column(name = "creation_time")
     private LocalDateTime createTime;
     private double cost;

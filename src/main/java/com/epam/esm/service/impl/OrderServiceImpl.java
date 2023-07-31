@@ -1,6 +1,7 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.persistence.entity.OrderEntity;
+import com.epam.esm.persistence.entity.OrderItemEntity;
 import com.epam.esm.persistence.repository.OrderRepository;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,8 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderEntity> findAllByCustomerId(Long id, Pageable pageable) {
         return orderRepository.findAllByCustomerEntity_Id(id,pageable);
     }
+
+
+
+
 }

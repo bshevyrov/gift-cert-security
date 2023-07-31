@@ -49,11 +49,11 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleTagExistException(TagExistException e) {
         return new ErrorResponse(Integer.parseInt(HttpStatus.BAD_REQUEST.value() + "07"), e.getMessage());
     }
-
+//TODO remove stack trace
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception e) {
-        return new ErrorResponse(Integer.parseInt(HttpStatus.INTERNAL_SERVER_ERROR.value() + "00"), e.getMessage());
+        return new ErrorResponse(Integer.parseInt(HttpStatus.INTERNAL_SERVER_ERROR.value() + "00"), e.getMessage()+ "" + e.getStackTrace().toString());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

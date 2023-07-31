@@ -1,11 +1,9 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.exception.customer.CustomerIdException;
 import com.epam.esm.exception.customer.CustomerNotFoundException;
 import com.epam.esm.persistence.entity.CustomerEntity;
 import com.epam.esm.persistence.repository.CustomerRepository;
 import com.epam.esm.service.CustomerService;
-import com.epam.esm.util.InputVerification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -37,9 +35,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerEntity findById(long id) {
 
-        if (!InputVerification.verifyId(id)) {
-            throw new CustomerIdException(id);
-        }
         return customerRepository.findById(id).orElseThrow(
                 () -> new CustomerNotFoundException(
                         messageSource.getMessage("customer.notfound.exception",

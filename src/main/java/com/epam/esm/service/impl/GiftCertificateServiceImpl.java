@@ -93,7 +93,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 //            throw new GiftCertificateIdException(id);
 //        }
         return giftCertificateRepository.findById(id).orElseThrow(() ->
-                new GiftCertificateNotFoundException(messageSource.getMessage("пшаесукешашсфеу.notfound.exceptoion",
+                new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
 //        if (!InputVerification.verifyId(id)) {

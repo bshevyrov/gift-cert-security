@@ -1,6 +1,8 @@
 package com.epam.esm.veiw.facade.impl;
 
+import com.epam.esm.mapper.OrderItemMapper;
 import com.epam.esm.persistence.entity.OrderEntity;
+import com.epam.esm.veiw.dto.OrderItemDTO;
 import com.epam.esm.veiw.facade.OrderFacade;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.service.OrderService;
@@ -15,11 +17,13 @@ import java.util.List;
 @Component
 public class OrderFacadeImpl implements OrderFacade {
     private final OrderMapper orderMapper;
+    private final OrderItemMapper orderItemMapper;
     private final OrderService orderService;
 
     @Autowired
-    public OrderFacadeImpl(OrderMapper orderMapper, OrderService orderService) {
+    public OrderFacadeImpl(OrderMapper orderMapper, OrderItemMapper orderItemMapper, OrderService orderService) {
         this.orderMapper = orderMapper;
+        this.orderItemMapper = orderItemMapper;
         this.orderService = orderService;
     }
 
@@ -51,8 +55,7 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     public Page<OrderDTO> findAllByCustomerId(long id, Pageable pageable) {
        Page<OrderEntity> orders= orderService.findAllByCustomerId(id,pageable);
-        List<OrderEntity> content = orders.getContent();
-        List<OrderDTO> orderDTOS = orderMapper.toDTOList(orders.getContent());
-        return new PageImpl<>(orderDTOS,pageable,orders.getTotalElements());
+        return new PageImpl<>(orderMapper.toDTOList(orders.getContent()),pageable,orders.getTotalElements());
     }
+
 }

@@ -24,18 +24,16 @@ import java.util.List;
  * method in facade and produces JSON as the result of model's operations
  */
 @RestController
-@RequestMapping(value = "/tags",
+@RequestMapping(value = "/v1/tags",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class TagController {
     private final TagFacade tagFacade;
-    private final MessageSource messageSource;
 
     @Autowired
-    public TagController(TagFacade tagFacade, MessageSource messageSource) {
+    public TagController(TagFacade tagFacade) {
         this.tagFacade = tagFacade;
-        this.messageSource = messageSource;
     }
 
     /**

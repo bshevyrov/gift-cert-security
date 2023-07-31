@@ -6,6 +6,8 @@ import org.springframework.lang.Nullable;
 
 
 @Data
+@SuperBuilder
+@NoArgsConstructor
 public abstract class AbstractDTO {
     @Nullable
     private long id;

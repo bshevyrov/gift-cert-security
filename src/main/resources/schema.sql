@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `gift_card`.`gift_certificate` (
                                                               `name` VARCHAR(45) NULL DEFAULT NULL,
                                                               `description` VARCHAR(45) NULL DEFAULT NULL,
                                                               `price` DOUBLE NULL DEFAULT NULL,
-                                                              `create_date` DATETIME NULL DEFAULT NULL,
-                                                              `last_update_date` DATETIME NULL DEFAULT NULL,
+                                                              `create_date` DATETIME  DEFAULT now(),
+                                                              `last_update_date` DATETIME  DEFAULT now() ON update now(),
                                                               `duration` INT NULL DEFAULT NULL,
                                                               PRIMARY KEY (`id`))
     ENGINE = InnoDB
@@ -94,7 +94,7 @@ DROP TABLE IF EXISTS `gift_card`.`order` ;
 CREATE TABLE IF NOT EXISTS `gift_card`.`order` (
                                                    `id` INT NOT NULL AUTO_INCREMENT,
                                                    `customer_id` INT NOT NULL,
-                                                   `creation_time` DATETIME NOT NULL,
+                                                   `creation_time` DATETIME DEFAULT now(),
                                                    `cost` DOUBLE NOT NULL,
                                                    PRIMARY KEY (`id`),
                                                    INDEX `fk_order_customer1_idx` (`customer_id` ASC) VISIBLE,
