@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 
@@ -52,7 +54,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByCustomerEntity_Id(id,pageable);
     }
 
-
+    @Override
+    public OrderEntity getPopularTagInOrderByCustomerId(Long id) {
+        Optional<OrderEntity> popularTagInOrderByCustomerId = orderRepository.getPopularTagInOrderByCustomerId(id);
+        return popularTagInOrderByCustomerId.get();
+    }
 
 
 }

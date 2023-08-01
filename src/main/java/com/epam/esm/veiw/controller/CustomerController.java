@@ -1,12 +1,11 @@
 package com.epam.esm.veiw.controller;
 
 import com.epam.esm.util.validation.group.Purchase;
-import com.epam.esm.veiw.dto.AbstractDTO;
+import com.epam.esm.veiw.dto.CustomerDTO;
+import com.epam.esm.veiw.dto.OrderDTO;
 import com.epam.esm.veiw.dto.OrderItemDTO;
 import com.epam.esm.veiw.facade.CustomerFacade;
 import com.epam.esm.veiw.facade.OrderFacade;
-import com.epam.esm.veiw.dto.CustomerDTO;
-import com.epam.esm.veiw.dto.OrderDTO;
 import com.epam.esm.veiw.facade.OrderItemFacade;
 import com.epam.esm.veiw.model.CustomerModel;
 import com.epam.esm.veiw.model.CustomerModelAssembler;
@@ -29,7 +28,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
@@ -68,14 +66,14 @@ public class CustomerController {
 
     }
 
-    @GetMapping (value = "")
+    @GetMapping(value = "")
     public ResponseEntity<CollectionModel<CustomerModel>> findAll(@PageableDefault Pageable pageable) {
         Page<CustomerDTO> all = customerFacade.findAll(pageable);
         PagedModel<CustomerModel> pagedModel = pagedCustomerResourcesAssembler.toModel(all, customerModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
-    @GetMapping (value = "/{id}/orders")
+    @GetMapping(value = "/{id}/orders")
     public ResponseEntity<PagedModel<OrderModel>> findAllOrders(@PathVariable long id,
                                                                 @PageableDefault Pageable pageable) {
         Page<OrderDTO> page = orderFacade.findAllByCustomerId(id, pageable);
@@ -83,23 +81,29 @@ public class CustomerController {
         PagedModel<OrderModel> resourcesAssembler = pagedOrderResourcesAssembler.toModel(page, orderModelAssembler, link);
         return new ResponseEntity<>(resourcesAssembler, HttpStatus.OK);
     }
+
     @PostMapping(value = "{id}/orders")
-    public ResponseEntity<OrderModel> createOrder(@Validated(Purchase.class)@RequestBody  List<OrderItemDTO>orderItemDTOS,
+    public ResponseEntity<OrderModel> createOrder(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
                                                   @PathVariable @Positive long id,
-                                                    UriComponentsBuilder ucb ){
+                                                  UriComponentsBuilder ucb) {
 
         OrderDTO orderDTO = OrderDTO.builder().customerDTO(CustomerDTO.builder().id(id).build()).build();
         orderItemDTOS.forEach(orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
         List<OrderItemDTO> all = orderItemFacade.createAll(orderItemDTOS);
 
         HttpHeaders headers = new HttpHeaders();
-        URI locationUri = ucb.path("/customer/"+id+"/orders/").path(String.valueOf(all.get(0).getOrderDTO().getId()))
+        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(all.get(0).getOrderDTO().getId()))
                 .build().toUri();
 
         headers.setLocation(locationUri);
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
 
     }
-    @GetMapping
 
+    @GetMapping(value = "{id}/orders/popularity")
+    public ResponseEntity<OrderModel> getPopularTagInOrderByCustomerId(@Positive @PathVariable long id) {
+        OrderDTO popularTagInOrderByCustomerId = orderFacade.getPopularTagInOrderByCustomerId(id);
+        OrderModel orderModel = orderModelAssembler.toModel(popularTagInOrderByCustomerId);
+        return new ResponseEntity<>(orderModel, HttpStatus.OK) ;
+    }
 }

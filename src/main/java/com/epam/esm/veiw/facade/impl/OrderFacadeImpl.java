@@ -58,4 +58,10 @@ public class OrderFacadeImpl implements OrderFacade {
         return new PageImpl<>(orderMapper.toDTOList(orders.getContent()),pageable,orders.getTotalElements());
     }
 
+    @Override
+    public OrderDTO getPopularTagInOrderByCustomerId(Long id) {
+        OrderEntity popularTagInOrderByCustomerId = orderService.getPopularTagInOrderByCustomerId(id);
+        return orderMapper.toDTO(popularTagInOrderByCustomerId);
+    }
+
 }
