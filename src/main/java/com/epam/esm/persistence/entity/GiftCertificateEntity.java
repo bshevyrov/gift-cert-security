@@ -1,10 +1,15 @@
 package com.epam.esm.persistence.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import net.bytebuddy.implementation.bind.annotation.Super;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -18,6 +23,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "gift_certificate")
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
@@ -35,11 +41,13 @@ public class GiftCertificateEntity extends BaseEntity {
     @Min(value = 1, message = "Internal error with field duration.")
     private int duration;
 
-@CreationTimestamp
+    @CreatedDate
+    @CreationTimestamp
     @Column(name = "create_date")
     private LocalDateTime createDate;
-    @CreationTimestamp
 
+    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
 
