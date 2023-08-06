@@ -1,6 +1,8 @@
 package com.epam.esm.veiw.facade.impl;
 
+import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
+import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.service.GiftCertificateService;
@@ -21,12 +23,14 @@ import java.util.List;
 public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
 
     private final GiftCertificateMapper giftCertificateMapper;
+    private final TagMapper tagMapper;
     private final GiftCertificateService giftCertificateService;
 
 
     @Autowired
-    public GiftCertificateFacadeImpl(GiftCertificateMapper giftCertificateMapper,  GiftCertificateService giftCertificateService) {
+    public GiftCertificateFacadeImpl(GiftCertificateMapper giftCertificateMapper, TagMapper tagMapper, GiftCertificateService giftCertificateService) {
         this.giftCertificateMapper = giftCertificateMapper;
+        this.tagMapper = tagMapper;
         this.giftCertificateService = giftCertificateService;
     }
 
@@ -80,6 +84,13 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
         Page<GiftCertificateEntity> entities =
                 giftCertificateService.findAll(pageable);
         return new PageImpl<>(giftCertificateMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());
+    }
+
+    @Override
+    public Page<GiftCertificateDTO> findAllByTagsName(List<TagDTO> tags, Pageable pageable) {
+        Page<GiftCertificateEntity> giftCertificateEntities= giftCertificateService.findAllByTagsName(tagMapper.toEntityList(tags),pageable);
+
+        return new PageImpl<>(giftCertificateMapper.toDTOList(giftCertificateEntities.getContent()),pageable,giftCertificateEntities.getTotalElements());
     }
 
     /**

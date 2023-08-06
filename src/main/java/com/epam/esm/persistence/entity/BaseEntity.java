@@ -4,6 +4,7 @@ package com.epam.esm.persistence.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.MappedSuperclass;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Pattern;
 @MappedSuperclass
 @Data
 @NoArgsConstructor
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public abstract class BaseEntity extends AbstractEntity {
     @NotBlank(message="Name is mandatory")

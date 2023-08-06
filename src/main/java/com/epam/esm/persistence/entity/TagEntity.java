@@ -19,6 +19,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class TagEntity extends BaseEntity {
-    @ManyToMany(mappedBy = "tagEntities",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tagEntities")
     private List<GiftCertificateEntity> giftCertificateEntities;
 }

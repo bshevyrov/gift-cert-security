@@ -1,7 +1,8 @@
 package com.epam.esm.veiw.controller;
 
-import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;
+import com.epam.esm.veiw.dto.TagDTO;
+import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.veiw.model.GiftCertificateModel;
 import com.epam.esm.veiw.model.GiftCertificateModelAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GiftCertificateController class is the REST controller which consumes JSON as the request, forwards to relevant
@@ -63,8 +68,7 @@ public class GiftCertificateController {
      * @param pageable object, which holds URL request params for search
      * @return {@link  GiftCertificateDTO} as the result of search based on URL params
      */
-    @RequestMapping(method = RequestMethod.GET,
-            value = "")
+    @GetMapping(value = "")
     public ResponseEntity<CollectionModel<GiftCertificateModel>> findAll(@PageableDefault Pageable pageable) {
         Page<GiftCertificateDTO> all = giftCertificateFacade.findAll(pageable);
         CollectionModel<GiftCertificateModel> pagedModel =
@@ -75,10 +79,8 @@ public class GiftCertificateController {
     }
 
 
-
-
     @PostMapping
-    public ResponseEntity<GiftCertificateDTO> create(@Valid @RequestBody  GiftCertificateDTO giftCertificateDTO,
+    public ResponseEntity<GiftCertificateDTO> create(@Valid @RequestBody GiftCertificateDTO giftCertificateDTO,
                                                      UriComponentsBuilder ucb) {
         GiftCertificateDTO currentGiftCertificate = giftCertificateFacade.create(giftCertificateDTO);
 
@@ -105,7 +107,6 @@ public class GiftCertificateController {
     }
 
 
-
     /**
      * Method consumes URL param.
      * Produces response object as the result of delete operation.
@@ -130,6 +131,17 @@ public class GiftCertificateController {
     public void update(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO, @PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         giftCertificateDTO.setId(id);
         giftCertificateFacade.update(giftCertificateDTO);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<CollectionModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
+                                                                               @RequestBody @NotEmpty List<TagDTO> tags) {
+
+        Page<GiftCertificateDTO> allByTags = giftCertificateFacade.findAllByTagsName(tags, pageable);
+        CollectionModel<GiftCertificateModel> pagedModel =
+                pagedResourcesAssembler.toModel(allByTags, giftCertificateModelAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+
     }
 
 }

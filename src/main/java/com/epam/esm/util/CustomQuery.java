@@ -36,4 +36,9 @@ public final class CustomQuery {
         "WHERE customer_id = ?\n" +
         "ORDER BY o.cost DESC\n" +
         "limit 1;";
+
+
+  public static final String FIND_ALL_GIFT_CERTIFICATE_BY_TAGS_ID_AND_SIZE  = "select gc.* from gift_certificate gc\n" +
+            "    join gift_certificate_has_tag gcht on gc.id = gcht.gift_certificate_id\n" +
+            "where gcht.tag_id in :tags group by gc.id having count(gc.id) = :tagCount";
 }

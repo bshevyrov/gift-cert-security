@@ -12,4 +12,5 @@ public interface TagMapper {
 
     TagEntity toEntity(TagDTO tagDTO);
     List<TagDTO> toDTOList(List<TagEntity> list);
+    List<TagEntity> toEntityList(List<TagDTO> list);
 }

@@ -1,9 +1,8 @@
 package com.epam.esm.persistence.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -19,8 +18,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "gift_certificate")
-@Getter
-@Setter
+@Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @DynamicUpdate
