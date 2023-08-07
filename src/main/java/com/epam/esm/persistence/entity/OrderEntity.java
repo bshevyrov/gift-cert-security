@@ -1,13 +1,14 @@
 package com.epam.esm.persistence.entity;
 
+import com.epam.esm.util.validation.group.GiftCertificateCreateValidationGroup;
+import com.epam.esm.util.validation.group.GiftCertificateUpdateValidationGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Positive;
 
 @Entity
 @Table(name = "\"order\"")
@@ -16,15 +17,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OrderEntity extends AbstractEntity {
-    @ManyToOne(
-//            fetch = FetchType.LAZY
-    )
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerEntity customerEntity;
-    //    @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
-//    private List<OrderItemEntity> orderItemEntities;
-    @CreationTimestamp
-    @Column(name = "creation_time")
-    private LocalDateTime createTime;
+
+    @Positive(message = "Internal error with field cost.")
     private double cost;
 }
