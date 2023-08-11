@@ -1,5 +1,6 @@
 package com.epam.esm.veiw.dto;
 
+import com.epam.esm.persistence.entity.AbstractAuditEntity;
 import com.epam.esm.util.validation.group.Purchase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

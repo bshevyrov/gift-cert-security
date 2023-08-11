@@ -6,7 +6,6 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
@@ -15,18 +14,18 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
-@SuperBuilder
 @NoArgsConstructor
+@SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractAuditEntity {
     @CreatedDate
-    @Nullable
+//    @Nullable
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Nullable
+//    @Nullable
     private LocalDateTime updatedDate;
-    @Nullable
+    //    @Nullable
     private LocalDateTime deletedDate;
 
     @PreRemove

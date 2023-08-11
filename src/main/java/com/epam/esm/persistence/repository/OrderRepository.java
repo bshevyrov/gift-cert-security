@@ -18,11 +18,11 @@ import java.util.Optional;
 public interface OrderRepository extends PagingAndSortingRepository<OrderEntity, Long> {
     Page<OrderEntity> findAllByCustomerEntity_Id(Long customerId, Pageable pageable);
 
-    @Query("SELECT SUM(gc.price*oi.quantity) FROM GiftCertificateEntity gc  JOIN OrderItemEntity  oi ON gc.id= oi.giftCertificateEntity.id WHERE oi.orderEntity.id =?1")
-    Double getOrderCostByOrderId(Long orderId);
-
-    @Query("SELECT o.createTime FROM OrderEntity o WHERE o.id=?1")
-    LocalDateTime getCreateTimeByOrderId(Long orderId);
+//    @Query("SELECT SUM(gc.price*oi.quantity) FROM GiftCertificateEntity gc  JOIN OrderItemEntity  oi ON gc.id= oi.giftCertificateEntity.id WHERE oi.orderEntity.id =?1")
+//    Double getOrderCostByOrderId(Long orderId);
+//
+//    @Query("SELECT o.createTime FROM OrderEntity o WHERE o.id=?1")
+//    LocalDateTime getCreateTimeByOrderId(Long orderId);
 
     @Query(value = CustomQuery.GET_POPULAR_ORDER, nativeQuery = true)
         Optional<OrderEntity> getPopularTagInOrderByCustomerId(Long id);

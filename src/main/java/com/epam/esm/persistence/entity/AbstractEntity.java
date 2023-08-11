@@ -16,7 +16,7 @@ import javax.validation.constraints.Null;
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractEntity extends AbstractAuditEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
     @Null(groups = GiftCertificateCreateValidationGroup.class)
     private Long id;

@@ -9,9 +9,13 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {GiftCertificateMapper.class, OrderMapper.class})
 public interface OrderItemMapper {
+
     @Mapping(target ="orderDTO",source = "orderEntity")
     @Mapping(target ="giftCertificateDTO",source = "giftCertificateEntity")
     OrderItemDTO toDTO(OrderItemEntity orderItemEntity);
+    @Mapping(target = "createdDate",ignore = true )
+    @Mapping(target = "updatedDate",ignore = true )
+    @Mapping(target = "deletedDate",ignore = true )
     @Mapping(source ="orderDTO",target = "orderEntity")
     @Mapping(source ="giftCertificateDTO",target = "giftCertificateEntity")
     OrderItemEntity toEntity(OrderItemDTO orderItemDTO);

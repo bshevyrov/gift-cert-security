@@ -10,13 +10,12 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
+import javax.persistence.Entity;
+import javax.validation.constraints.*;
 import java.util.List;
 
 /**
- * Entity that represent gift_certificate table.
+ * com.epam.esm.persistence.entity.Entity that represent gift_certificate table.
  */
 @Entity
 @Table(name = "gift_certificate")
@@ -26,7 +25,12 @@ import java.util.List;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-public class GiftCertificateEntity extends BaseEntity {
+public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.persistence.entity.Entity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
+    @Null(groups = GiftCertificateCreateValidationGroup.class)
+    private Long id;
     @NotEmpty(groups = {GiftCertificateCreateValidationGroup.class,
             GiftCertificateUpdateValidationGroup.class},
             message = "Internal error with field description.")
@@ -43,7 +47,9 @@ public class GiftCertificateEntity extends BaseEntity {
             message = "Internal error with field duration.")
     private int duration;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
+//            (cascade = CascadeType.PERSIST)
+            (cascade = CascadeType.ALL)
     @JoinTable(
             name = "gift_certificate_has_tag",
             joinColumns = {@JoinColumn(name = "gift_certificate_id")},

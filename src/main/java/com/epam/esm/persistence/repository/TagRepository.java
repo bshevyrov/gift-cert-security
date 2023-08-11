@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface TagRepository extends PagingAndSortingRepository<TagEntity, Long> {
     boolean existsByName(String name);
     Optional<TagEntity> findByName(String name);
-    @Query(value = "SELECT gc.tagEntities FROM  GiftCertificateEntity gc WHERE gc.id=?1")
-    Page<TagEntity> findAllByGiftCertificateEntityId(Long id, Pageable pageable);
+//    @Query(value = "SELECT gc.tagEntities FROM  GiftCertificateEntity gc WHERE gc.id=?1")
+//    Page<TagEntity> findAllByGiftCertificateEntityId(Long id, Pageable pageable);
 }

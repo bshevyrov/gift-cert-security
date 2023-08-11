@@ -1,5 +1,6 @@
 package com.epam.esm.veiw.dto;
 
+import com.epam.esm.util.validation.group.GiftCertificateCreateValidationGroup;
 import com.epam.esm.util.validation.group.Purchase;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,22 +22,25 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class GiftCertificateDTO extends BaseDTO {
-    @Null(groups = Purchase.class)
-    @NotEmpty(message = "Description can`t be empty.")
+//    @Null(groups = Purchase.class)
+    @NotEmpty(groups = GiftCertificateCreateValidationGroup.class,
+            message = "Description can`t be empty.")
     @Pattern(regexp = "^(?! )[A-Za-z\\s]*$", message = "Illegal chars in decription/ Only letters and whitespaces allowed.")
     private String description;
-    @Null(groups = Purchase.class)
-    @Positive(message = "Price can`t be less zero.")
+//    @Null(groups = Purchase.class)
+    @Positive(groups = GiftCertificateCreateValidationGroup.class,
+            message = "Price can`t be less zero.")
     private double price;
-    @Null(groups = Purchase.class)
-    @Positive(message = "Duration can`t be less one day.")
+//    @Null(groups = Purchase.class)
+    @Positive(groups = GiftCertificateCreateValidationGroup.class,
+            message = "Duration can`t be less one day.")
     private int duration;
-    @Null
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime createDate;
-    @Null
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime lastUpdateDate;
+//    @Null
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+//    private LocalDateTime createDate;
+//    @Null
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+//    private LocalDateTime lastUpdateDate;
     @JsonProperty("tags")
     @Valid
     private List<TagDTO> tagDTOS;

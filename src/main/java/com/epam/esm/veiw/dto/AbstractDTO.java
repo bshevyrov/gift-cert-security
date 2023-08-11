@@ -9,6 +9,6 @@ import org.springframework.lang.Nullable;
 @SuperBuilder
 @NoArgsConstructor
 public abstract class AbstractDTO {
-    @Nullable
+//    @Nullable
     private long id;
 }

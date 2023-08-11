@@ -23,6 +23,6 @@ public class OrderItemDTO extends AbstractDTO {
     private GiftCertificateDTO giftCertificateDTO;
     @Valid
     private OrderDTO orderDTO;
-    @Positive
+    @Positive(message = "Quantity can`t be negative.")
     private int quantity;
 }

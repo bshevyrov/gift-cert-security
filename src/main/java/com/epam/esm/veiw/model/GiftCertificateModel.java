@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * The ResponseModel class extends the Hateoas Representation Model and is required if we want to convert the Customer
- * Entity to a pagination format
+ * com.epam.esm.persistence.entity.Entity to a pagination format
 
 **/
 @Getter

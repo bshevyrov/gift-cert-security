@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @Service
-@Transactional(rollbackFor = {Exception.class})
+@Transactional(rollbackFor = {Exception.class},readOnly = true)
 
 public class TagServiceImpl implements TagService {
     private final MessageSource messageSource;

@@ -9,10 +9,13 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = TagMapper.class)
 public interface GiftCertificateMapper {
+
     @Mapping(source = "tagEntities", target = "tagDTOS")
     GiftCertificateDTO toDTO(GiftCertificateEntity giftCertificateEntity);
 
-
+    @Mapping(target = "createdDate",ignore = true )
+    @Mapping(target = "updatedDate",ignore = true )
+    @Mapping(target = "deletedDate",ignore = true )
     GiftCertificateEntity toEntity(GiftCertificateDTO giftCertificateDTO);
 
     List<GiftCertificateDTO> toDTOList(List<GiftCertificateEntity> list);

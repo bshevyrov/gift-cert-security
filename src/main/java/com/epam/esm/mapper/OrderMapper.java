@@ -16,7 +16,9 @@ public interface OrderMapper {
 
     @Mapping(source = "customerEntity", target = "customerDTO")
     OrderDTO toDTO(OrderEntity orderEntity);
-
+    @Mapping(target = "createdDate",ignore = true )
+    @Mapping(target = "updatedDate",ignore = true )
+    @Mapping(target = "deletedDate",ignore = true )
     @Mapping(target = "customerEntity", source = "customerDTO")
     OrderEntity toEntity(OrderDTO orderDTO);
 
