@@ -2,7 +2,7 @@ package com.epam.esm.persistence.dao.impl;
 
 import com.epam.esm.persistence.dao.CrudDAO;
 import com.epam.esm.persistence.entity.Entity;
-import com.epam.esm.utils.SortProp;
+import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E,Long> {
+public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E, Long> {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -43,38 +43,36 @@ public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E,Long> {
     }
 
     @Override
-    public Optional<E> deleteById(Class<E> eClass,Long aLong) {
+    public Optional<E> deleteById(Class<E> eClass, Long aLong) {
         Optional<E> e = Optional.ofNullable(entityManager.find(eClass, aLong));
-        e.ifPresent(value -> {entityManager.remove(value);entityManager.refresh(value);});
+        e.ifPresent(value -> {
+            entityManager.remove(value);
+            entityManager.refresh(value);
+        });
         return e;
     }
 
 
     @Override
-    public Page<E> findAll(Class<E> eClass,Pageable pageable) {
+    public Page<E> findAll(Class<E> eClass, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(eClass);
         Root<E> root = criteriaQuery.from(eClass);
         TypedQuery<E> query = entityManager.createQuery(criteriaQuery.select(root));
-        List<SortProp> sortProp = new ArrayList<>();
-        for (Sort.Order order : pageable.getSort()) {
-            sortProp.add(new SortProp(
-                    order.getProperty(), order.getDirection().name()));
-        }
-        if (!sortProp.isEmpty()) {
+
+        if (!pageable.getSort().isEmpty()) {
             List<Order> orderList = new ArrayList<>();
 
-            for (SortProp prop : sortProp) {
-                System.out.println(prop);
-                if (prop.getDirection().equals("DESC")) {
-                    orderList.add(criteriaBuilder.desc(root.get(prop.getProperty())));
+            for (Sort.Order order : pageable.getSort()) {
+                if (order.getDirection().name().equals("DESC")) {
+                    orderList.add(criteriaBuilder.desc(root.get(order.getProperty())));
                 } else {
-                    orderList.add(criteriaBuilder.asc(root.get(prop.getProperty())));
+                    orderList.add(criteriaBuilder.asc(root.get(order.getProperty())));
                 }
             }
             query = entityManager.createQuery(criteriaQuery.select(root).orderBy(orderList));
-
         }
+
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
@@ -84,7 +82,7 @@ public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E,Long> {
         return new PageImpl<>(list, pageable, list.size());
     }
 
-//    @Override
+    //    @Override
 //    public boolean existsByName(Class<Entity> aClass,String entityName) {
 //        return entityManager.unwrap(Session.class).createQuery(
 //                        "SELECT 1 FROM "+aClass.getSimpleName()+" WHERE EXISTS (SELECT 1 FROM "+aClass.getSimpleName()+" e WHERE e.name=:name)")
@@ -93,14 +91,15 @@ public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E,Long> {
 //                .uniqueResult() != null;
 //    }
 //
-//    @Override
-//    public boolean existsById(Class<Entity> aClass,Long entityId) {
-//        return entityManager.unwrap(Session.class).createQuery(
-//                        "SELECT 1 FROM "+aClass.getSimpleName()+" WHERE EXISTS (SELECT 1 FROM "+aClass.getSimpleName()+" e WHERE e.id=:id)")
-//                .setParameter("id", entityId)
-//                .setMaxResults(1)
-//                .uniqueResult() != null;
-//    }
+
+    @Override
+    public Boolean existsById(Class<E> aClass, Long entityId) {
+        return entityManager.unwrap(Session.class).createQuery(
+                        "SELECT 1 FROM " + aClass.getSimpleName() + " WHERE EXISTS (SELECT 1 FROM " + aClass.getSimpleName() + " e WHERE e.id=:id)")
+                .setParameter("id", entityId)
+                .setMaxResults(1)
+                .uniqueResult() != null;
+    }
 //
 //    @Override
 //    public Optional<Entity> findByName(Class<Entity> aClass,String entityName) {

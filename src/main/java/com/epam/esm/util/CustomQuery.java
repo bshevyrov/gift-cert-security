@@ -33,12 +33,12 @@ public final class CustomQuery {
         "       GROUP BY gcht.tag_id\n" +
         "       ORDER BY count(*) DESC\n" +
         "       limit 1) sub On gcht.tag_id = sub.tag_id\n" +
-        "WHERE customer_id = ?\n" +
+        "WHERE customer_id =:customerId\n" +
         "ORDER BY o.cost DESC\n" +
         "limit 1;";
 
 
   public static final String FIND_ALL_GIFT_CERTIFICATE_BY_TAGS_ID_AND_SIZE  = "select gc.* from gift_certificate gc\n" +
             "    join gift_certificate_has_tag gcht on gc.id = gcht.gift_certificate_id\n" +
-            "where gcht.tag_id in :tags group by gc.id having count(gc.id) = :tagCount";
+            "where gcht.tag_id in :tagsId group by gc.id having count(gc.id) = :tagsCount";
 }

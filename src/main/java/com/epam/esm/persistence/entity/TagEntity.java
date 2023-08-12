@@ -31,6 +31,7 @@ public class TagEntity extends BaseEntity implements com.epam.esm.persistence.en
 
     @Null
     private Long id;
+
 //    @ManyToMany(mappedBy = "tagEntities")
 //    private List<GiftCertificateEntity> giftCertificateEntities;
 

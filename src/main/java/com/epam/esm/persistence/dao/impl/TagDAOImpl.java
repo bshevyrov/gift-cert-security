@@ -87,14 +87,14 @@ public class TagDAOImpl extends CrudDAOImpl<TagEntity> implements TagDAO {
                 .uniqueResult() != null;
     }
 
-    @Override
-    public boolean existsById(Long tagTagEntityId) {
-        return entityManager.unwrap(Session.class).createQuery(
-                        "SELECT 1 FROM TagEntity WHERE EXISTS (SELECT 1 FROM TagEntity t WHERE t.id=:tagId)")
-                .setParameter("tagId", tagTagEntityId)
-                .setMaxResults(1)
-                .uniqueResult() != null;
-    }
+//    @Override
+//    public boolean existsById(Long tagTagEntityId) {
+//        return entityManager.unwrap(Session.class).createQuery(
+//                        "SELECT 1 FROM TagEntity WHERE EXISTS (SELECT 1 FROM TagEntity t WHERE t.id=:tagId)")
+//                .setParameter("tagId", tagTagEntityId)
+//                .setMaxResults(1)
+//                .uniqueResult() != null;
+//    }
 
     @Override
     public Optional<TagEntity> findByName(String tagEntityName) {

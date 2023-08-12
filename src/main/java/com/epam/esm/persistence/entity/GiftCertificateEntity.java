@@ -33,6 +33,7 @@ public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.pe
     @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
     @Null(groups = GiftCertificateCreateValidationGroup.class)
     private Long id;
+
     @NotEmpty(groups = {GiftCertificateCreateValidationGroup.class,
             GiftCertificateUpdateValidationGroup.class},
             message = "Internal error with field description.")
@@ -50,8 +51,8 @@ public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.pe
     private int duration;
 
     @ManyToMany
-//            (cascade = CascadeType.PERSIST)
-            (cascade = CascadeType.ALL)
+            (cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+//            (cascade = CascadeType.ALL)
     @JoinTable(
             name = "gift_certificate_has_tag",
             joinColumns = {@JoinColumn(name = "gift_certificate_id")},

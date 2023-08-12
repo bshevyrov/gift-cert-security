@@ -23,8 +23,9 @@ public class CustomerEntity extends BaseEntity implements com.epam.esm.persisten
     @GeneratedValue(generator = "customer-generator",strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "customer-generator",sequenceName= "customer_sequence",allocationSize = 10,initialValue = 50)
 
-    @Null()
+    @Null
     private Long id;
+
     @OneToMany(mappedBy = "customerEntity")
     private List<OrderEntity> orderEntities;
 }

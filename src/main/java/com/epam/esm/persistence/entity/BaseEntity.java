@@ -9,10 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -36,5 +33,6 @@ public abstract class BaseEntity extends AbstractAuditEntity {
             TagCreateValidationGroup.class},
             message = "Name is mandatory")
     @Pattern(regexp = "[a-zA-Z]+", message = "Name contains illegal chars")
+    @Column(nullable = false)
     private String name;
 }

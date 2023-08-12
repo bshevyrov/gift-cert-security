@@ -25,12 +25,15 @@ public class OrderItemEntity extends AbstractEntity implements com.epam.esm.pers
     @SequenceGenerator(name = "orderitem-generator",sequenceName= "order_item_sequence",allocationSize = 10,initialValue = 50)
     @Null
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gift_certificate_id")
     private GiftCertificateEntity giftCertificateEntity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity orderEntity;
+
     @Positive(message = "Internal error with field cost.")
     private int quantity;
 }

@@ -1,7 +1,7 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.persistence.dao.OrderDAO;
 import com.epam.esm.persistence.entity.OrderEntity;
-import com.epam.esm.persistence.repository.OrderRepository;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,16 +15,17 @@ import java.util.Optional;
 @Transactional
 
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
+
+    private final OrderDAO orderDAO;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrderServiceImpl(OrderDAO orderDAO) {
+        this.orderDAO = orderDAO;
     }
 
     @Override
     public OrderEntity create(OrderEntity entity) {
-        return null;
+        return orderDAO.create(entity);
     }
 
     @Override
@@ -44,17 +45,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderEntity delete(long id) {
-return null;
+        return null;
     }
 
     @Override
     public Page<OrderEntity> findAllByCustomerId(Long id, Pageable pageable) {
-        return orderRepository.findAllByCustomerEntity_Id(id,pageable);
+        return orderDAO.findAllByCustomerEntityId(id, pageable);
     }
 
     @Override
     public OrderEntity getPopularTagInOrderByCustomerId(Long id) {
-        Optional<OrderEntity> popularTagInOrderByCustomerId = orderRepository.getPopularTagInOrderByCustomerId(id);
+        Optional<OrderEntity> popularTagInOrderByCustomerId = orderDAO.getPopularTagInOrderByCustomerId(id);
         return popularTagInOrderByCustomerId.get();
     }
 
