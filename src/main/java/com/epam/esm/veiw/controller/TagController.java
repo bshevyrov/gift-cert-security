@@ -2,12 +2,21 @@ package com.epam.esm.veiw.controller;
 
 import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.TagEntity;
+import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.TagFacade;
+import com.epam.esm.veiw.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,10 +41,13 @@ import java.util.List;
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class TagController {
-    @Autowired
-    TagDAO tagDAO;
-    private final TagFacade tagFacade;
 
+    private final TagFacade tagFacade;
+    @Autowired
+    private TagModelAssembler tagModelAssembler;
+
+    @Autowired
+    private PagedResourcesAssembler<TagDTO> pagedResourcesAssembler;
     @Autowired
     public TagController(TagFacade tagFacade) {
         this.tagFacade = tagFacade;
@@ -51,25 +63,15 @@ public class TagController {
      */
     @PostMapping
     public ResponseEntity<TagDTO> create(@RequestBody @Valid TagDTO tagDTO, UriComponentsBuilder ucb) {
-        TagEntity tagEntity = new TagEntity();
-        tagEntity.setName("aaa");
-        Pageable pageRequest = PageRequest.of(1,2, Sort.by(new Sort.Order(Sort.Direction.ASC,"id")));
-        List<TagEntity> all = tagDAO.findAll(pageRequest);
-all.forEach(System.out::println);
- pageRequest = PageRequest.of(1,2, Sort.by(new Sort.Order(Sort.Direction.ASC,"name")));
-        all = tagDAO.findAll(pageRequest);
-all.forEach(System.out::println); pageRequest = PageRequest.of(1,2, Sort.by(new Sort.Order(Sort.Direction.DESC,"name")));
-        all = tagDAO.findAll(pageRequest);
-all.forEach(System.out::println);
-//        TagDTO currentTag = tagFacade.create(tagDTO);
-//        HttpHeaders headers = new HttpHeaders();
-//        URI locationUri = ucb.path("/tags/")
-//                .path(String.valueOf(currentTag.getId()))
-//                .build().toUri();
-//
-//        headers.setLocation(locationUri);
-//        return new ResponseEntity<>(headers, HttpStatus.CREATED);
-        return new ResponseEntity<>( HttpStatus.CREATED);
+
+        TagDTO currentTag = tagFacade.create(tagDTO);
+        HttpHeaders headers = new HttpHeaders();
+        URI locationUri = ucb.path("/tags/")
+                .path(String.valueOf(currentTag.getId()))
+                .build().toUri();
+
+        headers.setLocation(locationUri);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     /**
@@ -91,9 +93,14 @@ all.forEach(System.out::println);
      * @return list of all {@link TagDTO}
      */
     @GetMapping(value = "")
-    public List<TagDTO> findAll() {
-        return tagFacade.findAll();
+    public ResponseEntity<PagedModel<TagModel>> findAll(@PageableDefault Pageable pageable) {
+        Page<TagDTO> all = tagFacade.findAll(pageable);
+
+        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll(pageable)).withSelfRel();
+        PagedModel<TagModel> resourcesAssembler = pagedResourcesAssembler.toModel(all, tagModelAssembler, link);
+        return new ResponseEntity<>(resourcesAssembler, HttpStatus.OK);
     }
+
 
     /**
      * Method consumes URL param.

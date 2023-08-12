@@ -2,10 +2,10 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.tag.TagNotFoundException;
+import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.TagEntity;
 import com.epam.esm.persistence.repository.GiftCertificateRepository;
-import com.epam.esm.persistence.repository.TagRepository;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -29,15 +29,15 @@ import java.util.List;
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final MessageSource messageSource;
     private final GiftCertificateRepository giftCertificateRepository;
-    private final TagRepository tagRepository;
+    private final TagDAO tagDAO;
     private final EntityManager entityManager;
 
     @Autowired
 
-    public GiftCertificateServiceImpl(MessageSource messageSource, GiftCertificateRepository giftCertificateRepository, TagRepository tagRepository, EntityManager entityManager) {
+    public GiftCertificateServiceImpl(MessageSource messageSource, GiftCertificateRepository giftCertificateRepository, TagDAO tagDAO, EntityManager entityManager) {
         this.messageSource = messageSource;
         this.giftCertificateRepository = giftCertificateRepository;
-        this.tagRepository = tagRepository;
+        this.tagDAO = tagDAO;
         this.entityManager = entityManager;
     }
 
@@ -118,18 +118,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     /**
-     * Guaranteed to throw an exception and leave.
-     *
-     * @throws UnsupportedOperationException always
-     * @deprecated Unsupported operation.
-     */
-    @Override
-    @Deprecated
-    public List<GiftCertificateEntity> findAll() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * Method finds all gift certificates based on search param, add tags for each one, and sort items.
      *
      * @param pageable entity
@@ -152,7 +140,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private List<Long> findTagsIdByName(List<TagEntity> tags) {
         List<Long> currentTags = new ArrayList<>();
         tags.forEach(tagEntity ->
-                currentTags.add(tagRepository.findByName(tagEntity.getName()).orElseThrow(() ->
+                currentTags.add(tagDAO.findByName(tagEntity.getName()).orElseThrow(() ->
                         new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
                                 new Object[]{tagEntity.getName()},
                                 LocaleContextHolder.getLocale()))).getId()));
@@ -231,7 +219,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
          * @param id requested parameter
          */
         @Override
-        public void delete ( long id){
+        public GiftCertificateEntity delete ( long id){
 
             if (!giftCertificateRepository.existsById(id)) {
                 throw new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
@@ -239,5 +227,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                         LocaleContextHolder.getLocale()));
             }
             giftCertificateRepository.deleteById(id);
+            return null;
         }
     }

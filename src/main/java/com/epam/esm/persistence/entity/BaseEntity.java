@@ -27,11 +27,11 @@ import javax.validation.constraints.Pattern;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public abstract class BaseEntity extends AbstractAuditEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
-    @Null(groups = GiftCertificateCreateValidationGroup.class)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+//    @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
+//    @Null(groups = GiftCertificateCreateValidationGroup.class)
+//    private Long id;
     @NotBlank(groups = {GiftCertificateCreateValidationGroup.class,
             TagCreateValidationGroup.class},
             message = "Name is mandatory")

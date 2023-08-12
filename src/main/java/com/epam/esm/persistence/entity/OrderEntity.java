@@ -21,9 +21,9 @@ import javax.validation.constraints.Positive;
 @EqualsAndHashCode(callSuper = true)
 public class OrderEntity extends AbstractAuditEntity implements com.epam.esm.persistence.entity.Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
-    @Null(groups = GiftCertificateCreateValidationGroup.class)
+    @GeneratedValue(generator = "order-generator",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "order-generator",sequenceName= "order_sequence",allocationSize = 10,initialValue = 50)
+    @Null
     private Long id;
     @ManyToOne
     @JoinColumn(name = "customer_id")

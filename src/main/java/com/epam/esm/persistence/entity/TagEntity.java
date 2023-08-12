@@ -26,9 +26,10 @@ import java.util.List;
 @SuperBuilder
 public class TagEntity extends BaseEntity implements com.epam.esm.persistence.entity.Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
-    @Null(groups = GiftCertificateCreateValidationGroup.class)
+    @GeneratedValue(generator = "tag-generator",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "tag-generator",sequenceName= "tag_sequence",allocationSize = 10,initialValue = 50)
+
+    @Null
     private Long id;
 //    @ManyToMany(mappedBy = "tagEntities")
 //    private List<GiftCertificateEntity> giftCertificateEntities;

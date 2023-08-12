@@ -1,10 +1,14 @@
 package com.epam.esm.veiw.facade.impl;
 
+import com.epam.esm.persistence.entity.TagEntity;
 import com.epam.esm.veiw.facade.TagFacade;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.service.TagService;
 import com.epam.esm.veiw.dto.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -53,8 +57,9 @@ public class TagFacadeImpl implements TagFacade {
      * @return List of dtos
      */
     @Override
-    public List<TagDTO> findAll() {
-        return tagMapper.toDTOList(tagService.findAll());
+    public Page<TagDTO> findAll(Pageable pageable) {
+        Page<TagEntity> all = tagService.findAll(pageable);
+        return new PageImpl<>( tagMapper.toDTOList(all.getContent()),pageable,all.getTotalElements());
     }
 
     /**

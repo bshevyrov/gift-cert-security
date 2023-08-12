@@ -60,16 +60,6 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
 
     }
 
-    /**
-     * Guaranteed to throw an exception and leave.
-     *
-     * @throws UnsupportedOperationException always
-     * @deprecated Unsupported operation.
-     */
-    @Override
-    public List<GiftCertificateDTO> findAll() {
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * Method consume sort searchRequest.

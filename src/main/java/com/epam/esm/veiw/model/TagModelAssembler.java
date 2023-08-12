@@ -34,12 +34,12 @@ public class TagModelAssembler extends RepresentationModelAssemblerSupport<TagDT
         return model;
     }
 
-    @Override
-    public CollectionModel<TagModel> toCollectionModel(Iterable<? extends TagDTO> entities) {
-        CollectionModel<TagModel> tagsModel = super.toCollectionModel(entities);
-        tagsModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll()).withSelfRel());
-        return tagsModel;
-    }
+//    @Override
+//    public CollectionModel<TagModel> toCollectionModel(Iterable<? extends TagDTO> entities) {
+//        CollectionModel<TagModel> tagsModel = super.toCollectionModel(entities);
+//        tagsModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll()).withSelfRel());
+//        return tagsModel;
+//    }
 
     private List<GiftCertificateModel> toGiftCertificateModel(List<GiftCertificateDTO> giftCertificateDTOList) {
         if (giftCertificateDTOList.isEmpty()) {

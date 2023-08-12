@@ -1,7 +1,6 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.persistence.entity.OrderEntity;
-import com.epam.esm.persistence.entity.OrderItemEntity;
 import com.epam.esm.persistence.repository.OrderRepository;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderEntity> findAll() {
+    public Page<OrderEntity> findAll(Pageable pageable) {
         return null;
     }
 
@@ -45,8 +43,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void delete(long id) {
-
+    public OrderEntity delete(long id) {
+return null;
     }
 
     @Override

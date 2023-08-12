@@ -1,19 +1,18 @@
 package com.epam.esm.service;
 
-import com.epam.esm.persistence.entity.AbstractEntity;
 import com.epam.esm.persistence.entity.Entity;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BaseService<E extends Entity> {
     E create(E entity);
 
     E findById(long id);
 
-    List<E> findAll();
+    Page<E> findAll(Pageable pageable);
 
     void update(E entity);
 
-    void delete(long id);
+    E delete(long id);
 
 }

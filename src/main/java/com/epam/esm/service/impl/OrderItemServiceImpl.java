@@ -3,13 +3,14 @@ package com.epam.esm.service.impl;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.persistence.entity.OrderItemEntity;
-import com.epam.esm.persistence.repository.CustomerRepository;
 import com.epam.esm.persistence.repository.GiftCertificateRepository;
 import com.epam.esm.persistence.repository.OrderItemRepository;
 import com.epam.esm.persistence.repository.OrderRepository;
 import com.epam.esm.service.OrderItemService;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public List<OrderItemEntity> findAll() {
+    public Page<OrderItemEntity> findAll(Pageable pageable) {
         return null;
     }
 
@@ -51,8 +52,8 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public void delete(long id) {
-
+    public OrderItemEntity delete(long id) {
+return null;
     }
 
     public List<OrderItemEntity> createAll(List<OrderItemEntity> orderItemEntities) {

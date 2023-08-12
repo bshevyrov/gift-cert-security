@@ -2,5 +2,5 @@ package com.epam.esm.persistence.dao;
 
 import com.epam.esm.persistence.entity.OrderEntity;
 
-public interface OrderDAO extends BaseDAO<OrderEntity,Long> {
+public interface OrderDAO extends CrudDAO<OrderEntity,Long> {
 }

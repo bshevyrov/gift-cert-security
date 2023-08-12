@@ -38,7 +38,7 @@ public class OrderFacadeImpl implements OrderFacade {
     }
 
     @Override
-    public List<OrderDTO> findAll() {
+    public Page<OrderDTO> findAll(Pageable pageable) {
         return null;
     }
 

@@ -27,7 +27,9 @@ import java.util.List;
 @DynamicUpdate
 public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.persistence.entity.Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "giftcertificate-generator",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "giftcertificate-generator",sequenceName= "giftcertificate_sequence",allocationSize = 10,initialValue = 50)
+
     @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
     @Null(groups = GiftCertificateCreateValidationGroup.class)
     private Long id;

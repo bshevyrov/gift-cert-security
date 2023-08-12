@@ -21,9 +21,9 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 public class OrderItemEntity extends AbstractEntity implements com.epam.esm.persistence.entity.Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
-    @Null(groups = GiftCertificateCreateValidationGroup.class)
+    @GeneratedValue(generator = "orderitem-generator",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "orderitem-generator",sequenceName= "order_item_sequence",allocationSize = 10,initialValue = 50)
+    @Null
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gift_certificate_id")

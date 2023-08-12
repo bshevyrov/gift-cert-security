@@ -35,10 +35,6 @@ public class CustomerFacadeImpl implements CustomerFacade {
         return customerMapper.toDTO(customerService.findById(id));
     }
 
-    @Override
-    public List<CustomerDTO> findAll() {
-        return null;
-    }
 
     @Override
     public void update(CustomerDTO entity) {

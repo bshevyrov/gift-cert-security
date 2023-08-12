@@ -1,18 +1,18 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.TagEntity;
 import com.epam.esm.exception.tag.TagExistException;
 
 import com.epam.esm.exception.tag.TagNotFoundException;
-import com.epam.esm.persistence.repository.TagRepository;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 /**
@@ -24,13 +24,13 @@ import java.util.List;
 
 public class TagServiceImpl implements TagService {
     private final MessageSource messageSource;
-    private final TagRepository tagRepository;
+    private final TagDAO tagDAO;
 
     @Autowired
 
-    public TagServiceImpl(MessageSource messageSource, TagRepository tagRepository) {
+    public TagServiceImpl(MessageSource messageSource, TagDAO tagDAO) {
         this.messageSource = messageSource;
-        this.tagRepository = tagRepository;
+        this.tagDAO = tagDAO;
     }
 
 
@@ -46,12 +46,12 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagEntity create(TagEntity tagEntity) {
 
-        if (tagRepository.existsByName(tagEntity.getName())) {
+        if (tagDAO.existsByName(tagEntity.getName())) {
             throw new TagExistException(messageSource.getMessage("tag.exist.exception",
                     new Object[]{tagEntity.getName()},
                     LocaleContextHolder.getLocale()));
         }
-        return tagRepository.save(tagEntity);
+        return tagDAO.create(tagEntity);
     }
 
     /**
@@ -66,7 +66,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagEntity findById(long id) {
 
-        return tagRepository.findById(id)
+        return tagDAO.findById(TagEntity.class,id)
                 .orElseThrow(() -> new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
@@ -78,8 +78,8 @@ public class TagServiceImpl implements TagService {
      * @return List of tags
      */
     @Override
-    public List<TagEntity> findAll() {
-        return (List<TagEntity>) tagRepository.findAll();
+    public Page<TagEntity> findAll(Pageable pageable) {
+        return  tagDAO.findAll(TagEntity.class,pageable);
     }
 
     /**
@@ -104,14 +104,18 @@ public class TagServiceImpl implements TagService {
      * @param id request parameter
      */
     @Override
-    public void delete(long id) {
-
-        if (!tagRepository.existsById(id)) {
-            throw new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
-                    new Object[]{id},
-                    LocaleContextHolder.getLocale()));
-        }
-        tagRepository.deleteById(id);
+    public TagEntity delete(long id) {
+//
+//        if (!tagDAO.existsById(id)) {
+//            throw new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
+//                    new Object[]{id},
+//                    LocaleContextHolder.getLocale()));
+//        }
+        TagEntity tagEntity = tagDAO.deleteById(TagEntity.class, id).orElseThrow(() ->
+                new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
+                        new Object[]{id},
+                        LocaleContextHolder.getLocale())));
+        return tagEntity;
     }
 
     /**

@@ -5,6 +5,8 @@ import com.epam.esm.persistence.entity.OrderItemEntity;
 import com.epam.esm.service.OrderItemService;
 import com.epam.esm.veiw.dto.OrderItemDTO;
 import com.epam.esm.veiw.facade.OrderItemFacade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public class OrderItemFacadeImpl implements OrderItemFacade {
     }
 
     @Override
-    public List<OrderItemDTO> findAll() {
+    public Page<OrderItemDTO> findAll(Pageable pageable) {
         return null;
     }
 
