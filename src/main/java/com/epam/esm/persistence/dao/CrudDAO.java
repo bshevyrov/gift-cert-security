@@ -1,5 +1,6 @@
 package com.epam.esm.persistence.dao;
 
+import com.epam.esm.persistence.entity.AbstractEntity;
 import com.epam.esm.persistence.entity.Entity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

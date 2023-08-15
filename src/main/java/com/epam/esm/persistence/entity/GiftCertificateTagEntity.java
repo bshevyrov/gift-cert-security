@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class GiftCertificateTagEntity extends AbstractAuditEntity implements Entity{
+public class GiftCertificateTagEntity extends AbstractAuditEntity {
     private long giftCertificateId;
     private long TagId;
 }

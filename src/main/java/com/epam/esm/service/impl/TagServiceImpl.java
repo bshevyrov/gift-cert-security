@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
-@Transactional(rollbackFor = {Exception.class},readOnly = true)
+
 
 public class TagServiceImpl implements TagService {
     private final MessageSource messageSource;
@@ -44,6 +44,7 @@ public class TagServiceImpl implements TagService {
      * @return id fon created object
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public TagEntity create(TagEntity tagEntity) {
 
         if (tagDAO.existsByName(tagEntity.getName())) {
@@ -64,6 +65,7 @@ public class TagServiceImpl implements TagService {
      * @return tag entity
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class},readOnly = true)
     public TagEntity findById(long id) {
 
         return tagDAO.findById(TagEntity.class,id)
@@ -78,6 +80,7 @@ public class TagServiceImpl implements TagService {
      * @return List of tags
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class},readOnly = true)
     public Page<TagEntity> findAll(Pageable pageable) {
         return  tagDAO.findAll(TagEntity.class,pageable);
     }
@@ -90,6 +93,7 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     @Deprecated
+    @Transactional(rollbackFor = {Exception.class})
     public void update(TagEntity tagEntity) {
         throw new UnsupportedOperationException();
     }
@@ -104,6 +108,7 @@ public class TagServiceImpl implements TagService {
      * @param id request parameter
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public TagEntity delete(long id) {
 //
 //        if (!tagDAO.existsById(id)) {

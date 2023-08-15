@@ -26,7 +26,7 @@ public class CustomerEntity extends BaseEntity implements com.epam.esm.persisten
     @Null
     private Long id;
 
-    @OneToMany(mappedBy = "customerEntity")
+    @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<OrderEntity> orderEntities;
 }
 

@@ -7,7 +7,7 @@ VALUES (10, NULL, NULL, NULL, 'birthday'),
        (2, NULL, NULL, NULL, 'vip'),
        (3, NULL, NULL, NULL, 'promo'),
        (4, NULL, NULL, NULL, 'partner');
-INSERT INTO gift_certificate_has_tag
+INSERT INTO gift_certificate_tag
 VALUES (1, 2),
        (1, 3),
        (2, 3),

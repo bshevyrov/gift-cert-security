@@ -26,15 +26,24 @@ public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E, Long> 
 
     @Override
     public E create(E e) {
-        entityManager.merge(e);
-        return e;
+//        entityManager.unwrap(Session.class).merge(e);
+//        entityManager.unwrap(Session.class).saveOrUpdate(e);
+//
+        return entityManager.merge(e);
+//        e.setId((Long) entityManager.unwrap(Session.class).save(e));
+//        entityManager.unwrap(Session.class).persist(e);
+
+//        return e;
     }
 
     @Override
-    @Deprecated
     public E update(E e) {
+//entityManager.unwrap(Session.class).saveOrUpdate(e);
+//entityManager.flush();
+//         entityManager.unwrap(Session.class).merge(e);
+//        return e;
+        return entityManager.merge(e);
 
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -47,7 +56,7 @@ public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E, Long> 
         Optional<E> e = Optional.ofNullable(entityManager.find(eClass, aLong));
         e.ifPresent(value -> {
             entityManager.remove(value);
-            entityManager.refresh(value);
+            entityManager.flush();
         });
         return e;
     }

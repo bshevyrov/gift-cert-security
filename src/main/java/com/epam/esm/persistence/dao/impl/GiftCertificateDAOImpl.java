@@ -4,6 +4,7 @@ import com.epam.esm.persistence.dao.GiftCertificateDAO;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.GiftCertificateTagEntity;
 import com.epam.esm.persistence.entity.OrderEntity;
+import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -60,5 +61,7 @@ public class GiftCertificateDAOImpl extends CrudDAOImpl<GiftCertificateEntity> i
         List<GiftCertificateEntity> resultList = entityManager.createQuery(criteriaQuery).getResultList();
         return new PageImpl<>(resultList, pageable, resultList.size());
     }
+
+
 }
 

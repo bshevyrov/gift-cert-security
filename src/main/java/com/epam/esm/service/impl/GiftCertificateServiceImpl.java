@@ -7,6 +7,8 @@ import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.TagEntity;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.util.UpdateRequestUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -19,12 +21,12 @@ import javax.persistence.EntityManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Used  to manipulate GiftCertificate objects and collecting data.
  */
 @Service
-@Transactional
 
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final MessageSource messageSource;
@@ -54,7 +56,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = {SQLException.class})
     public GiftCertificateEntity create(GiftCertificateEntity giftCertificateEntity) {
-       /* long giftCertificateId = giftCertificateDAO.create(giftCertificate);
+     /*   long giftCertificateId = giftCertificateDAO.create(giftCertificate);
         giftCertificate.getTags().forEach(tag -> {
             if (!InputVerification.verifyName(tag.getName())) {
                 throw new TagNameException(tag.getName());
@@ -84,7 +86,81 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 //                throw new TagNameException(tag.getName());
 //            }
 //        });
+//        giftCertificateEntity.prepareTagsToInsert();
+//        for (TagEntity tagEntity : giftCertificateEntity.getTagEntities()) {
+//            giftCertificateEntity.addToTagThisGiftCertificate(tagEntity);
+//        }
+
+        List<TagEntity> tagEntities = giftCertificateEntity.getTagEntities();
+        tagEntities.forEach(tagEntity -> {
+            if(ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())){
+                tagEntity.setGiftCertificateEntities(new ArrayList<>());
+            }
+            tagEntity.getGiftCertificateEntities().add(giftCertificateEntity);
+            Optional<TagEntity> byName = tagDAO.findByName(tagEntity.getName());
+            byName.ifPresent(entity -> tagEntity.setId(entity.getId()));
+        });
+
         return giftCertificateDAO.create(giftCertificateEntity);
+    }
+
+    @Override
+    @Transactional(rollbackFor = {SQLException.class})
+    public void update(GiftCertificateEntity giftCertificateEntity) {
+//        if (!InputVerification.verifyId(giftCertificate.getId())) {
+//            throw new GiftCertificateIdException(giftCertificate.getId());
+//        }
+//        if (!giftCertificateDAO.existById(giftCertificate.getId())) {
+//            throw new GiftCertificateNotFoundException(giftCertificate.getId());
+//        }
+//        if (giftCertificate.getTags() != null
+//                && giftCertificate.getTags().size() > 0){
+//            giftCertificateTagDAO.deleteByGiftCertificateId(giftCertificate.getId());
+//            giftCertificate.getTags().forEach(tag -> {
+//                if (!InputVerification.verifyName(tag.getName())) {
+//                    throw new TagNameException(tag.getName());
+//                }
+//                if (tagDAO.existByName(tag.getName())) {
+//                    giftCertificateTagDAO.create(new GiftCertificateTag(giftCertificate.getId(), tagDAO.findByName(tag.getName()).getId()));
+//                } else {
+//                    long tagId = tagDAO.create(new Tag(tag.getName()));
+//                    giftCertificateTagDAO.create(new GiftCertificateTag(giftCertificate.getId(), tagId));
+//                }
+//            });
+//        }
+//        giftCertificate.setTags(null);
+//        giftCertificateDAO.update(giftCertificate);
+//        if (!InputVerification.verifyId(giftCertificateEntity.getId())) {
+//            throw new GiftCertificateIdException(giftCertificateEntity.getId());
+//        }
+
+        GiftCertificateEntity toDB = giftCertificateDAO.findById(GiftCertificateEntity.class, giftCertificateEntity.getId())
+                .orElseThrow(() -> new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
+                        new Object[]{giftCertificateEntity.getId()},
+                        LocaleContextHolder.getLocale())));
+        UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateEntity, toDB);
+
+//        List<TagEntity> tagEntities = toDB.getTagEntities();
+//        for (TagEntity tagEntity : tagEntities) {
+//            if(ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())){
+//                tagEntity.setGiftCertificateEntities(new ArrayList<>());
+//            }
+//            tagEntity.getGiftCertificateEntities().add(toDB);
+//            Optional<TagEntity> byName = tagDAO.findByName(tagEntity.getName());
+//            byName.ifPresent(entity -> tagEntity.setId(entity.getId()));
+//        }
+//        tagEntities.forEach(tagEntity -> {
+//            if(ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())){
+//                tagEntity.setGiftCertificateEntities(new ArrayList<>());
+//            }
+//            tagEntity.getGiftCertificateEntities().add(toDB);
+//            Optional<TagEntity> byName = tagDAO.findByName(tagEntity.getName());
+//            byName.ifPresent(entity -> tagEntity.setId(entity.getId()));
+//        });
+
+//        giftCertificateService.update(giftCertificateMapper.toEntity(byId));
+        create(toDB);
+//        giftCertificateDAO.update(toDB);
     }
 
     /**
@@ -97,6 +173,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * @return {@link  GiftCertificateEntity} found object
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
+
     public GiftCertificateEntity findById(long id) {
 //        if (!InputVerification.verifyId(id)) {
 //            throw new GiftCertificateIdException(id);
@@ -124,6 +202,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * @return List of objects
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
+
     public Page<GiftCertificateEntity> findAll(Pageable pageable) {
         /*List<GiftCertificate> giftCertificateList = giftCertificateRepository.findAll(searchRequest);
         giftCertificateList.forEach(giftCertificate -> giftCertificate.setTags((Set<Tag>) tagDAO.findAllByGiftCertificateId(giftCertificate.getId())));
@@ -133,9 +213,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
+
     public Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable) {
         return giftCertificateDAO.findAllByTagsId(findTagsIdByName(tags), pageable);
     }
+
 
     private List<Long> findTagsIdByName(List<TagEntity> tags) {
         List<Long> currentTags = new ArrayList<>();
@@ -173,42 +256,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      *
      * @param giftCertificateEntity candidate for update
      */
-    @Override
-    @Transactional(rollbackFor = {SQLException.class})
-    public void update(GiftCertificateEntity giftCertificateEntity) {
-//        if (!InputVerification.verifyId(giftCertificate.getId())) {
-//            throw new GiftCertificateIdException(giftCertificate.getId());
-//        }
-//        if (!giftCertificateDAO.existById(giftCertificate.getId())) {
-//            throw new GiftCertificateNotFoundException(giftCertificate.getId());
-//        }
-//        if (giftCertificate.getTags() != null
-//                && giftCertificate.getTags().size() > 0){
-//            giftCertificateTagDAO.deleteByGiftCertificateId(giftCertificate.getId());
-//            giftCertificate.getTags().forEach(tag -> {
-//                if (!InputVerification.verifyName(tag.getName())) {
-//                    throw new TagNameException(tag.getName());
-//                }
-//                if (tagDAO.existByName(tag.getName())) {
-//                    giftCertificateTagDAO.create(new GiftCertificateTag(giftCertificate.getId(), tagDAO.findByName(tag.getName()).getId()));
-//                } else {
-//                    long tagId = tagDAO.create(new Tag(tag.getName()));
-//                    giftCertificateTagDAO.create(new GiftCertificateTag(giftCertificate.getId(), tagId));
-//                }
-//            });
-//        }
-//        giftCertificate.setTags(null);
-//        giftCertificateDAO.update(giftCertificate);
-//        if (!InputVerification.verifyId(giftCertificateEntity.getId())) {
-//            throw new GiftCertificateIdException(giftCertificateEntity.getId());
-//        }
-        if (!giftCertificateDAO.existsById(GiftCertificateEntity.class, giftCertificateEntity.getId())) {
-            throw new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
-                    new Object[]{giftCertificateEntity.getId()},
-                    LocaleContextHolder.getLocale()));
-        }
-        giftCertificateDAO.create(giftCertificateEntity);
-    }
+
 
     /**
      * Method deletes gift certificate
@@ -220,6 +268,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * @param id requested parameter
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class})
+
     public GiftCertificateEntity delete(long id) {
 
         return giftCertificateDAO.deleteById(GiftCertificateEntity.class, id).orElseThrow(() ->

@@ -19,7 +19,7 @@ import javax.validation.constraints.Positive;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class OrderItemEntity extends AbstractEntity implements com.epam.esm.persistence.entity.Entity {
+public class OrderItemEntity extends AbstractAuditEntity implements com.epam.esm.persistence.entity.Entity {
     @Id
     @GeneratedValue(generator = "orderitem-generator",strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "orderitem-generator",sequenceName= "order_item_sequence",allocationSize = 10,initialValue = 50)

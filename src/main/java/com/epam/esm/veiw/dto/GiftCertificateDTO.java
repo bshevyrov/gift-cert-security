@@ -30,11 +30,11 @@ public class GiftCertificateDTO extends BaseDTO {
 //    @Null(groups = Purchase.class)
     @Positive(groups = GiftCertificateCreateValidationGroup.class,
             message = "Price can`t be less zero.")
-    private double price;
+    private Double price;
 //    @Null(groups = Purchase.class)
     @Positive(groups = GiftCertificateCreateValidationGroup.class,
             message = "Duration can`t be less one day.")
-    private int duration;
+    private Integer duration;
 //    @Null
 //    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
 //    private LocalDateTime createDate;

@@ -90,9 +90,8 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      */
     @Override
     public void update(GiftCertificateDTO giftCertificateDTO) {
-        GiftCertificateDTO byId = giftCertificateMapper.toDTO(giftCertificateService.findById(giftCertificateDTO.getId()));
-        UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateDTO,byId);
-        giftCertificateService.update(giftCertificateMapper.toEntity(byId));
+
+        giftCertificateService.update(giftCertificateMapper.toEntity(giftCertificateDTO));
     }
 
     /**
