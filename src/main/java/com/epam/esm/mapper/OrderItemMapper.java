@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {GiftCertificateMapper.class, OrderMapper.class})
+@Mapper(componentModel = "spring", uses = {GiftCertificateMapper.class})
 public interface OrderItemMapper {
 
     @Mapping(target ="orderDTO",source = "orderEntity")
@@ -17,7 +17,7 @@ public interface OrderItemMapper {
     @Mapping(target = "createdDate",ignore = true )
     @Mapping(target = "updatedDate",ignore = true )
     @Mapping(target = "deletedDate",ignore = true )
-    @Mapping(source ="orderDTO",target = "orderEntity")
+    @Mapping(source ="orderDTO.id",target = "orderEntity.id")
     @Mapping(source ="giftCertificateDTO",target = "giftCertificateEntity")
     OrderItemEntity toEntity(OrderItemDTO orderItemDTO);
 

@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = {Exception.class})
 
     public OrderEntity create(OrderEntity entity) {
-     /*   //validation customer id
+        //validation customer id
         double sum = 0;
 entity.getOrderItemEntities().forEach(orderItem -> orderItem.setOrderEntity(entity));
         for (OrderItemEntity orderItemEntity : entity.getOrderItemEntities()) {
@@ -57,7 +57,7 @@ entity.getOrderItemEntities().forEach(orderItem -> orderItem.setOrderEntity(enti
             sum += currentGiftCertificate.get().getPrice() * orderItemEntity.getQuantity();
         }
         entity.setCost(sum);
-        entity.getCustomerEntity().setOrderEntities(new ArrayList<OrderEntity>(){{add(entity);}});*/
+        entity.getCustomerEntity().setOrderEntities(new ArrayList<OrderEntity>(){{add(entity);}});
         return orderDAO.create(entity);
     }
 

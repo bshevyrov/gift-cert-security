@@ -87,12 +87,12 @@ public class CustomerController {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setId(id);
         orderDTO.setCustomerDTO(customerDTO);
-//        orderItemDTOS.forEach(
-//                orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
+        orderItemDTOS.forEach(
+                orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
         orderDTO.setOrderItemDTOS(orderItemDTOS);
         orderItemDTOS.forEach(orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
-
-        OrderDTO dto = orderFacade.createOrderByOrderItems(orderItemDTOS);
+        OrderDTO dto = orderFacade.create(orderDTO);
+//        OrderDTO dto = orderFacade.createOrderByOrderItems(orderItemDTOS);
 
         HttpHeaders headers = new HttpHeaders();
         URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(dto.getId()))
