@@ -5,6 +5,7 @@ import com.epam.esm.util.validation.group.GiftCertificateUpdateValidationGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -19,18 +20,23 @@ import javax.validation.constraints.Positive;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@ToString(exclude = "orderEntity")
 public class OrderItemEntity extends AbstractAuditEntity implements com.epam.esm.persistence.entity.Entity {
     @Id
     @GeneratedValue(generator = "orderitem-generator",strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "orderitem-generator",sequenceName= "order_item_sequence",allocationSize = 10,initialValue = 50)
-    @Null
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+//            fetch = FetchType.LAZY
+    )
     @JoinColumn(name = "gift_certificate_id")
     private GiftCertificateEntity giftCertificateEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            fetch = FetchType.LAZY
+            ,cascade = {CascadeType.MERGE,CascadeType.REFRESH}
+           )
     @JoinColumn(name = "order_id")
     private OrderEntity orderEntity;
 

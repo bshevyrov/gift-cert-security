@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 @Repository
-public class TagDAOImpl extends CrudDAOImpl<TagEntity> implements TagDAO {
+public class TagDAOImpl extends BaseDAOImpl<TagEntity> implements TagDAO {
     @PersistenceContext
     private EntityManager entityManager;
 //

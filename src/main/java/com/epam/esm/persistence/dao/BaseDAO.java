@@ -1,13 +1,12 @@
 package com.epam.esm.persistence.dao;
 
-import com.epam.esm.persistence.entity.AbstractEntity;
 import com.epam.esm.persistence.entity.Entity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface CrudDAO<E extends Entity, ID extends Number> {
+public interface BaseDAO<E extends Entity, ID extends Number> {
     E create(E e);
 
     E update(E e);
@@ -18,6 +17,8 @@ public interface CrudDAO<E extends Entity, ID extends Number> {
 
     Page<E> findAll(Class<E> eClass,Pageable pageable);
     Boolean existsById(Class<E> e,ID id);
+
+    ID count(Class<E> e);
 
     //    @Override
 //    public boolean existsByName(Class<Entity> aClass,String entityName) {

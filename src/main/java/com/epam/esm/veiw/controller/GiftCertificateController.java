@@ -72,8 +72,6 @@ public class GiftCertificateController {
     public ResponseEntity<CollectionModel<GiftCertificateModel>> findAll(@PageableDefault Pageable pageable) {
         Page<GiftCertificateDTO> all = giftCertificateFacade.findAll(pageable);
         CollectionModel<GiftCertificateModel> pagedModel =
-//                pagedResourcesAssembler.toCollectionModel(all);
-
                 pagedResourcesAssembler.toModel(all, giftCertificateModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }

@@ -3,6 +3,7 @@ package com.epam.esm.mapper;
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.veiw.dto.OrderDTO;
 import com.epam.esm.veiw.dto.OrderItemDTO;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -20,6 +21,7 @@ public interface OrderMapper {
     @Mapping(target = "updatedDate",ignore = true )
     @Mapping(target = "deletedDate",ignore = true )
     @Mapping(target = "customerEntity", source = "customerDTO")
+//    @Mapping(target = "orderItemEntities",source = "orderItemDTOS")
     OrderEntity toEntity(OrderDTO orderDTO);
 
 

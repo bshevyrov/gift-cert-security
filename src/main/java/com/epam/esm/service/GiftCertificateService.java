@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface GiftCertificateService extends BaseService<GiftCertificateEntity> {
 
-    Page<GiftCertificateEntity> findAll(Pageable pageable);
 
     Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags,Pageable pageable);
 }

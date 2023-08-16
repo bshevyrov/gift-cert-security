@@ -17,9 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -63,7 +61,6 @@ public class CustomerController {
             method = RequestMethod.GET)
     public ResponseEntity<CustomerDTO> findById(@PathVariable long id) {
         return new ResponseEntity<>(customerFacade.findById(id), HttpStatus.OK);
-
     }
 
     @GetMapping(value = "")
@@ -76,23 +73,29 @@ public class CustomerController {
     @GetMapping(value = "/{id}/orders")
     public ResponseEntity<PagedModel<OrderModel>> findAllOrders(@PathVariable long id,
                                                                 @PageableDefault Pageable pageable) {
-        Page<OrderDTO> page = orderFacade.findAllByCustomerId(id, pageable);
-        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerController.class).findAllOrders(id, pageable)).withSelfRel();
-        PagedModel<OrderModel> resourcesAssembler = pagedOrderResourcesAssembler.toModel(page, orderModelAssembler, link);
-        return new ResponseEntity<>(resourcesAssembler, HttpStatus.OK);
+        Page<OrderDTO> all = orderFacade.findAllByCustomerId(id, pageable);
+        PagedModel<OrderModel> pagedModel = pagedOrderResourcesAssembler.toModel(all, orderModelAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
     @PostMapping(value = "{id}/orders")
-    public ResponseEntity<OrderModel> createOrder(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
+    public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
                                                   @PathVariable @Positive long id,
                                                   UriComponentsBuilder ucb) {
 
-        OrderDTO orderDTO = OrderDTO.builder().customerDTO(CustomerDTO.builder().id(id).build()).build();
+        OrderDTO orderDTO = new OrderDTO();
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setId(id);
+        orderDTO.setCustomerDTO(customerDTO);
+//        orderItemDTOS.forEach(
+//                orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
+        orderDTO.setOrderItemDTOS(orderItemDTOS);
         orderItemDTOS.forEach(orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
-        List<OrderItemDTO> all = orderItemFacade.createAll(orderItemDTOS);
+
+        OrderDTO dto = orderFacade.createOrderByOrderItems(orderItemDTOS);
 
         HttpHeaders headers = new HttpHeaders();
-        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(all.get(0).getOrderDTO().getId()))
+        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(dto.getId()))
                 .build().toUri();
 
         headers.setLocation(locationUri);
@@ -104,6 +107,6 @@ public class CustomerController {
     public ResponseEntity<OrderModel> getPopularTagInOrderByCustomerId(@Positive @PathVariable long id) {
         OrderDTO popularTagInOrderByCustomerId = orderFacade.getPopularTagInOrderByCustomerId(id);
         OrderModel orderModel = orderModelAssembler.toModel(popularTagInOrderByCustomerId);
-        return new ResponseEntity<>(orderModel, HttpStatus.OK) ;
+        return new ResponseEntity<>(orderModel, HttpStatus.OK);
     }
 }

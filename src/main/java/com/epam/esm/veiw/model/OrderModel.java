@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 public class OrderModel extends RepresentationModel<OrderModel> {
     private long id;
-    private LocalDateTime createTime;
+    private LocalDateTime createdDate;
     private double cost;
 }

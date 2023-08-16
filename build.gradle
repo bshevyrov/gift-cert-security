@@ -37,7 +37,7 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
-
+    annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.6.15.Final'
 //
     //UTILS
     //model to dto mapper
@@ -52,4 +52,17 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file("src/generated/java")
+}
+
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ['src/generated/java']
+        }
+    }
 }

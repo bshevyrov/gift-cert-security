@@ -1,6 +1,6 @@
 package com.epam.esm.persistence.dao.impl;
 
-import com.epam.esm.persistence.dao.CrudDAO;
+import com.epam.esm.persistence.dao.BaseDAO;
 import com.epam.esm.persistence.entity.Entity;
 import org.hibernate.Session;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E, Long> {
+public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -86,9 +86,9 @@ public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E, Long> 
         query.setMaxResults(pageable.getPageSize());
 
         List<E> list = query.getResultList();
+        Long total = count(eClass);
 
-
-        return new PageImpl<>(list, pageable, list.size());
+        return new PageImpl<>(list, pageable, total);
     }
 
     //    @Override
@@ -109,7 +109,15 @@ public abstract class CrudDAOImpl<E extends Entity> implements CrudDAO<E, Long> 
                 .setMaxResults(1)
                 .uniqueResult() != null;
     }
-//
+
+    @Override
+    public Long count(Class<E> e) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(e)));
+        return entityManager.createQuery(criteriaQuery).getSingleResult();
+    }
+    //
 //    @Override
 //    public Optional<Entity> findByName(Class<Entity> aClass,String entityName) {
 //        return Optional.ofNullable(entityManager.createQuery("SELECT e FROM "+aClass.getSimpleName()+" e WHERE e.name=:name", aClass)

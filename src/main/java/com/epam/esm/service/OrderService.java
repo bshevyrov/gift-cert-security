@@ -12,4 +12,5 @@ public interface OrderService extends BaseService<OrderEntity>{
   Page<OrderEntity> findAllByCustomerId(Long id, Pageable pageable);
   OrderEntity getPopularTagInOrderByCustomerId(Long id);
 
+    OrderEntity createOrderByOrderItems(List<OrderItemEntity> toEntityList);
 }

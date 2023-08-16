@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractAuditEntity{
+public abstract class AbstractAuditEntity {
     @CreatedDate
     @Nullable
     @Column(updatable = false)
@@ -28,8 +28,8 @@ public abstract class AbstractAuditEntity{
     @LastModifiedDate
     @Nullable
     private LocalDateTime updatedDate;
-        @Nullable
-        @Column(updatable = false)
+    @Nullable
+    @Column(updatable = false)
     private LocalDateTime deletedDate;
 
     @PreRemove

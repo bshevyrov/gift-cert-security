@@ -1,5 +1,6 @@
 package com.epam.esm.veiw.facade.impl;
 
+import com.epam.esm.mapper.CycleAvoidingMappingContext;
 import com.epam.esm.mapper.OrderItemMapper;
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.veiw.dto.OrderItemDTO;
@@ -28,8 +29,10 @@ public class OrderFacadeImpl implements OrderFacade {
     }
 
     @Override
-    public OrderDTO create(OrderDTO entity) {
-        return null;
+    public OrderDTO create(OrderDTO orderDTO) {
+        return orderMapper.toDTO(
+                orderService.create(
+                        orderMapper.toEntity(orderDTO)));
     }
 
     @Override
@@ -62,6 +65,13 @@ public class OrderFacadeImpl implements OrderFacade {
     public OrderDTO getPopularTagInOrderByCustomerId(Long id) {
         OrderEntity popularTagInOrderByCustomerId = orderService.getPopularTagInOrderByCustomerId(id);
         return orderMapper.toDTO(popularTagInOrderByCustomerId);
+    }
+
+    @Override
+    public OrderDTO createOrderByOrderItems(List<OrderItemDTO> orderItemDTOS) {
+        return orderMapper.toDTO(
+                orderService.createOrderByOrderItems(
+                        orderItemMapper.toEntityList(orderItemDTOS)));
     }
 
 }

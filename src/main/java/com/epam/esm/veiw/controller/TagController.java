@@ -1,19 +1,13 @@
 package com.epam.esm.veiw.controller;
 
-import com.epam.esm.persistence.dao.TagDAO;
-import com.epam.esm.persistence.entity.TagEntity;
-import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.TagFacade;
 import com.epam.esm.veiw.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -29,7 +23,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.net.URI;
-import java.util.List;
 
 /**
  * TagController class is the REST controller which consumes JSON as the request, forwards to relevant
@@ -43,14 +36,15 @@ import java.util.List;
 public class TagController {
 
     private final TagFacade tagFacade;
-    @Autowired
-    private TagModelAssembler tagModelAssembler;
 
+    private final TagModelAssembler tagModelAssembler;
+
+    private final PagedResourcesAssembler<TagDTO> pagedResourcesAssembler;
     @Autowired
-    private PagedResourcesAssembler<TagDTO> pagedResourcesAssembler;
-    @Autowired
-    public TagController(TagFacade tagFacade) {
+    public TagController(TagFacade tagFacade, TagModelAssembler tagModelAssembler, PagedResourcesAssembler<TagDTO> pagedResourcesAssembler) {
         this.tagFacade = tagFacade;
+        this.tagModelAssembler = tagModelAssembler;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
     /**
@@ -92,13 +86,21 @@ public class TagController {
      *
      * @return list of all {@link TagDTO}
      */
+//    @GetMapping(value = "")
+//    public ResponseEntity<PagedModel<TagModel>> findAll(@PageableDefault Pageable pageable) {
+//        Page<TagDTO> all = tagFacade.findAll(pageable);
+//
+////        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll(pageable)).withSelfRel();
+////        PagedModel<TagModel> pagedModel = pagedResourcesAssembler.toModel(all, tagModelAssembler, link);
+//        PagedModel<TagModel> pagedModel = pagedResourcesAssembler.toModel(all, tagModelAssembler);
+//        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+//    }
     @GetMapping(value = "")
-    public ResponseEntity<PagedModel<TagModel>> findAll(@PageableDefault Pageable pageable) {
+    public PagedModel<TagModel>  findAll(@PageableDefault Pageable pageable) {
         Page<TagDTO> all = tagFacade.findAll(pageable);
 
-        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll(pageable)).withSelfRel();
-        PagedModel<TagModel> resourcesAssembler = pagedResourcesAssembler.toModel(all, tagModelAssembler, link);
-        return new ResponseEntity<>(resourcesAssembler, HttpStatus.OK);
+//
+        return pagedResourcesAssembler.toModel(all,tagModelAssembler);
     }
 
 

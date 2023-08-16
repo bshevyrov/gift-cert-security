@@ -21,9 +21,9 @@ public class GiftCertificateModel extends RepresentationModel<GiftCertificateMod
     private String description;
     private double price;
     private int duration;
-    private LocalDateTime createDate;
-    private LocalDateTime lastUpdateDate;
-    private List<TagModel> tagModelList;
+//    private LocalDateTime createDate;
+//    private LocalDateTime lastUpdateDate;
+    private List<TagModel> tagModels;
 
 
 }

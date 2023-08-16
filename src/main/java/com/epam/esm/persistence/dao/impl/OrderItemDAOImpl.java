@@ -5,5 +5,5 @@ import com.epam.esm.persistence.entity.OrderItemEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class OrderItemDAOImpl extends CrudDAOImpl<OrderItemEntity> implements OrderItemDAO {
+public class OrderItemDAOImpl extends BaseDAOImpl<OrderItemEntity> implements OrderItemDAO {
 }

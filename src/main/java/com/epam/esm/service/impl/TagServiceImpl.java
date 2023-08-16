@@ -82,6 +82,7 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional(rollbackFor = {Exception.class},readOnly = true)
     public Page<TagEntity> findAll(Pageable pageable) {
+
         return  tagDAO.findAll(TagEntity.class,pageable);
     }
 

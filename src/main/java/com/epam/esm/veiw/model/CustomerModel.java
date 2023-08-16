@@ -12,6 +12,6 @@ import java.util.List;
 public class CustomerModel extends RepresentationModel<CustomerModel> {
     private long id;
     private String name;
-    private List<OrderDTO> orderDTOS;
+    private List<OrderModel> orderModels;
 
 }

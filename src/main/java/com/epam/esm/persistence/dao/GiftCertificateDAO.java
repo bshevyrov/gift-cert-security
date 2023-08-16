@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface GiftCertificateDAO extends CrudDAO<GiftCertificateEntity, Long> {
+public interface GiftCertificateDAO extends BaseDAO<GiftCertificateEntity, Long> {
     Page<GiftCertificateEntity> findAllByTagsId(List<Long> tagsId,  Pageable pageable);
 }

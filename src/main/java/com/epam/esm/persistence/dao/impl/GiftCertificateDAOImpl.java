@@ -3,8 +3,6 @@ package com.epam.esm.persistence.dao.impl;
 import com.epam.esm.persistence.dao.GiftCertificateDAO;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.GiftCertificateTagEntity;
-import com.epam.esm.persistence.entity.OrderEntity;
-import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class GiftCertificateDAOImpl extends CrudDAOImpl<GiftCertificateEntity> implements GiftCertificateDAO {
+public class GiftCertificateDAOImpl extends BaseDAOImpl<GiftCertificateEntity> implements GiftCertificateDAO {
     @PersistenceContext
     EntityManager entityManager;
 

@@ -26,6 +26,7 @@ public class TagModelAssembler extends RepresentationModelAssemblerSupport<TagDT
     @Override
     public TagModel toModel(TagDTO entity) {
 //        GiftCertificateModel model = instantiateModel(entity);
+//        TagModel model = instantiateModel(entity);
 
         TagModel model = new TagModel();
 
@@ -40,25 +41,25 @@ public class TagModelAssembler extends RepresentationModelAssemblerSupport<TagDT
 //        tagsModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll()).withSelfRel());
 //        return tagsModel;
 //    }
-
-    private List<GiftCertificateModel> toGiftCertificateModel(List<GiftCertificateDTO> giftCertificateDTOList) {
-        if (giftCertificateDTOList.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return giftCertificateDTOList.stream()
-                .map(giftCertificateDTO -> {
-                            GiftCertificateModel giftCertificateModel = new GiftCertificateModel();
-                            BeanUtils.copyProperties(giftCertificateDTO,giftCertificateDTO);
-//                            tagModel.setId(tagModel.getId());
-//                            tagModel.setName(tagModel.getName());
-                            giftCertificateModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findById(giftCertificateDTO.getId())).withSelfRel());
-                            return giftCertificateModel;
-                        }
-
-
-                ).collect(Collectors.toList());
-    }
+//
+//    private List<GiftCertificateModel> toGiftCertificateModel(List<GiftCertificateDTO> giftCertificateDTOList) {
+//        if (giftCertificateDTOList.isEmpty()) {
+//            return Collections.emptyList();
+//        }
+//
+//        return giftCertificateDTOList.stream()
+//                .map(giftCertificateDTO -> {
+//                            GiftCertificateModel giftCertificateModel = new GiftCertificateModel();
+//                            BeanUtils.copyProperties(giftCertificateDTO,giftCertificateDTO);
+////                            tagModel.setId(tagModel.getId());
+////                            tagModel.setName(tagModel.getName());
+//                            giftCertificateModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findById(giftCertificateDTO.getId())).withSelfRel());
+//                            return giftCertificateModel;
+//                        }
+//
+//
+//                ).collect(Collectors.toList());
+//    }
 }
 
 
