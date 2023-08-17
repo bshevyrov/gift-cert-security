@@ -49,7 +49,7 @@ entity.getOrderItemEntities().forEach(orderItem -> orderItem.setOrderEntity(enti
                     .getGiftCertificateEntity().getId());
 
 
-            orderItemEntity.setGiftCertificateEntity(currentGiftCertificate      .orElseThrow(() ->
+            orderItemEntity.setGiftCertificateEntity(currentGiftCertificate .orElseThrow(() ->
                     new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
                             new Object[]{orderItemEntity.getGiftCertificateEntity().getId()},
                             LocaleContextHolder.getLocale()))));

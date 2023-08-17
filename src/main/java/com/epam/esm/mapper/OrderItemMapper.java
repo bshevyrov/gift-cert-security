@@ -16,7 +16,6 @@ public interface OrderItemMapper {
     OrderItemDTO toDTO(OrderItemEntity orderItemEntity);
     @Mapping(target = "createdDate",ignore = true )
     @Mapping(target = "updatedDate",ignore = true )
-    @Mapping(target = "deletedDate",ignore = true )
     @Mapping(source ="orderDTO.id",target = "orderEntity.id")
     @Mapping(source ="giftCertificateDTO",target = "giftCertificateEntity")
     OrderItemEntity toEntity(OrderItemDTO orderItemDTO);

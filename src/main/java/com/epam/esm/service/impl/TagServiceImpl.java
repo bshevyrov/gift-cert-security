@@ -69,7 +69,7 @@ public class TagServiceImpl implements TagService {
     public TagEntity findById(long id) {
 
         return tagDAO.findById(TagEntity.class,id)
-                .orElseThrow(() -> new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
+                .orElseThrow(() -> new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
     }

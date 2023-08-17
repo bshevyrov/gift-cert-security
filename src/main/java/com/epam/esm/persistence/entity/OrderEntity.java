@@ -29,7 +29,8 @@ public class OrderEntity extends AbstractAuditEntity implements com.epam.esm.per
     @JoinColumn(name = "customer_id")
     private CustomerEntity customerEntity;
 
-    @OneToMany(mappedBy = "orderEntity",cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.REFRESH},orphanRemoval = true)
+    @OneToMany(mappedBy = "orderEntity",
+            cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.REFRESH},orphanRemoval = true)
     private List<OrderItemEntity> orderItemEntities;
 
     @Positive(message = "Internal error with field cost.")

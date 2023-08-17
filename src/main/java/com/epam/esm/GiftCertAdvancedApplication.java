@@ -14,7 +14,6 @@ public class GiftCertAdvancedApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GiftCertAdvancedApplication.class, args);
-
     }
 }
 

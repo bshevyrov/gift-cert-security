@@ -34,8 +34,8 @@ public class OrderItemEntity extends AbstractAuditEntity implements com.epam.esm
     private GiftCertificateEntity giftCertificateEntity;
 
     @ManyToOne(
-            fetch = FetchType.LAZY
-            ,cascade = {CascadeType.MERGE,CascadeType.REFRESH}
+//            fetch = FetchType.LAZY            ,
+            cascade = {CascadeType.MERGE,CascadeType.REFRESH}
            )
     @JoinColumn(name = "order_id")
     private OrderEntity orderEntity;

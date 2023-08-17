@@ -21,21 +21,21 @@ public final class CustomQuery {
 //            " limit 1;";
     public static final String GET_POPULAR_ORDER=
 //        "    set @customer_id_current=?;\n" +
-        "SELECT distinct o.*\n" +
-        "from `order` o\n" +
+        "SELECT distinct o.* " +
+        "from `order` o " +
         "join order_item oi on o.id = oi.order_id\n" +
-        "    join gift_certificate_has_tag gcht on oi.gift_certificate_id = gcht.gift_certificate_id\n" +
-        "join (SELECT  gcht.tag_id\n" +
-        "       FROM gift_certificate_has_tag gcht\n" +
-        "                join order_item oi on gcht.gift_certificate_id = oi.gift_certificate_id\n" +
+        "    join gift_certificate_tag gct on oi.gift_certificate_id = gct.gift_certificate_id\n" +
+        "join (SELECT  gct.tag_id\n" +
+        "       FROM gift_certificate_tag gct\n" +
+        "                join order_item oi on gct.gift_certificate_id = oi.gift_certificate_id\n" +
         "                join `order` o on o.id = oi.order_id\n" +
-//        "       WHERE customer_id = @customer_id_current\n" +
-        "       GROUP BY gcht.tag_id\n" +
+        "       WHERE customer_id = :customerId\n" +
+        "       GROUP BY gct.tag_id\n" +
         "       ORDER BY count(*) DESC\n" +
-        "       limit 1) sub On gcht.tag_id = sub.tag_id\n" +
+        "       limit 1) sub On gct.tag_id = sub.tag_id\n" +
         "WHERE customer_id =:customerId\n" +
         "ORDER BY o.cost DESC\n" +
-        "limit 1;";
+        "limit 1";
 
 
   public static final String FIND_ALL_GIFT_CERTIFICATE_BY_TAGS_ID_AND_SIZE  = "select gc.* from gift_certificate gc\n" +

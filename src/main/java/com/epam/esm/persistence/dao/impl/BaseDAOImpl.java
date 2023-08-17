@@ -26,24 +26,12 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
 
     @Override
     public E create(E e) {
-//        entityManager.unwrap(Session.class).merge(e);
-//        entityManager.unwrap(Session.class).saveOrUpdate(e);
-//
         return entityManager.merge(e);
-//        e.setId((Long) entityManager.unwrap(Session.class).save(e));
-//        entityManager.unwrap(Session.class).persist(e);
-
-//        return e;
     }
 
     @Override
     public E update(E e) {
-//entityManager.unwrap(Session.class).saveOrUpdate(e);
-//entityManager.flush();
-//         entityManager.unwrap(Session.class).merge(e);
-//        return e;
         return entityManager.merge(e);
-
     }
 
     @Override
@@ -70,15 +58,7 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
         TypedQuery<E> query = entityManager.createQuery(criteriaQuery.select(root));
 
         if (!pageable.getSort().isEmpty()) {
-            List<Order> orderList = new ArrayList<>();
-
-            for (Sort.Order order : pageable.getSort()) {
-                if (order.getDirection().name().equals("DESC")) {
-                    orderList.add(criteriaBuilder.desc(root.get(order.getProperty())));
-                } else {
-                    orderList.add(criteriaBuilder.asc(root.get(order.getProperty())));
-                }
-            }
+            List<Order> orderList = getSortOrders(pageable, criteriaBuilder, root);
             query = entityManager.createQuery(criteriaQuery.select(root).orderBy(orderList));
         }
 
@@ -91,15 +71,19 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
         return new PageImpl<>(list, pageable, total);
     }
 
-    //    @Override
-//    public boolean existsByName(Class<Entity> aClass,String entityName) {
-//        return entityManager.unwrap(Session.class).createQuery(
-//                        "SELECT 1 FROM "+aClass.getSimpleName()+" WHERE EXISTS (SELECT 1 FROM "+aClass.getSimpleName()+" e WHERE e.name=:name)")
-//                .setParameter("name", entityName)
-//                .setMaxResults(1)
-//                .uniqueResult() != null;
-//    }
-//
+     List<Order> getSortOrders(Pageable pageable, CriteriaBuilder criteriaBuilder, Root<E> root) {
+        List<Order> orderList = new ArrayList<>();
+
+        for (Sort.Order order : pageable.getSort()) {
+            if (order.getDirection().name().equals("DESC")) {
+                orderList.add(criteriaBuilder.desc(root.get(order.getProperty())));
+            } else {
+                orderList.add(criteriaBuilder.asc(root.get(order.getProperty())));
+            }
+        }
+        return orderList;
+    }
+
 
     @Override
     public Boolean existsById(Class<E> aClass, Long entityId) {
@@ -117,11 +101,5 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
         criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(e)));
         return entityManager.createQuery(criteriaQuery).getSingleResult();
     }
-    //
-//    @Override
-//    public Optional<Entity> findByName(Class<Entity> aClass,String entityName) {
-//        return Optional.ofNullable(entityManager.createQuery("SELECT e FROM "+aClass.getSimpleName()+" e WHERE e.name=:name", aClass)
-//                .setParameter("name", entityName)
-//                .getSingleResult());
-//    }
+
 }

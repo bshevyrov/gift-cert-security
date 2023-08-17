@@ -27,7 +27,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerEntity create(CustomerEntity entity) {
-        return null;
+        return customerDAO.create(entity);
     }
 
 

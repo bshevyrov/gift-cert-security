@@ -11,23 +11,15 @@ public interface BaseDAO<E extends Entity, ID extends Number> {
 
     E update(E e);
 
-    Optional<E> findById(Class<E> eClass,ID id);
+    Optional<E> findById(Class<E> eClass, ID id);
 
-    Optional<E> deleteById(Class<E> eClass,ID id);
+    Optional<E> deleteById(Class<E> eClass, ID id);
 
-    Page<E> findAll(Class<E> eClass,Pageable pageable);
-    Boolean existsById(Class<E> e,ID id);
+    Page<E> findAll(Class<E> eClass, Pageable pageable);
+
+    Boolean existsById(Class<E> e, ID id);
 
     ID count(Class<E> e);
 
-    //    @Override
-//    public boolean existsByName(Class<Entity> aClass,String entityName) {
-//        return entityManager.unwrap(Session.class).createQuery(
-//                        "SELECT 1 FROM "+aClass.getSimpleName()+" WHERE EXISTS (SELECT 1 FROM "+aClass.getSimpleName()+" e WHERE e.name=:name)")
-//                .setParameter("name", entityName)
-//                .setMaxResults(1)
-//                .uniqueResult() != null;
-//    }
-//
 
 }

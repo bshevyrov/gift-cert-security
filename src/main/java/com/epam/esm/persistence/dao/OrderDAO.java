@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface OrderDAO extends BaseDAO<OrderEntity,Long> {
+public interface OrderDAO extends BaseDAO<OrderEntity, Long> {
     Page<OrderEntity> findAllByCustomerEntityId(Long id, Pageable pageable);
 
     Optional<OrderEntity> getPopularTagInOrderByCustomerId(Long id);

@@ -7,13 +7,12 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = OrderMapper.class)
 public interface CustomerMapper {
 @Mapping(target ="orderDTOS",source = "orderEntities")
     CustomerDTO toDTO(CustomerEntity customerEntity);
     @Mapping(target = "createdDate",ignore = true )
     @Mapping(target = "updatedDate",ignore = true )
-    @Mapping(target = "deletedDate",ignore = true )
     CustomerEntity toEntity(CustomerDTO customerDTO);
     List<CustomerDTO> toDTOList(List<CustomerEntity> list);
 

@@ -27,7 +27,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 
     @Override
     public CustomerDTO create(CustomerDTO entity) {
-        return null;
+      return customerMapper.toDTO(customerService.create(customerMapper.toEntity(entity)));
     }
 
     @Override

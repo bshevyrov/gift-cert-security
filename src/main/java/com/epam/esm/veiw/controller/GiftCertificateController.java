@@ -5,6 +5,7 @@ import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.veiw.model.GiftCertificateModel;
 import com.epam.esm.veiw.model.GiftCertificateModelAssembler;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -133,7 +134,7 @@ public class GiftCertificateController {
 
     @GetMapping("/search")
     public ResponseEntity<CollectionModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
-                                                                               @RequestBody @NotEmpty List<TagDTO> tags) {
+                                                                               @RequestBody @NotEmpty  List<TagDTO> tags) {
 
         Page<GiftCertificateDTO> allByTags = giftCertificateFacade.findAllByTagsName(tags, pageable);
         CollectionModel<GiftCertificateModel> pagedModel =

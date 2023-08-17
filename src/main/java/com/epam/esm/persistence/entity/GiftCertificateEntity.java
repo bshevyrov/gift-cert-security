@@ -60,30 +60,30 @@ public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.pe
             inverseJoinColumns =  {@JoinColumn(name = "tag_id")}
     )
     private List<TagEntity> tagEntities = new ArrayList<>();
-
-    public void prepareTagsToInsert() {
-        List<TagEntity> tagEntities1 = getTagEntities();
-        List<TagEntity> current = new ArrayList<>();
-        GiftCertificateEntity currentGift = this;
-        tagEntities1.forEach(tagEntity -> {
-            if (ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())) {
-
-                tagEntity.setGiftCertificateEntities(new ArrayList<>());
-            }
-            tagEntity.getGiftCertificateEntities().add(currentGift);
-
-            current.add(tagEntity);
-        });
-        setTagEntities(current);
-    }
-
-    public void addToTagThisGiftCertificate(TagEntity tag) {
-//        tagEntities.add(tag);
-        if(ObjectUtils.isEmpty(tag.getGiftCertificateEntities())){
-            tag.setGiftCertificateEntities(new ArrayList<>());
-        }
-        tag.getGiftCertificateEntities().add(this);
-    }
+//
+//    public void prepareTagsToInsert() {
+//        List<TagEntity> tagEntities1 = getTagEntities();
+//        List<TagEntity> current = new ArrayList<>();
+//        GiftCertificateEntity currentGift = this;
+//        tagEntities1.forEach(tagEntity -> {
+//            if (ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())) {
+//
+//                tagEntity.setGiftCertificateEntities(new ArrayList<>());
+//            }
+//            tagEntity.getGiftCertificateEntities().add(currentGift);
+//
+//            current.add(tagEntity);
+//        });
+//        setTagEntities(current);
+//    }
+//
+//    public void addToTagThisGiftCertificate(TagEntity tag) {
+////        tagEntities.add(tag);
+//        if(ObjectUtils.isEmpty(tag.getGiftCertificateEntities())){
+//            tag.setGiftCertificateEntities(new ArrayList<>());
+//        }
+//        tag.getGiftCertificateEntities().add(this);
+//    }
 }
 
 
