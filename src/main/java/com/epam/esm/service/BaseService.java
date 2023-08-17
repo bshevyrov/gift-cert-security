@@ -14,5 +14,4 @@ public interface BaseService<E extends Entity> {
     void update(E entity);
 
     E delete(long id);
-
 }

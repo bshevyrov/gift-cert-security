@@ -2,7 +2,5 @@ package com.epam.esm.service;
 
 import com.epam.esm.persistence.entity.TagEntity;
 
-public interface TagService extends BaseService<TagEntity>  {
-//    List<Tag> findAllByGiftCertificateId(long id);
-
+public interface TagService extends BaseService<TagEntity> {
 }

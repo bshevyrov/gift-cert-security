@@ -18,13 +18,11 @@ import java.util.List;
 @Component
 public class OrderFacadeImpl implements OrderFacade {
     private final OrderMapper orderMapper;
-    private final OrderItemMapper orderItemMapper;
     private final OrderService orderService;
 
     @Autowired
     public OrderFacadeImpl(OrderMapper orderMapper, OrderItemMapper orderItemMapper, OrderService orderService) {
         this.orderMapper = orderMapper;
-        this.orderItemMapper = orderItemMapper;
         this.orderService = orderService;
     }
 
@@ -65,13 +63,6 @@ public class OrderFacadeImpl implements OrderFacade {
     public OrderDTO getPopularTagInOrderByCustomerId(Long id) {
         OrderEntity popularTagInOrderByCustomerId = orderService.getPopularTagInOrderByCustomerId(id);
         return orderMapper.toDTO(popularTagInOrderByCustomerId);
-    }
-
-    @Override
-    public OrderDTO createOrderByOrderItems(List<OrderItemDTO> orderItemDTOS) {
-        return orderMapper.toDTO(
-                orderService.createOrderByOrderItems(
-                        orderItemMapper.toEntityList(orderItemDTOS)));
     }
 
 }

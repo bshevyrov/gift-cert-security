@@ -10,6 +10,4 @@ import java.util.List;
 public interface OrderFacade extends BaseFacade<OrderDTO>{
     Page<OrderDTO> findAllByCustomerId(long id, Pageable pageable);
     OrderDTO getPopularTagInOrderByCustomerId(Long id);
-
-    OrderDTO createOrderByOrderItems(List<OrderItemDTO> orderItemDTOS);
 }

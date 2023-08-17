@@ -33,12 +33,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void update(CustomerEntity entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public CustomerEntity findById(long id) {
-
         return customerDAO.findById(CustomerEntity.class, id).orElseThrow(
                 () -> new CustomerNotFoundException(
                         messageSource.getMessage("customer.notfound.exception",
@@ -47,8 +46,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Deprecated
     public CustomerEntity delete(long id) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

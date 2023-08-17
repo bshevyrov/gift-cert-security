@@ -1,8 +1,6 @@
 package com.epam.esm.veiw.facade.impl;
 
 import com.epam.esm.mapper.OrderItemMapper;
-import com.epam.esm.persistence.entity.OrderItemEntity;
-import com.epam.esm.service.OrderItemService;
 import com.epam.esm.veiw.dto.OrderItemDTO;
 import com.epam.esm.veiw.facade.OrderItemFacade;
 import org.springframework.data.domain.Page;
@@ -10,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.function.Function;
 
 @Component
 public class OrderItemFacadeImpl implements OrderItemFacade {

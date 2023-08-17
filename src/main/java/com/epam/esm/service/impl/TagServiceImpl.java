@@ -1,10 +1,9 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.exception.tag.TagExistException;
+import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.TagEntity;
-import com.epam.esm.exception.tag.TagExistException;
-
-import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -36,7 +35,7 @@ public class TagServiceImpl implements TagService {
 
     /**
      * Method creates tag.
-
+     * <p>
      * Checks if tag with this name exist
      * - if true throws TagExistException
      *
@@ -57,7 +56,7 @@ public class TagServiceImpl implements TagService {
 
     /**
      * Method return tag that was found by id
-
+     * <p>
      * Checks if tag with this name exist
      * - if false throws TagNotFoundException
      *
@@ -65,10 +64,9 @@ public class TagServiceImpl implements TagService {
      * @return tag entity
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class},readOnly = true)
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public TagEntity findById(long id) {
-
-        return tagDAO.findById(TagEntity.class,id)
+        return tagDAO.findById(TagEntity.class, id)
                 .orElseThrow(() -> new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
@@ -80,10 +78,9 @@ public class TagServiceImpl implements TagService {
      * @return List of tags
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class},readOnly = true)
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<TagEntity> findAll(Pageable pageable) {
-
-        return  tagDAO.findAll(TagEntity.class,pageable);
+        return tagDAO.findAll(TagEntity.class, pageable);
     }
 
     /**
@@ -111,38 +108,9 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public TagEntity delete(long id) {
-//
-//        if (!tagDAO.existsById(id)) {
-//            throw new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
-//                    new Object[]{id},
-//                    LocaleContextHolder.getLocale()));
-//        }
-        TagEntity tagEntity = tagDAO.deleteById(TagEntity.class, id).orElseThrow(() ->
+        return tagDAO.deleteById(TagEntity.class, id).orElseThrow(() ->
                 new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
-        return tagEntity;
     }
-
-    /**
-     * Method finds all tags by connected giftCertificate.
-     * Checks if id valid
-     * * - if false throws GiftCertificateIdException exception
-     * * Then checks if giftCertificate exist by id
-     * * - if false throws GiftCertificateNotFoundException
-     *
-     * @param id giftCertificate id
-     * @return List of tags
-     */
-
-/*    @Override
-    public List<Tag> findAllByGiftCertificateId(long id) {
-        if (!InputVerification.verifyId(id)) {
-            throw new GiftCertificateIdException(id);
-        }
-        if (!tagRepository.existsById(id)) {
-            throw new GiftCertificateNotFoundException(id);
-        }
-        return tagRepository.findAllByGiftCertificates_id(id);
-    }*/
 }
