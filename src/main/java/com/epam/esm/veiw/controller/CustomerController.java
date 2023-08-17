@@ -6,7 +6,6 @@ import com.epam.esm.veiw.dto.OrderDTO;
 import com.epam.esm.veiw.dto.OrderItemDTO;
 import com.epam.esm.veiw.facade.CustomerFacade;
 import com.epam.esm.veiw.facade.OrderFacade;
-import com.epam.esm.veiw.facade.OrderItemFacade;
 import com.epam.esm.veiw.model.CustomerModel;
 import com.epam.esm.veiw.model.CustomerModelAssembler;
 import com.epam.esm.veiw.model.OrderModel;

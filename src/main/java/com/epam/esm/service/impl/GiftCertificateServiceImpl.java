@@ -54,7 +54,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = {SQLException.class})
     public GiftCertificateEntity create(GiftCertificateEntity giftCertificateEntity) {
-//TODO try
+//TODO do wee need foreach
         List<TagEntity> tagEntities = giftCertificateEntity.getTagEntities();
         tagEntities.forEach(tagEntity -> {
             if(ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())){
@@ -92,23 +92,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
 
     public GiftCertificateEntity findById(long id) {
-//        if (!InputVerification.verifyId(id)) {
-//            throw new GiftCertificateIdException(id);
-//        }
+
         return giftCertificateDAO.findById(GiftCertificateEntity.class, id).orElseThrow(() ->
                 new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
-//        if (!InputVerification.verifyId(id)) {
-//            throw new GiftCertificateIdException(id);
-//        }
-//        if (!giftCertificateDAO.existById(id)) {
-//            throw new GiftCertificateNotFoundException(id);
-//
-//        }
-//        GiftCertificate giftCertificate = giftCertificateDAO.findById(id);
-//        giftCertificate.setTags((Set<Tag>) tagDAO.findAllByGiftCertificateId(giftCertificate.getId()));
-//        return giftCertificate;
     }
 
     /**
@@ -119,18 +107,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
-
     public Page<GiftCertificateEntity> findAll(Pageable pageable) {
-        /*List<GiftCertificate> giftCertificateList = giftCertificateRepository.findAll(searchRequest);
-        giftCertificateList.forEach(giftCertificate -> giftCertificate.setTags((Set<Tag>) tagDAO.findAllByGiftCertificateId(giftCertificate.getId())));
-        return giftCertificateList;*/
-//        Pageable pageable = PageRequest.of(0,2);
+
         return giftCertificateDAO.findAll(GiftCertificateEntity.class, pageable);
     }
 
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
-
     public Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable) {
         return giftCertificateDAO.findAllByTagsId(findTagsIdByName(tags), pageable);
     }
@@ -145,15 +128,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                 LocaleContextHolder.getLocale()))).getId()));
         return currentTags;
     }
-//    private List<TagEntity> findTagsByName(List<TagEntity> tags) {
-//        List<TagEntity> currentTags = new ArrayList<>();
-//        tags.forEach(tagEntity ->
-//                currentTags.add(tagRepository.findByName(tagEntity.getName()).orElseThrow(() ->
-//                        new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
-//                                new Object[]{tagEntity.getName()},
-//                                LocaleContextHolder.getLocale())))));
-//        return currentTags;
-//    }
+
 
     /**
      * Method updates gift certificate.

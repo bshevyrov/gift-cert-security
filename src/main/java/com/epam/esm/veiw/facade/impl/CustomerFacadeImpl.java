@@ -1,17 +1,15 @@
 package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.persistence.entity.CustomerEntity;
-import com.epam.esm.veiw.facade.CustomerFacade;
 import com.epam.esm.mapper.CustomerMapper;
+import com.epam.esm.persistence.entity.CustomerEntity;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.veiw.dto.CustomerDTO;
+import com.epam.esm.veiw.facade.CustomerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 
@@ -27,7 +25,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 
     @Override
     public CustomerDTO create(CustomerDTO entity) {
-      return customerMapper.toDTO(customerService.create(customerMapper.toEntity(entity)));
+        return customerMapper.toDTO(customerService.create(customerMapper.toEntity(entity)));
     }
 
     @Override
@@ -37,13 +35,15 @@ public class CustomerFacadeImpl implements CustomerFacade {
 
 
     @Override
+    @Deprecated
     public void update(CustomerDTO entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
+    @Deprecated
     public void delete(long id) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

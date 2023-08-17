@@ -14,19 +14,16 @@ public final class UpdateRequestUtils {
     private UpdateRequestUtils() {
     }
 
-
     private static String[] getNullOrEmptyPropertyNames(Object source) {
         final BeanWrapper wrappedSource = new BeanWrapperImpl(source);
         String[] rsl =
                 Stream.of(wrappedSource.getPropertyDescriptors())
                         .map(FeatureDescriptor::getName)
-
                         .filter(propertyName -> ObjectUtils.isEmpty(wrappedSource.getPropertyValue(propertyName))
                                 || (wrappedSource.getPropertyValue(propertyName) != null && ClassUtils.isAssignable(wrappedSource.getPropertyValue(propertyName).getClass(), Number.class)
                                 && ((Number) wrappedSource.getPropertyValue(propertyName)).doubleValue() == 0)
                         )
                         .toArray(String[]::new);
-
         return rsl;
     }
     public static void copyNotNullOrEmptyProperties(Object src, Object target) {

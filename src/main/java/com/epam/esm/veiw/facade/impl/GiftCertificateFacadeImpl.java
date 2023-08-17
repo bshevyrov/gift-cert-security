@@ -1,13 +1,12 @@
 package com.epam.esm.veiw.facade.impl;
 
+import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
+import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.GiftCertificateFacade;
-import com.epam.esm.mapper.GiftCertificateMapper;
-import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.util.UpdateRequestUtils;
-import com.epam.esm.veiw.dto.GiftCertificateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -55,9 +54,7 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      */
     @Override
     public GiftCertificateDTO findById(long id) {
-
         return giftCertificateMapper.toDTO(giftCertificateService.findById(id));
-
     }
 
 
@@ -70,7 +67,6 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      */
     @Override
     public Page<GiftCertificateDTO> findAll(Pageable pageable) {
-
         Page<GiftCertificateEntity> entities =
                 giftCertificateService.findAll(pageable);
         return new PageImpl<>(giftCertificateMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());
@@ -78,9 +74,8 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
 
     @Override
     public Page<GiftCertificateDTO> findAllByTagsName(List<TagDTO> tags, Pageable pageable) {
-        Page<GiftCertificateEntity> giftCertificateEntities= giftCertificateService.findAllByTagsName(tagMapper.toEntityList(tags),pageable);
-
-        return new PageImpl<>(giftCertificateMapper.toDTOList(giftCertificateEntities.getContent()),pageable,giftCertificateEntities.getTotalElements());
+        Page<GiftCertificateEntity> giftCertificateEntities = giftCertificateService.findAllByTagsName(tagMapper.toEntityList(tags), pageable);
+        return new PageImpl<>(giftCertificateMapper.toDTOList(giftCertificateEntities.getContent()), pageable, giftCertificateEntities.getTotalElements());
     }
 
     /**
@@ -90,7 +85,6 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
      */
     @Override
     public void update(GiftCertificateDTO giftCertificateDTO) {
-
         giftCertificateService.update(giftCertificateMapper.toEntity(giftCertificateDTO));
     }
 
@@ -103,6 +97,4 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
     public void delete(long id) {
         giftCertificateService.delete(id);
     }
-
-
 }

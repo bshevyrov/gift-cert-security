@@ -12,5 +12,5 @@ public interface GiftCertificateFacade extends BaseFacade<GiftCertificateDTO> {
 
     Page<GiftCertificateDTO> findAll(Pageable pageable);
 
-    Page<GiftCertificateDTO> findAllByTagsName(List<TagDTO> tags,Pageable pageable);
+    Page<GiftCertificateDTO> findAllByTagsName(List<TagDTO> tags, Pageable pageable);
 }
