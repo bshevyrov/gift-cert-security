@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class OrderEntity extends AbstractAuditEntity implements com.epam.esm.per
     private CustomerEntity customerEntity;
 
     @OneToMany(mappedBy = "orderEntity",
-            cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.REFRESH},orphanRemoval = true)
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true)
     private List<OrderItemEntity> orderItemEntities;
 
     @Positive(message = "Internal error with field cost.")

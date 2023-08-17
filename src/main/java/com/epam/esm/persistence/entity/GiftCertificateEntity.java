@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,7 +30,6 @@ public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.pe
     @Id
     @GeneratedValue(generator = "giftcertificate-generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "giftcertificate-generator", sequenceName = "giftcertificate_sequence", allocationSize = 10, initialValue = 50)
-
     @NotNull(groups = GiftCertificateUpdateValidationGroup.class)
     @Null(groups = GiftCertificateCreateValidationGroup.class)
     private Long id;
@@ -53,37 +51,13 @@ public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.pe
     private Integer duration;
 
     @ManyToMany(
-            cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+            cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "gift_certificate_tag",
-            joinColumns ={@JoinColumn(name = "gift_certificate_id")},
-            inverseJoinColumns =  {@JoinColumn(name = "tag_id")}
+            joinColumns = {@JoinColumn(name = "gift_certificate_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
     private List<TagEntity> tagEntities = new ArrayList<>();
-//
-//    public void prepareTagsToInsert() {
-//        List<TagEntity> tagEntities1 = getTagEntities();
-//        List<TagEntity> current = new ArrayList<>();
-//        GiftCertificateEntity currentGift = this;
-//        tagEntities1.forEach(tagEntity -> {
-//            if (ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())) {
-//
-//                tagEntity.setGiftCertificateEntities(new ArrayList<>());
-//            }
-//            tagEntity.getGiftCertificateEntities().add(currentGift);
-//
-//            current.add(tagEntity);
-//        });
-//        setTagEntities(current);
-//    }
-//
-//    public void addToTagThisGiftCertificate(TagEntity tag) {
-////        tagEntities.add(tag);
-//        if(ObjectUtils.isEmpty(tag.getGiftCertificateEntities())){
-//            tag.setGiftCertificateEntities(new ArrayList<>());
-//        }
-//        tag.getGiftCertificateEntities().add(this);
-//    }
 }
 
 

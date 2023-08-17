@@ -22,14 +22,9 @@ public class CustomerEntity extends BaseEntity implements com.epam.esm.persisten
     @Id
     @GeneratedValue(generator = "customer-generator",strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "customer-generator",sequenceName= "customer_sequence",allocationSize = 10,initialValue = 50)
-
-
     private Long id;
 
-    @OneToMany(mappedBy = "customerEntity"
-//            ,cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.REFRESH}
-//            , orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "customerEntity")
     private List<OrderEntity> orderEntities;
 }
 
