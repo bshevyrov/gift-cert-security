@@ -2,15 +2,14 @@ package com.epam.esm.veiw.controller;
 
 import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.TagFacade;
-import com.epam.esm.veiw.model.*;
+import com.epam.esm.veiw.model.TagModel;
+import com.epam.esm.veiw.model.TagModelAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,12 +33,10 @@ import java.net.URI;
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class TagController {
-
     private final TagFacade tagFacade;
-
     private final TagModelAssembler tagModelAssembler;
-
     private final PagedResourcesAssembler<TagDTO> pagedResourcesAssembler;
+
     @Autowired
     public TagController(TagFacade tagFacade, TagModelAssembler tagModelAssembler, PagedResourcesAssembler<TagDTO> pagedResourcesAssembler) {
         this.tagFacade = tagFacade;
@@ -86,21 +83,11 @@ public class TagController {
      *
      * @return list of all {@link TagDTO}
      */
-//    @GetMapping(value = "")
-//    public ResponseEntity<PagedModel<TagModel>> findAll(@PageableDefault Pageable pageable) {
-//        Page<TagDTO> all = tagFacade.findAll(pageable);
-//
-////        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll(pageable)).withSelfRel();
-////        PagedModel<TagModel> pagedModel = pagedResourcesAssembler.toModel(all, tagModelAssembler, link);
-//        PagedModel<TagModel> pagedModel = pagedResourcesAssembler.toModel(all, tagModelAssembler);
-//        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
-//    }
-    @GetMapping(value = "")
-    public PagedModel<TagModel>  findAll(@PageableDefault Pageable pageable) {
-        Page<TagDTO> all = tagFacade.findAll(pageable);
 
-//
-        return pagedResourcesAssembler.toModel(all,tagModelAssembler);
+    @GetMapping(value = "")
+    public PagedModel<TagModel> findAll(@PageableDefault Pageable pageable) {
+        Page<TagDTO> all = tagFacade.findAll(pageable);
+        return pagedResourcesAssembler.toModel(all, tagModelAssembler);
     }
 
 

@@ -1,16 +1,10 @@
 package com.epam.esm.veiw.dto;
 
-import com.epam.esm.persistence.entity.GiftCertificateEntity;
-import com.epam.esm.persistence.entity.OrderEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 

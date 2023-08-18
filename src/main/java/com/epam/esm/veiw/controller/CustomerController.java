@@ -37,7 +37,6 @@ import java.util.List;
 public class CustomerController {
     private final CustomerFacade customerFacade;
     private final OrderFacade orderFacade;
-    private final OrderItemFacade orderItemFacade;
 
     private final CustomerModelAssembler customerModelAssembler;
     private final OrderModelAssembler orderModelAssembler;
@@ -45,10 +44,9 @@ public class CustomerController {
     private final PagedResourcesAssembler<OrderDTO> pagedOrderResourcesAssembler;
 
     @Autowired
-    public CustomerController(CustomerFacade customerFacade, OrderFacade orderFacade, OrderItemFacade orderItemFacade, CustomerModelAssembler customerModelAssembler, OrderModelAssembler orderModelAssembler, PagedResourcesAssembler<CustomerDTO> pagedCustomerResourcesAssembler, PagedResourcesAssembler<OrderDTO> pagedOrderResourcesAssembler) {
+    public CustomerController(CustomerFacade customerFacade, OrderFacade orderFacade, CustomerModelAssembler customerModelAssembler, OrderModelAssembler orderModelAssembler, PagedResourcesAssembler<CustomerDTO> pagedCustomerResourcesAssembler, PagedResourcesAssembler<OrderDTO> pagedOrderResourcesAssembler) {
         this.customerFacade = customerFacade;
         this.orderFacade = orderFacade;
-        this.orderItemFacade = orderItemFacade;
         this.customerModelAssembler = customerModelAssembler;
         this.orderModelAssembler = orderModelAssembler;
         this.pagedCustomerResourcesAssembler = pagedCustomerResourcesAssembler;
@@ -79,20 +77,19 @@ public class CustomerController {
 
     @PostMapping(value = "{id}/orders")
     public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
-                                                  @PathVariable @Positive long id,
-                                                  UriComponentsBuilder ucb) {
+                                                              @PathVariable @Positive long id,
+                                                              UriComponentsBuilder ucb) {
 
         OrderDTO orderDTO = new OrderDTO();
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setId(id);
         orderDTO.setCustomerDTO(customerDTO);
+
         orderItemDTOS.forEach(
                 orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
         orderDTO.setOrderItemDTOS(orderItemDTOS);
         orderItemDTOS.forEach(orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
         OrderDTO dto = orderFacade.create(orderDTO);
-//        OrderDTO dto = orderFacade.createOrderByOrderItems(orderItemDTOS);
-
         HttpHeaders headers = new HttpHeaders();
         URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(dto.getId()))
                 .build().toUri();

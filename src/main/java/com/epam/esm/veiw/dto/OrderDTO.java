@@ -1,6 +1,5 @@
 package com.epam.esm.veiw.dto;
 
-import com.epam.esm.persistence.entity.OrderItemEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

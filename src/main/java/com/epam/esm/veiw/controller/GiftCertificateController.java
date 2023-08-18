@@ -5,7 +5,6 @@ import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.veiw.model.GiftCertificateModel;
 import com.epam.esm.veiw.model.GiftCertificateModelAssembler;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,25 +36,14 @@ import java.util.List;
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class GiftCertificateController {
-
-
-    @Autowired
-    private GiftCertificateModelAssembler giftCertificateModelAssembler;
-
-    @Autowired
-    private PagedResourcesAssembler<GiftCertificateDTO> pagedResourcesAssembler;
-//    @Autowired
-
-//    @Autowired
-//    private BaseModelAssembler baseModelAssembler;
-//
-//    @Autowired
-//    private PagedResourcesAssembler<BaseEntity> pagedResourcesAssembler;
-
+    private final GiftCertificateModelAssembler giftCertificateModelAssembler;
+    private final PagedResourcesAssembler<GiftCertificateDTO> pagedResourcesAssembler;
     private final GiftCertificateFacade giftCertificateFacade;
 
     @Autowired
-    public GiftCertificateController(GiftCertificateFacade giftCertificateFacade) {
+    public GiftCertificateController(GiftCertificateModelAssembler giftCertificateModelAssembler, PagedResourcesAssembler<GiftCertificateDTO> pagedResourcesAssembler, GiftCertificateFacade giftCertificateFacade) {
+        this.giftCertificateModelAssembler = giftCertificateModelAssembler;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
         this.giftCertificateFacade = giftCertificateFacade;
     }
 
