@@ -35,13 +35,13 @@ import java.net.URI;
 public class TagController {
     private final TagFacade tagFacade;
     private final TagModelAssembler tagModelAssembler;
-    private final PagedResourcesAssembler<TagDTO> pagedResourcesAssembler;
+    private final PagedResourcesAssembler<TagDTO> pagedTagResourcesAssembler;
 
     @Autowired
-    public TagController(TagFacade tagFacade, TagModelAssembler tagModelAssembler, PagedResourcesAssembler<TagDTO> pagedResourcesAssembler) {
+    public TagController(TagFacade tagFacade, TagModelAssembler tagModelAssembler, PagedResourcesAssembler<TagDTO> pagedTagResourcesAssembler) {
         this.tagFacade = tagFacade;
         this.tagModelAssembler = tagModelAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
+        this.pagedTagResourcesAssembler = pagedTagResourcesAssembler;
     }
 
     /**
@@ -73,9 +73,11 @@ public class TagController {
      * @return found {@link TagDTO}
      **/
     @GetMapping(value = "/{id}")
-    public TagDTO findById(@PathVariable @Min(value = 1)
-                           @Max(Long.MAX_VALUE) long id) {
-        return tagFacade.findById(id);
+    public ResponseEntity<TagModel> findById(@PathVariable @Min(value = 1)
+                                             @Max(Long.MAX_VALUE) long id) {
+        TagDTO tagDTO = tagFacade.findById(id);
+        TagModel tagModel = tagModelAssembler.toModel(tagDTO);
+        return new ResponseEntity<>(tagModel, HttpStatus.OK);
     }
 
     /**
@@ -85,9 +87,10 @@ public class TagController {
      */
 
     @GetMapping(value = "")
-    public PagedModel<TagModel> findAll(@PageableDefault Pageable pageable) {
+    public ResponseEntity<PagedModel<TagModel>> findAll(@PageableDefault Pageable pageable) {
         Page<TagDTO> all = tagFacade.findAll(pageable);
-        return pagedResourcesAssembler.toModel(all, tagModelAssembler);
+        PagedModel<TagModel> tagModels = pagedTagResourcesAssembler.toModel(all, tagModelAssembler);
+        return new ResponseEntity<>(tagModels, HttpStatus.OK);
     }
 
 
@@ -99,7 +102,7 @@ public class TagController {
      * @return Http status
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<TagDTO> deleteById(@PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
+    public ResponseEntity<TagModel> deleteById(@PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         tagFacade.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -56,12 +55,14 @@ public class CustomerController {
 
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET)
-    public ResponseEntity<CustomerDTO> findById(@PathVariable long id) {
-        return new ResponseEntity<>(customerFacade.findById(id), HttpStatus.OK);
+    public ResponseEntity<CustomerModel> findById(@PathVariable long id) {
+        return new ResponseEntity<>(customerModelAssembler.toModel(
+                customerFacade.findById(id)),
+                HttpStatus.OK);
     }
 
     @GetMapping(value = "")
-    public ResponseEntity<CollectionModel<CustomerModel>> findAll(@PageableDefault Pageable pageable) {
+    public ResponseEntity<PagedModel<CustomerModel>> findAll(@PageableDefault Pageable pageable) {
         Page<CustomerDTO> all = customerFacade.findAll(pageable);
         PagedModel<CustomerModel> pagedModel = pagedCustomerResourcesAssembler.toModel(all, customerModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);

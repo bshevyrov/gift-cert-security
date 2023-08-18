@@ -36,7 +36,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 
     @Override
     @Deprecated
-    public void update(CustomerDTO entity) {
+    public CustomerDTO update(CustomerDTO entity) {
         throw new UnsupportedOperationException();
     }
 

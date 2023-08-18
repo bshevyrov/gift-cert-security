@@ -6,6 +6,7 @@ import com.epam.esm.persistence.entity.CustomerEntity_;
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.persistence.entity.OrderEntity_;
 import com.epam.esm.util.CustomQuery;
+import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +47,14 @@ public class OrderDAOImpl extends BaseDAOImpl<OrderEntity> implements OrderDAO {
         query.setMaxResults(pageable.getPageSize());
 
         List<OrderEntity> resultList = query.getResultList();
-        Long count = count(OrderEntity.class);
+        Long count = countByCustomerId(id);
         return new PageImpl<>(resultList, pageable, count);
+    }
+
+    private Long countByCustomerId(Long id) {
+        Query query = entityManager.createQuery("Select count(o) from OrderEntity o where o.customerEntity.id=:customerId");
+        query.setParameter("customerId", id);
+        return (Long) query.getSingleResult();
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -65,7 +66,7 @@ public class GiftCertificateController {
 
 
     @PostMapping
-    public ResponseEntity<GiftCertificateDTO> create(@Valid @RequestBody GiftCertificateDTO giftCertificateDTO,
+    public ResponseEntity<GiftCertificateModel> create(@Valid @RequestBody GiftCertificateDTO giftCertificateDTO,
                                                      UriComponentsBuilder ucb) {
         GiftCertificateDTO currentGiftCertificate = giftCertificateFacade.create(giftCertificateDTO);
 
@@ -85,10 +86,11 @@ public class GiftCertificateController {
      * @return found {@link GiftCertificateDTO}
      **/
     @GetMapping(value = "/{id}")
-    public GiftCertificateDTO findById(@PathVariable
+    public ResponseEntity<GiftCertificateModel> findById(@PathVariable
                                        @Min(1)
                                        @Max(Long.MAX_VALUE) long id) {
-        return giftCertificateFacade.findById(id);
+        return new ResponseEntity<>(giftCertificateModelAssembler.toModel(
+                giftCertificateFacade.findById(id)),HttpStatus.OK);
     }
 
 
@@ -100,7 +102,7 @@ public class GiftCertificateController {
      * @return Http status
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<GiftCertificateDTO> deleteById(@PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
+    public ResponseEntity<GiftCertificateModel> deleteById(@PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         giftCertificateFacade.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -113,17 +115,18 @@ public class GiftCertificateController {
      * @param id                 URL parameter, which holds gift certificate id value
      */
     @PatchMapping(value = "/{id}")
-    public void update(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO, @PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
+    public ResponseEntity<GiftCertificateModel> update(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO, @PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         giftCertificateDTO.setId(id);
-        giftCertificateFacade.update(giftCertificateDTO);
+       return new ResponseEntity<>( giftCertificateModelAssembler.toModel(
+               giftCertificateFacade.update(giftCertificateDTO)),HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<CollectionModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
+    public ResponseEntity<PagedModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
                                                                                @RequestBody @NotEmpty  List<TagDTO> tags) {
 
         Page<GiftCertificateDTO> allByTags = giftCertificateFacade.findAllByTagsName(tags, pageable);
-        CollectionModel<GiftCertificateModel> pagedModel =
+        PagedModel<GiftCertificateModel> pagedModel =
                 pagedResourcesAssembler.toModel(allByTags, giftCertificateModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
 

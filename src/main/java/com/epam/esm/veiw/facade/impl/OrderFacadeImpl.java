@@ -1,6 +1,5 @@
 package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.mapper.OrderItemMapper;
 import com.epam.esm.mapper.OrderMapper;
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.service.OrderService;
@@ -18,7 +17,7 @@ public class OrderFacadeImpl implements OrderFacade {
     private final OrderService orderService;
 
     @Autowired
-    public OrderFacadeImpl(OrderMapper orderMapper, OrderItemMapper orderItemMapper, OrderService orderService) {
+    public OrderFacadeImpl(OrderMapper orderMapper, OrderService orderService) {
         this.orderMapper = orderMapper;
         this.orderService = orderService;
     }
@@ -44,7 +43,7 @@ public class OrderFacadeImpl implements OrderFacade {
 
     @Override
     @Deprecated
-    public void update(OrderDTO entity) {
+    public OrderDTO update(OrderDTO entity) {
         throw new UnsupportedOperationException();
     }
 

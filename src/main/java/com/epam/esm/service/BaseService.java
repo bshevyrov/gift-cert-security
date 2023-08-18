@@ -11,7 +11,7 @@ public interface BaseService<E extends Entity> {
 
     Page<E> findAll(Pageable pageable);
 
-    void update(E entity);
+    E update(E entity);
 
     E delete(long id);
 }

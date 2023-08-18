@@ -1,17 +1,15 @@
 package com.epam.esm.veiw.facade.impl;
 
-import com.epam.esm.persistence.entity.TagEntity;
-import com.epam.esm.veiw.facade.TagFacade;
 import com.epam.esm.mapper.TagMapper;
+import com.epam.esm.persistence.entity.TagEntity;
 import com.epam.esm.service.TagService;
 import com.epam.esm.veiw.dto.TagDTO;
+import com.epam.esm.veiw.facade.TagFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Class used for conversion  tag and tagDTO.
@@ -59,7 +57,7 @@ public class TagFacadeImpl implements TagFacade {
     @Override
     public Page<TagDTO> findAll(Pageable pageable) {
         Page<TagEntity> all = tagService.findAll(pageable);
-        return new PageImpl<>( tagMapper.toDTOList(all.getContent()),pageable,all.getTotalElements());
+        return new PageImpl<>(tagMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
     }
 
     /**
@@ -68,8 +66,9 @@ public class TagFacadeImpl implements TagFacade {
      * @param tagDTO dto object
      */
     @Override
-    public void update(TagDTO tagDTO) {
-        tagService.update(tagMapper.toEntity(tagDTO));
+    @Deprecated
+    public TagDTO update(TagDTO tagDTO) {
+        throw new UnsupportedOperationException();
     }
 
     /**

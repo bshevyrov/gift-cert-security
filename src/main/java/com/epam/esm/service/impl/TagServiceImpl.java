@@ -91,8 +91,7 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     @Deprecated
-    @Transactional(rollbackFor = {Exception.class})
-    public void update(TagEntity tagEntity) {
+    public TagEntity update(TagEntity tagEntity) {
         throw new UnsupportedOperationException();
     }
 

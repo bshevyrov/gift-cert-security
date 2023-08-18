@@ -24,11 +24,11 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
     }
 
 
+
     @Override
     public CustomerModel toModel(CustomerDTO entity) {
         CustomerModel model = new CustomerModel();
         BeanUtils.copyProperties(entity, model);
-        model.setOrderModels(toOrderModel(entity.getOrderDTOS()));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerController.class).findById(entity.getId())).withSelfRel());
         return model;
     }
@@ -42,7 +42,6 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
                 .map(orderDTO -> {
                             OrderModel orderModel = new OrderModel();
                             BeanUtils.copyProperties(orderDTO,orderModel);
-                            orderModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findById(orderDTO.getId())).withSelfRel());
                             return orderModel;
                         }
                 ).collect(Collectors.toList());

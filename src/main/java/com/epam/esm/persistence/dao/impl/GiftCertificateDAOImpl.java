@@ -32,7 +32,7 @@ public class GiftCertificateDAOImpl extends BaseDAOImpl<GiftCertificateEntity> i
 
         criteriaQuery.select(root)
                 .groupBy(root.get("id"))
-                .having(tagIdPredicate)
+                .where(tagIdPredicate)
                 .having(tagsCountPredicate);
         TypedQuery<GiftCertificateEntity> query = entityManager.createQuery(criteriaQuery);
 

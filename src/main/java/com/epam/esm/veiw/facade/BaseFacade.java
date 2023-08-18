@@ -11,7 +11,7 @@ public interface BaseFacade<E extends AbstractDTO> {
 
     Page<E> findAll(Pageable pageable);
 
-    void update(E entity);
+    E update(E entity);
 
     void delete(long id);
 }

@@ -32,7 +32,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public void update(CustomerEntity entity) {
+    @Deprecated
+    public CustomerEntity update(CustomerEntity entity) {
         throw new UnsupportedOperationException();
     }
 

@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Deprecated
-    public void update(OrderEntity entity) {
+    public OrderEntity update(OrderEntity entity) {
         throw new UnsupportedOperationException();
     }
 

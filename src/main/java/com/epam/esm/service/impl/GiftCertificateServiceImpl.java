@@ -57,7 +57,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 //TODO do wee need foreach
         List<TagEntity> tagEntities = giftCertificateEntity.getTagEntities();
         tagEntities.forEach(tagEntity -> {
-            if(ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())){
+            if (ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())) {
                 tagEntity.setGiftCertificateEntities(new ArrayList<>());
             }
             tagEntity.getGiftCertificateEntities().add(giftCertificateEntity);
@@ -70,13 +70,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional(rollbackFor = {SQLException.class})
-    public void update(GiftCertificateEntity giftCertificateEntity) {
+    public GiftCertificateEntity update(GiftCertificateEntity giftCertificateEntity) {
         GiftCertificateEntity toDB = giftCertificateDAO.findById(GiftCertificateEntity.class, giftCertificateEntity.getId())
                 .orElseThrow(() -> new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
                         new Object[]{giftCertificateEntity.getId()},
                         LocaleContextHolder.getLocale())));
         UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateEntity, toDB);
-        create(toDB);
+        return create(toDB);
     }
 
     /**
