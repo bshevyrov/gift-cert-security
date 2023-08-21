@@ -52,7 +52,13 @@ public class CustomerController {
         this.pagedOrderResourcesAssembler = pagedOrderResourcesAssembler;
     }
 
-
+    /**
+     * Method consumes URL param.
+     * Produces response object as the result of find by id operation.
+     *
+     * @param id URL parameter, which holds customer id value
+     * @return {@link CustomerModel}
+     **/
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET)
     public ResponseEntity<CustomerModel> findById(@PathVariable long id) {
@@ -61,12 +67,27 @@ public class CustomerController {
                 HttpStatus.OK);
     }
 
+    /**
+     * Method produces set of response objects
+     *
+     * @param pageable pagination object
+     * @return PagedModel of response
+     */
+
     @GetMapping(value = "")
     public ResponseEntity<PagedModel<CustomerModel>> findAll(@PageableDefault Pageable pageable) {
         Page<CustomerDTO> all = customerFacade.findAll(pageable);
         PagedModel<CustomerModel> pagedModel = pagedCustomerResourcesAssembler.toModel(all, customerModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
+
+    /**
+     * Method produces set of response objects
+     *
+     * @param id       URL parameter, which holds customer id value
+     * @param pageable pagination object
+     * @return PagedModel of response
+     */
 
     @GetMapping(value = "/{id}/orders")
     public ResponseEntity<PagedModel<OrderModel>> findAllOrders(@PathVariable long id,
@@ -76,6 +97,15 @@ public class CustomerController {
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
+    /**
+     * Method consumes request object and puts together data.
+     * Produces response object as the result of create operation
+     *
+     * @param orderItemDTOS object for creation
+     * @param id            URL parameter, which holds customer id value
+     * @param ucb           UriComponentsBuilder
+     * @return OrderModel
+     */
     @PostMapping(value = "{id}/orders")
     public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
                                                               @PathVariable @Positive long id,
@@ -100,6 +130,13 @@ public class CustomerController {
 
     }
 
+    /**
+     * Method consumes URL param.
+     * Produces response object as the result of find by id operation.
+     *
+     * @param id URL parameter, which holds customer id value
+     * @return {@link OrderModel}
+     **/
     @GetMapping(value = "{id}/orders/popularity")
     public ResponseEntity<OrderModel> getPopularTagInOrderByCustomerId(@Positive @PathVariable long id) {
         OrderDTO popularTagInOrderByCustomerId = orderFacade.getPopularTagInOrderByCustomerId(id);

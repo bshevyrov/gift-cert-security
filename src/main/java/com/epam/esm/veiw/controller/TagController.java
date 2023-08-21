@@ -50,7 +50,7 @@ public class TagController {
      *
      * @param tagDTO object for creation
      * @param ucb    UriComponentsBuilder
-     * @return response header with uri of created object.
+     * @return {@link ResponseEntity} with header and uri of created object.
      */
     @PostMapping
     public ResponseEntity<TagDTO> create(@RequestBody @Valid TagDTO tagDTO, UriComponentsBuilder ucb) {
@@ -69,8 +69,8 @@ public class TagController {
      * Method consumes URL param.
      * Produces response object as the result of find by id operation.
      *
-     * @param id URL parameter, which holds gift certificate id value
-     * @return found {@link TagDTO}
+     * @param id URL parameter, which holds tag id value
+     * @return {@link TagModel}
      **/
     @GetMapping(value = "/{id}")
     public ResponseEntity<TagModel> findById(@PathVariable @Min(value = 1)
@@ -83,7 +83,8 @@ public class TagController {
     /**
      * Method produces set of response objects
      *
-     * @return list of all {@link TagDTO}
+     * @param pageable pagination object
+     * @return PagedModel of response
      */
 
     @GetMapping(value = "")

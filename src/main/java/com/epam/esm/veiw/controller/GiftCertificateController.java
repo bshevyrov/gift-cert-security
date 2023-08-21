@@ -54,17 +54,24 @@ public class GiftCertificateController {
      * Produces set of response objects based on web request params
      *
      * @param pageable object, which holds URL request params for search
-     * @return {@link  GiftCertificateDTO} as the result of search based on URL params
+     * @return PagedModel as the result of search based on URL params
      */
     @GetMapping(value = "")
-    public ResponseEntity<CollectionModel<GiftCertificateModel>> findAll(@PageableDefault Pageable pageable) {
+    public ResponseEntity<PagedModel<GiftCertificateModel>> findAll(@PageableDefault Pageable pageable) {
         Page<GiftCertificateDTO> all = giftCertificateFacade.findAll(pageable);
-        CollectionModel<GiftCertificateModel> pagedModel =
+        PagedModel<GiftCertificateModel> pagedModel =
                 pagedResourcesAssembler.toModel(all, giftCertificateModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
-
+    /**
+     * Method consumes request object.
+     * Produces response object as the result of create operation.
+     *
+     * @param giftCertificateDTO object for creation
+     * @param ucb    UriComponentsBuilder
+     * @return ResponseEntity with header and uri of created object.
+     */
     @PostMapping
     public ResponseEntity<GiftCertificateModel> create(@Valid @RequestBody GiftCertificateDTO giftCertificateDTO,
                                                      UriComponentsBuilder ucb) {
@@ -83,7 +90,7 @@ public class GiftCertificateController {
      * Produces response object as the result of find by id operation.
      *
      * @param id URL parameter, which holds gift certificate id value
-     * @return found {@link GiftCertificateDTO}
+     * @return GiftCertificateModel
      **/
     @GetMapping(value = "/{id}")
     public ResponseEntity<GiftCertificateModel> findById(@PathVariable
@@ -113,6 +120,7 @@ public class GiftCertificateController {
      *
      * @param giftCertificateDTO GiftCertificateDtoRequest request object for update
      * @param id                 URL parameter, which holds gift certificate id value
+     * @return GiftCertificateModel of updated object
      */
     @PatchMapping(value = "/{id}")
     public ResponseEntity<GiftCertificateModel> update(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO, @PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
@@ -121,6 +129,12 @@ public class GiftCertificateController {
                giftCertificateFacade.update(giftCertificateDTO)),HttpStatus.OK);
     }
 
+    /**
+     * Method consumes request object and URL param.
+     * @param pageable pagination object
+     * @param tags  body parameter, string  tags name
+     * @return PagedModel
+     */
     @GetMapping("/search")
     public ResponseEntity<PagedModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
                                                                                @RequestBody @NotEmpty  List<TagDTO> tags) {
