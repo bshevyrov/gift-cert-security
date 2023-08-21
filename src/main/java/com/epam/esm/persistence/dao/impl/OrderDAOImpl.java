@@ -1,12 +1,7 @@
 package com.epam.esm.persistence.dao.impl;
 
 import com.epam.esm.persistence.dao.OrderDAO;
-import com.epam.esm.persistence.entity.CustomerEntity;
-import com.epam.esm.persistence.entity.CustomerEntity_;
-import com.epam.esm.persistence.entity.OrderEntity;
-import com.epam.esm.persistence.entity.OrderEntity_;
-import com.epam.esm.util.CustomQuery;
-import org.hibernate.Session;
+import com.epam.esm.persistence.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +12,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +20,29 @@ public class OrderDAOImpl extends BaseDAOImpl<OrderEntity> implements OrderDAO {
     @PersistenceContext
     EntityManager entityManager;
 
+    public static final String GET_POPULAR_ORDER=
+            "SELECT distinct o.* " +
+                    "from `order` o " +
+                    "join order_item oi on o.id = oi.order_id\n" +
+                    "    join gift_certificate_tag gct on oi.gift_certificate_id = gct.gift_certificate_id\n" +
+                    "join (SELECT  gct.tag_id\n" +
+                    "       FROM gift_certificate_tag gct\n" +
+                    "                join order_item oi on gct.gift_certificate_id = oi.gift_certificate_id\n" +
+                    "                join `order` o on o.id = oi.order_id\n" +
+                    "       WHERE customer_id = :customerId\n" +
+                    "       GROUP BY gct.tag_id\n" +
+                    "       ORDER BY count(*) DESC\n" +
+                    "       limit 1) sub On gct.tag_id = sub.tag_id\n" +
+                    "WHERE customer_id =:customerId\n" +
+                    "ORDER BY o.cost DESC\n" +
+                    "limit 1";
+
+    /**
+     * Finds all orders by customer id.
+     * @param id long id.
+     * @param pageable  pagination object.
+     * @return {@link Page} of {@link OrderEntity}
+     */
     @Override
     public Page<OrderEntity> findAllByCustomerEntityId(Long id, Pageable pageable) {
 
@@ -51,15 +68,25 @@ public class OrderDAOImpl extends BaseDAOImpl<OrderEntity> implements OrderDAO {
         return new PageImpl<>(resultList, pageable, count);
     }
 
+    /**
+     * Counts all customer orders by id.
+     * @param id long identifier.
+     * @return number of existing entities in the database.
+     */
     private Long countByCustomerId(Long id) {
         Query query = entityManager.createQuery("Select count(o) from OrderEntity o where o.customerEntity.id=:customerId");
         query.setParameter("customerId", id);
         return (Long) query.getSingleResult();
     }
 
+    /**
+     * Returns the order with the highest value with the most popular tag.
+     * @param id long identifier.
+     * @return optional of found order.
+     */
     @Override
     public Optional<OrderEntity> getPopularTagInOrderByCustomerId(Long id) {
-        Query query = entityManager.createNativeQuery(CustomQuery.GET_POPULAR_ORDER, OrderEntity.class);
+        Query query = entityManager.createNativeQuery(GET_POPULAR_ORDER, OrderEntity.class);
         query.setParameter("customerId", id);
         OrderEntity result = (OrderEntity) query.getSingleResult();
         return Optional.ofNullable(result);

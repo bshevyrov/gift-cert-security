@@ -14,6 +14,11 @@ public class TagDAOImpl extends BaseDAOImpl<TagEntity> implements TagDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Checks if tag exists in database.
+     * @param tagTagEntityName string name parameter.
+     * @return true is exists.
+     */
     @Override
     public boolean existsByName(String tagTagEntityName) {
         return entityManager.unwrap(Session.class).createQuery(
@@ -23,6 +28,11 @@ public class TagDAOImpl extends BaseDAOImpl<TagEntity> implements TagDAO {
                 .uniqueResult() != null;
     }
 
+    /**
+     * Finds {@link TagEntity} in database by name.
+     * @param tagEntityName string parameter.
+     * @return optional of found entity.
+     */
     @Override
     public Optional<TagEntity> findByName(String tagEntityName) {
         return entityManager.createQuery("SELECT t FROM TagEntity t WHERE t.name=:tagName", TagEntity.class)

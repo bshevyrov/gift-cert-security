@@ -19,6 +19,12 @@ public class GiftCertificateDAOImpl extends BaseDAOImpl<GiftCertificateEntity> i
     @PersistenceContext
     EntityManager entityManager;
 
+    /**
+     * Finds all tags with corresponding tags.
+     * @param tagsId long id.
+     * @param pageable  pagination object.
+     * @return {@link Page} of {@link GiftCertificateEntity}
+     */
     @Override
     public Page<GiftCertificateEntity> findAllByTagsId(List<Long> tagsId, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

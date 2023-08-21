@@ -18,26 +18,50 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/*
+Used for CRUD operations with the database
+ */
 public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> {
     @PersistenceContext
     private EntityManager entityManager;
 
-
+    /**
+     * Saves entity in database.
+     * @param e entity to save.
+     * @return saved entity.
+     */
     @Override
     public E create(E e) {
         return entityManager.merge(e);
     }
 
+    /**
+     * Updates entity in database.
+     * @param e entity to update.
+     * @return updated entity.
+     */
     @Override
     public E update(E e) {
         return entityManager.merge(e);
     }
 
+    /**
+     * Finds entity in database by id.
+     * @param eClass class associated with the corresponding table.
+     * @param aLong id.
+     * @return optional of found entity.
+     */
     @Override
     public Optional<E> findById(Class<E> eClass, Long aLong) {
         return Optional.ofNullable(entityManager.find(eClass, aLong));
     }
+
+    /**
+     * Deletes entity from database by id.
+     * @param eClass class associated with the corresponding table.
+     * @param aLong id.
+     * @return optional of deleted entity.
+     */
 
     @Override
     public Optional<E> deleteById(Class<E> eClass, Long aLong) {
@@ -49,7 +73,12 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
         return e;
     }
 
-
+    /**
+     * Finds all entity from database.
+     * @param eClass class associated with the corresponding table.
+     * @param pageable  pagination object.
+     * @return page of entity.
+     */
     @Override
     public Page<E> findAll(Class<E> eClass, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -71,6 +100,13 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
         return new PageImpl<>(list, pageable, total);
     }
 
+    /**
+     * Creates list of sorting parameter for criteria API.
+     * @param pageable  pagination object.
+     * @param criteriaBuilder criteria builder.
+     * @param root root query.
+     * @return list of {@link Sort }
+     */
      List<Order> getSortOrders(Pageable pageable, CriteriaBuilder criteriaBuilder, Root<E> root) {
         List<Order> orderList = new ArrayList<>();
 
@@ -84,21 +120,32 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
         return orderList;
     }
 
+    /**
+     * Checks if entity by id exists in database.
+     * @param eClass class associated with the corresponding table.
+     * @param entityId id.
+     * @return true if exists or false if not exists,
+     */
 
     @Override
-    public Boolean existsById(Class<E> aClass, Long entityId) {
+    public Boolean existsById(Class<E> eClass, Long entityId) {
         return entityManager.unwrap(Session.class).createQuery(
-                        "SELECT 1 FROM " + aClass.getSimpleName() + " WHERE EXISTS (SELECT 1 FROM " + aClass.getSimpleName() + " e WHERE e.id=:id)")
+                        "SELECT 1 FROM " + eClass.getSimpleName() + " WHERE EXISTS (SELECT 1 FROM " + eClass.getSimpleName() + " e WHERE e.id=:id)")
                 .setParameter("id", entityId)
                 .setMaxResults(1)
                 .uniqueResult() != null;
     }
 
+    /**
+     *  Counts all entities of corresponding table.
+     * @param eClass class associated with the corresponding table.
+     * @return number of existing entities in the database.
+     */
     @Override
-    public Long count(Class<E> e) {
+    public Long count(Class<E> eClass) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(e)));
+        criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(eClass)));
         return entityManager.createQuery(criteriaQuery).getSingleResult();
     }
 
