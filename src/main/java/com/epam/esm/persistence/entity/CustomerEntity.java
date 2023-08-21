@@ -3,14 +3,14 @@ package com.epam.esm.persistence.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.util.List;
-import org.hibernate.annotations.Parameter;
+
+/**
+ * Entity that represent customer table.
+ */
 @Entity
 @Table(name = "customer")
 @EntityListeners(AuditingEntityListener.class)
@@ -18,10 +18,10 @@ import org.hibernate.annotations.Parameter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 
-public class CustomerEntity extends BaseEntity implements com.epam.esm.persistence.entity.Entity {
+public class CustomerEntity extends BaseEntity {
     @Id
-    @GeneratedValue(generator = "customer-generator",strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "customer-generator",sequenceName= "customer_sequence",allocationSize = 10,initialValue = 50)
+    @GeneratedValue(generator = "customer-generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "customer-generator", sequenceName = "customer_sequence", allocationSize = 10, initialValue = 50)
     private Long id;
 
     @OneToMany(mappedBy = "customerEntity")

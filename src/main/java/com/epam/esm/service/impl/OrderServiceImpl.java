@@ -22,8 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Used  to manipulate Order objects and collecting data.
+ */
 @Service
-
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;

@@ -53,6 +53,7 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+/*
 
 tasks.withType(JavaCompile) {
     options.annotationProcessorGeneratedSourcesDirectory = file("src/generated/java")
@@ -65,4 +66,4 @@ sourceSets {
             srcDirs = ['src/generated/java']
         }
     }
-}
+}*/

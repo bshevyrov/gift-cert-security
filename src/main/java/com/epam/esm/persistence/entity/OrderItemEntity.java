@@ -9,7 +9,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
-
+/**
+ * Entity that represent order_item table.
+ */
 @Entity
 @Table(name = "order_item")
 @EntityListeners(AuditingEntityListener.class)
@@ -17,7 +19,7 @@ import javax.validation.constraints.Positive;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @ToString(exclude = "orderEntity")
-public class OrderItemEntity extends AbstractAuditEntity implements com.epam.esm.persistence.entity.Entity {
+public class OrderItemEntity extends AbstractAuditEntity {
     @Id
     @GeneratedValue(generator = "orderitem-generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "orderitem-generator", sequenceName = "order_item_sequence", allocationSize = 10, initialValue = 50)

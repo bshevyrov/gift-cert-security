@@ -6,11 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+/**
+ * Entity that represent order table.
+ */
 @Entity
 @Table(name = "\"order\"")
 @EntityListeners(AuditingEntityListener.class)
@@ -18,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(exclude = "customerEntity")
-public class OrderEntity extends AbstractAuditEntity implements com.epam.esm.persistence.entity.Entity {
+public class OrderEntity extends AbstractAuditEntity {
     @Id
     @GeneratedValue(generator = "order-generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "order-generator", sequenceName = "order_sequence", allocationSize = 10, initialValue = 50)

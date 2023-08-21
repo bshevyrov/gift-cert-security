@@ -1,7 +1,7 @@
 package com.epam.esm.persistence.dao.impl;
 
 import com.epam.esm.persistence.dao.BaseDAO;
-import com.epam.esm.persistence.entity.Entity;
+import com.epam.esm.persistence.entity.AbstractAuditEntity;
 import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,15 +18,17 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 /*
 Used for CRUD operations with the database
  */
-public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> {
+public abstract class BaseDAOImpl<E extends AbstractAuditEntity> implements BaseDAO<E, Long> {
     @PersistenceContext
     private EntityManager entityManager;
 
     /**
      * Saves entity in database.
+     *
      * @param e entity to save.
      * @return saved entity.
      */
@@ -37,6 +39,7 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
 
     /**
      * Updates entity in database.
+     *
      * @param e entity to update.
      * @return updated entity.
      */
@@ -47,8 +50,9 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
 
     /**
      * Finds entity in database by id.
+     *
      * @param eClass class associated with the corresponding table.
-     * @param aLong id.
+     * @param aLong  id.
      * @return optional of found entity.
      */
     @Override
@@ -58,8 +62,9 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
 
     /**
      * Deletes entity from database by id.
+     *
      * @param eClass class associated with the corresponding table.
-     * @param aLong id.
+     * @param aLong  id.
      * @return optional of deleted entity.
      */
 
@@ -75,8 +80,9 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
 
     /**
      * Finds all entity from database.
-     * @param eClass class associated with the corresponding table.
-     * @param pageable  pagination object.
+     *
+     * @param eClass   class associated with the corresponding table.
+     * @param pageable pagination object.
      * @return page of entity.
      */
     @Override
@@ -102,12 +108,13 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
 
     /**
      * Creates list of sorting parameter for criteria API.
-     * @param pageable  pagination object.
+     *
+     * @param pageable        pagination object.
      * @param criteriaBuilder criteria builder.
-     * @param root root query.
+     * @param root            root query.
      * @return list of {@link Sort }
      */
-     List<Order> getSortOrders(Pageable pageable, CriteriaBuilder criteriaBuilder, Root<E> root) {
+    List<Order> getSortOrders(Pageable pageable, CriteriaBuilder criteriaBuilder, Root<E> root) {
         List<Order> orderList = new ArrayList<>();
 
         for (Sort.Order order : pageable.getSort()) {
@@ -122,7 +129,8 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
 
     /**
      * Checks if entity by id exists in database.
-     * @param eClass class associated with the corresponding table.
+     *
+     * @param eClass   class associated with the corresponding table.
      * @param entityId id.
      * @return true if exists or false if not exists,
      */
@@ -137,7 +145,8 @@ public abstract class BaseDAOImpl<E extends Entity> implements BaseDAO<E, Long> 
     }
 
     /**
-     *  Counts all entities of corresponding table.
+     * Counts all entities of corresponding table.
+     *
      * @param eClass class associated with the corresponding table.
      * @return number of existing entities in the database.
      */

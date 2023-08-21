@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import java.util.List;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-public class GiftCertificateEntity extends BaseEntity implements com.epam.esm.persistence.entity.Entity {
+public class GiftCertificateEntity extends BaseEntity {
     @Id
     @GeneratedValue(generator = "giftcertificate-generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "giftcertificate-generator", sequenceName = "giftcertificate_sequence", allocationSize = 10, initialValue = 50)

@@ -1,12 +1,12 @@
 package com.epam.esm.persistence.dao;
 
-import com.epam.esm.persistence.entity.Entity;
+import com.epam.esm.persistence.entity.AbstractAuditEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface BaseDAO<E extends Entity, ID extends Number> {
+public interface BaseDAO<E extends AbstractAuditEntity, ID extends Number> {
     E create(E e);
 
     E update(E e);
