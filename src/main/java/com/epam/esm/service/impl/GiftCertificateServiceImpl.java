@@ -1,12 +1,12 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
-import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.persistence.dao.GiftCertificateDAO;
 import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.TagEntity;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.TagService;
 import com.epam.esm.util.UpdateRequestUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,29 +32,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final MessageSource messageSource;
     private final GiftCertificateDAO giftCertificateDAO;
     private final TagDAO tagDAO;
+    private final TagService tagService;
 
     @Autowired
 
-    public GiftCertificateServiceImpl(MessageSource messageSource, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO, EntityManager entityManager) {
+    public GiftCertificateServiceImpl(MessageSource messageSource, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO, EntityManager entityManager, TagService tagService) {
         this.messageSource = messageSource;
         this.giftCertificateDAO = giftCertificateDAO;
         this.tagDAO = tagDAO;
+        this.tagService = tagService;
     }
 
 
     /**
      * Method creates gift certificate.
-     * Checks if tag with this name exist
-     * - if true add tag id to giftCertificate
-     * - if false create new tag and add id of this tag to gift certificate
+     * Creates a new tag if it doesn't exist.
      *
      * @param giftCertificateEntity object for creation
-     * @return id fon created object
+     * @return id of created object
      */
     @Override
     @Transactional(rollbackFor = {SQLException.class})
     public GiftCertificateEntity create(GiftCertificateEntity giftCertificateEntity) {
-//TODO do wee need foreach
         List<TagEntity> tagEntities = giftCertificateEntity.getTagEntities();
         tagEntities.forEach(tagEntity -> {
             if (ObjectUtils.isEmpty(tagEntity.getGiftCertificateEntities())) {
@@ -64,10 +63,17 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             Optional<TagEntity> byName = tagDAO.findByName(tagEntity.getName());
             byName.ifPresent(entity -> tagEntity.setId(entity.getId()));
         });
-
         return giftCertificateDAO.create(giftCertificateEntity);
     }
 
+    /**
+     * Updates entity in database.
+     * Throws exception if GiftCertificate doesn't exist.
+     *
+     * @param giftCertificateEntity
+     * @return
+     * @throws {@link GiftCertificateNotFoundException}
+     */
     @Override
     @Transactional(rollbackFor = {SQLException.class})
     public GiftCertificateEntity update(GiftCertificateEntity giftCertificateEntity) {
@@ -80,19 +86,17 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     /**
-     * Method finds gift certificate by id
-     * Checks if gift certificate exists:
-     * - if true - finds gift certificate by id and set tags to it
-     * - if false - throws {@link GiftCertificateNotFoundException} exception
+     * Method finds gift certificate by id.
+     * <p>
+     * If gift certificate doesn't exist throw exception.
      *
      * @param id requested parameter
      * @return {@link  GiftCertificateEntity} found object
+     * @throws {@link GiftCertificateNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
-
     public GiftCertificateEntity findById(long id) {
-
         return giftCertificateDAO.findById(GiftCertificateEntity.class, id).orElseThrow(() ->
                 new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
                         new Object[]{id},
@@ -100,69 +104,47 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     /**
-     * Method finds all gift certificates based on search param, add tags for each one, and sort items.
+     * Method finds all gift certificates.
      *
-     * @param pageable entity
-     * @return List of objects
+     * @param pageable pagination object
+     * @return {@list Page} of objects
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<GiftCertificateEntity> findAll(Pageable pageable) {
-
         return giftCertificateDAO.findAll(GiftCertificateEntity.class, pageable);
     }
 
+    /**
+     * Method finds all gift certificates based on tags name.
+     *
+     * @param tags     List of {@link TagEntity}
+     * @param pageable pagination object
+     * @return {@link Page} of {@link GiftCertificateEntity}
+     */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable) {
-        return giftCertificateDAO.findAllByTagsId(findTagsIdByName(tags), pageable);
+        ArrayList<Long> list = new ArrayList<>();
+        tags.forEach(tagEntity -> list.add(tagService.findTagIdByName(tagEntity.getName())));
+        return giftCertificateDAO.findAllByTagsId(list, pageable);
     }
-
-
-    private List<Long> findTagsIdByName(List<TagEntity> tags) {
-        List<Long> currentTags = new ArrayList<>();
-        tags.forEach(tagEntity ->
-                currentTags.add(tagDAO.findByName(tagEntity.getName()).orElseThrow(() ->
-                        new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
-                                new Object[]{tagEntity.getName()},
-                                LocaleContextHolder.getLocale()))).getId()));
-        return currentTags;
-    }
-
-
-    /**
-     * Method updates gift certificate.
-     * Checks if giftCertificate  if id valid:
-     * - if true proceed to next operation
-     * Checks if giftCertificate  is exists by id:
-     * - if true proceed to next operation
-     * - if false throws GiftCertificateNotFoundException exception
-     * Then checks if tags set is null or empty:
-     * - if true - doesn't  proceed to update tags
-     * - if false - removes all connection with  tags,  and checks is tag name correct
-     * - if false throws TagNameException
-     * - if true  checks if tags already exist
-     * - if true adds tag id to giftCertificate and creates relation between tag and giftCertificate
-     * - if false creates new tag and adds tag id to giftCertificate, creates relation between tag and giftCertificate
-     *
-     * @param giftCertificateEntity candidate for update
-     */
 
 
     /**
      * Method deletes gift certificate
      * <p>
-     * Checks if gift certificate exists by id:
-     * - if true - deletes from database
-     * - if false - throws GiftCertificateNotFoundException exception
+     * Checks if gift certificate exists by id.
+     * Throws exception if it doesn't exist.
      *
      * @param id requested parameter
+     * @return found entity
+     * @throws {@link GiftCertificateNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
 
     public GiftCertificateEntity delete(long id) {
-
         return giftCertificateDAO.deleteById(GiftCertificateEntity.class, id).orElseThrow(() ->
                 new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
                         new Object[]{id},

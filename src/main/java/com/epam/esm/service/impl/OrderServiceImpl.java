@@ -41,6 +41,15 @@ public class OrderServiceImpl implements OrderService {
         this.messageSource = messageSource;
     }
 
+    /**
+     * The method prepares {@link OrderEntity} to be stored in the database.
+     * Checks if CustomerEntity and GiftCertificateEntity exist.
+     * Sets for each OrderItemEntity GiftCertificateEntity, calculates and sets the value of the order.
+     * Sets OrderEntity to CustomerEntity.
+     *
+     * @param entity object for creation
+     * @return saved entity
+     */
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public OrderEntity create(OrderEntity entity) {
@@ -69,37 +78,72 @@ public class OrderServiceImpl implements OrderService {
         return orderDAO.create(entity);
     }
 
-
+    /**
+     * Guaranteed to throw an exception and leave.
+     *
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
+     */
     @Override
     @Deprecated
     public OrderEntity findById(long id) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Guaranteed to throw an exception and leave.
+     *
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
+     */
     @Override
     @Deprecated
     public Page<OrderEntity> findAll(Pageable pageable) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Guaranteed to throw an exception and leave.
+     *
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
+     */
     @Override
     @Deprecated
     public OrderEntity update(OrderEntity entity) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Guaranteed to throw an exception and leave.
+     *
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
+     */
     @Override
     @Deprecated
     public OrderEntity delete(long id) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Returns all found orders of customer.
+     * @param id customer id values
+     * @param pageable pagination object.
+     * @return {@link Page} of {@link OrderEntity}
+     */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<OrderEntity> findAllByCustomerId(Long id, Pageable pageable) {
         return orderDAO.findAllByCustomerEntityId(id, pageable);
     }
 
+    /**
+     * Return found order or thows exception.
+     * @param id customer id values
+     * @return found {@link OrderEntity}
+     * @throws {@link PopularOrderNotFoundException}
+     */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public OrderEntity getPopularTagInOrderByCustomerId(Long id) {

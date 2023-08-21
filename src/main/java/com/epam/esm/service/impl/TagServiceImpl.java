@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Used  to manipulate GiftCertificate objects and collecting data.
@@ -37,10 +40,11 @@ public class TagServiceImpl implements TagService {
      * Method creates tag.
      * <p>
      * Checks if tag with this name exist
-     * - if true throws TagExistException
+     * - if true throws exception
      *
-     * @param tagEntity object for creation
-     * @return id fon created object
+     * @param tagEntity object for creation.
+     * @return saved entity.
+     * @throws {@link TagNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -55,13 +59,14 @@ public class TagServiceImpl implements TagService {
     }
 
     /**
-     * Method return tag that was found by id
+     * Method return tag that was found by id.
      * <p>
-     * Checks if tag with this name exist
-     * - if false throws TagNotFoundException
+     * Checks if tag with this name exists.
+     * - if false throws exception.
      *
      * @param id tag id values
      * @return tag entity
+     * @throws {@link TagNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
@@ -73,9 +78,9 @@ public class TagServiceImpl implements TagService {
     }
 
     /**
-     * Method finds all tags
-     *
-     * @return List of tags
+     * Method finds all tags with pagination.
+     * @param pageable pagination object
+     * @return {@link Page} of tags
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
@@ -97,12 +102,11 @@ public class TagServiceImpl implements TagService {
 
     /**
      * Method deletes tag.
-     * Checks if id valid
-     * - if false throws TagIdException
-     * Then checks if tag exist by id
-     * - if false throws TagNotFoundException
+     * If there is not TagEntity with corresponding id throws exception.
      *
-     * @param id request parameter
+     * @param id request parameter.
+     * @return deleted {@link TagEntity}
+     * @throws TagNotFoundException
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -111,5 +115,20 @@ public class TagServiceImpl implements TagService {
                 new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
+    }
+
+    /**
+     * Finds tag id by tag na
+     * @param tagName String request parameter.
+     * @return Long id
+     * @throws TagNotFoundException
+     */
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
+    public Long findTagIdByName(String tagName) {
+       return tagDAO.findByName(tagName).orElseThrow(() ->
+                        new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
+                                new Object[]{tagName},
+                                LocaleContextHolder.getLocale()))).getId();
+
     }
 }
