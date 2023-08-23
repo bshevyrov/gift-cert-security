@@ -2,8 +2,11 @@ package com.epam.esm.veiw.facade.impl;
 
 import com.epam.esm.mapper.CustomerMapper;
 import com.epam.esm.persistence.entity.CustomerEntity;
+import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.veiw.dto.CustomerDTO;
+import com.epam.esm.veiw.dto.OrderDTO;
+import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.CustomerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +16,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 
+/**
+ * Class used for conversion  {@link CustomerEntity} and {@link CustomerDTO}.
+ */
 public class CustomerFacadeImpl implements CustomerFacade {
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
@@ -22,12 +28,22 @@ public class CustomerFacadeImpl implements CustomerFacade {
         this.customerService = customerService;
         this.customerMapper = customerMapper;
     }
-
+    /**
+     * Method consume customerDTO and return created customer.
+     *
+     * @param customerDTO dto object
+     * @return {@link CustomerDTO}
+     */
     @Override
-    public CustomerDTO create(CustomerDTO entity) {
-        return customerMapper.toDTO(customerService.create(customerMapper.toEntity(entity)));
+    public CustomerDTO create(CustomerDTO customerDTO) {
+        return customerMapper.toDTO(customerService.create(customerMapper.toEntity(customerDTO)));
     }
-
+    /**
+     * Method consume id value and return dto object.
+     *
+     * @param id request parameter
+     * @return {@link  CustomerDTO} created object
+     */
     @Override
     public CustomerDTO findById(long id) {
         return customerMapper.toDTO(customerService.findById(id));
@@ -46,6 +62,12 @@ public class CustomerFacadeImpl implements CustomerFacade {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Method produce {@Page} of dto object.
+     *
+     * @param pageable pagination object
+     * @return page of dtos
+     */
     @Override
     public Page<CustomerDTO> findAll(Pageable pageable) {
         Page<CustomerEntity> all = customerService.findAll(pageable);

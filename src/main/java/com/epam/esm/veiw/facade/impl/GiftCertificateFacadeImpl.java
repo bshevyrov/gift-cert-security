@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Class used for conversion giftCertificate  and giftCertificateFacadeImplDTO.
+ * Class used for conversion {@link GiftCertificateEntity}  and {@link GiftCertificateDTO}.
  */
 @Component
 public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
@@ -34,10 +34,10 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
     }
 
     /**
-     * Method consume giftCertificateDTO and return id of created giftCertificate.
+     * Method consumes giftCertificateDTO and return  created giftCertificate.
      *
      * @param giftCertificateDTO dto object
-     * @return id
+     * @return {@link GiftCertificateDTO}
      */
     @Override
     public GiftCertificateDTO create(GiftCertificateDTO giftCertificateDTO) {
@@ -47,10 +47,10 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
     }
 
     /**
-     * Method consume id value and return dto object.
+     * Method consumes id value and return dto object.
      *
      * @param id request parameter
-     * @return {@link  GiftCertificateDTO} created object
+     * @return {@link  GiftCertificateDTO} found object
      */
     @Override
     public GiftCertificateDTO findById(long id) {
@@ -59,11 +59,11 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
 
 
     /**
-     * Method consume sort searchRequest.
+     * Method consumes pagination object.
      * Produce list of dto object.
      *
-     * @param pageable sort and search parameters
-     * @return list of dtos
+     * @param pageable pagination objects
+     * @return {@page} of dtos
      */
     @Override
     public Page<GiftCertificateDTO> findAll(Pageable pageable) {
@@ -72,6 +72,13 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
         return new PageImpl<>(giftCertificateMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());
     }
 
+    /**
+     * Finds  GiftCertificate by corresponding tags.
+     *
+     * @param tags     {@link List} of {@link TagDTO}
+     * @param pageable pagination object.
+     * @return {@link Page} of found {@link GiftCertificateDTO}
+     */
     @Override
     public Page<GiftCertificateDTO> findAllByTagsName(List<TagDTO> tags, Pageable pageable) {
         Page<GiftCertificateEntity> giftCertificateEntities = giftCertificateService.findAllByTagsName(tagMapper.toEntityList(tags), pageable);

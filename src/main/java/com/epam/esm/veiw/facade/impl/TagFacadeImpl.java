@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
- * Class used for conversion  tag and tagDTO.
+ * Class used for conversion  {@link TagEntity} and {@link TagDTO}.
  */
 @Component
 public class TagFacadeImpl implements TagFacade {
@@ -26,10 +26,10 @@ public class TagFacadeImpl implements TagFacade {
     }
 
     /**
-     * Method consume tagDTO and return id of created giftCertificate.
+     * Method consume tagDTO and return created tag.
      *
      * @param tagDTO dto object
-     * @return id
+     * @return {@link TagDTO}
      */
     @Override
     public TagDTO create(TagDTO tagDTO) {
@@ -50,9 +50,10 @@ public class TagFacadeImpl implements TagFacade {
     }
 
     /**
-     * Method produce list of dto object.
+     * Method produce {@Page} of dto object.
      *
-     * @return List of dtos
+     * @param pageable pagination object
+     * @return page of dtos
      */
     @Override
     public Page<TagDTO> findAll(Pageable pageable) {
@@ -60,11 +61,7 @@ public class TagFacadeImpl implements TagFacade {
         return new PageImpl<>(tagMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
     }
 
-    /**
-     * Consumes dto update tag.
-     *
-     * @param tagDTO dto object
-     */
+
     @Override
     @Deprecated
     public TagDTO update(TagDTO tagDTO) {

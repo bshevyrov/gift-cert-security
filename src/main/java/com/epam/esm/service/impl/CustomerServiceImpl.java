@@ -51,18 +51,6 @@ public class CustomerServiceImpl implements CustomerService {
         throw new UnsupportedOperationException();
     }
 
-
-    /**
-     * Method finds gift certificate by id.
-     * <p>
-     * If gift certificate doesn't exist throw exception.
-     *
-     * @param id requested parameter
-     * @return {@link  GiftCertificateEntity} found object
-     * @throws {@link GiftCertificateNotFoundException}
-
-
-
     /**
      * Finds customer by id.
      * @param id requested parameter
