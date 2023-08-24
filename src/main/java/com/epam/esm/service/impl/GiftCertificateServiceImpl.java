@@ -71,7 +71,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Throws exception if GiftCertificate doesn't exist.
      *
      * @param giftCertificateEntity
-     * @return
+     * @return created entity
      * @throws {@link GiftCertificateNotFoundException}
      */
     @Override
@@ -146,7 +146,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     public GiftCertificateEntity delete(long id) {
         return giftCertificateDAO.deleteById(GiftCertificateEntity.class, id).orElseThrow(() ->
-                new GiftCertificateNotFoundException(messageSource.getMessage("giftcertificate.notfound.exceptoion",
+                new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exceptoion",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
     }

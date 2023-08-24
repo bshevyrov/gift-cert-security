@@ -110,7 +110,7 @@ public class TagServiceImpl implements TagService {
     @Transactional(rollbackFor = {Exception.class})
     public TagEntity delete(long id) {
         return tagDAO.deleteById(TagEntity.class, id).orElseThrow(() ->
-                new TagNotFoundException(messageSource.getMessage("tag.notfound.exceptoion",
+                new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
     }

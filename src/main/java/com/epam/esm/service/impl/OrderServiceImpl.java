@@ -140,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Return found order or thows exception.
+     * Return found order or thкows exception.
      *
      * @param id customer id values
      * @return found {@link OrderEntity}
