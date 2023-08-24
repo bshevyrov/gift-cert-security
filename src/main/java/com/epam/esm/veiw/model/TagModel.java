@@ -6,8 +6,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 
 /**
- * The ResponseModel class extends the Hateoas Representation Model and is required if we want to convert the Customer
- * com.epam.esm.persistence.entity.Entity to a pagination format
+ * The TagModel class extends the Hateoas Representation Model and is required if we want to convert the TagDTO
+ * to a pagination format
  **/
 @Getter
 @Setter

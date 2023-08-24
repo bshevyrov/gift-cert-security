@@ -16,14 +16,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class transforms  dto to response model.
+ */
 @Component
 public class GiftCertificateModelAssembler extends RepresentationModelAssemblerSupport<GiftCertificateDTO, GiftCertificateModel> {
-
-
     public GiftCertificateModelAssembler() {
         super(GiftCertificateController.class, GiftCertificateModel.class);
     }
-
 
     @Override
     public GiftCertificateModel toModel(GiftCertificateDTO entity) {

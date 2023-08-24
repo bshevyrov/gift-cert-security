@@ -9,14 +9,14 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Class transforms  dto to response model.
+ */
 @Component
 public class TagModelAssembler extends RepresentationModelAssemblerSupport<TagDTO, TagModel> {
-
-
     public TagModelAssembler() {
         super(TagController.class, TagModel.class);
     }
-
 
     @Override
     public TagModel toModel(TagDTO entity) {
@@ -26,10 +26,8 @@ public class TagModelAssembler extends RepresentationModelAssemblerSupport<TagDT
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).deleteById(entity.getId())).withRel("delete"));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll(Pageable.unpaged())).withRel("find all"));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).create(new TagDTO(), UriComponentsBuilder.newInstance())).withRel("create"));
-
         return model;
     }
-
 }
 
 

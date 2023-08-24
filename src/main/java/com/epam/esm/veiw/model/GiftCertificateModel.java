@@ -6,10 +6,9 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-
 /**
- * The ResponseModel class extends the Hateoas Representation Model and is required if we want to convert the Customer
- * com.epam.esm.persistence.entity.Entity to a pagination format
+ * The GiftCertificateModel class extends the Hateoas Representation Model and is required if we want to convert the GiftCertificateDTO
+ * to a pagination format
  **/
 @Getter
 @Setter
@@ -19,9 +18,6 @@ public class GiftCertificateModel extends RepresentationModel<GiftCertificateMod
     private String description;
     private double price;
     private int duration;
-
     private List<TagModel> tagModels;
-
-
 }
 

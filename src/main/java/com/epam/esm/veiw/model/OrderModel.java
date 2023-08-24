@@ -6,6 +6,10 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 
+/**
+ * The OrderModel class extends the Hateoas Representation Model and is required if we want to convert the OrderDTO
+ * to a pagination format
+ **/
 @Getter
 @Setter
 public class OrderModel extends RepresentationModel<OrderModel> {

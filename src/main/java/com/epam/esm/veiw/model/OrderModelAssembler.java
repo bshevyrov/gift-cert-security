@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+/**
+ * Class transforms  dto to response model.
+ */
 @Component
 public class OrderModelAssembler extends RepresentationModelAssemblerSupport<OrderDTO, OrderModel> {
 
@@ -15,14 +18,12 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
         super(CustomerController.class, OrderModel.class);
     }
 
-
     @Override
     public OrderModel toModel(OrderDTO entity) {
         OrderModel model = new OrderModel();
         BeanUtils.copyProperties(entity, model);
         return model;
     }
-
 }
 
 
