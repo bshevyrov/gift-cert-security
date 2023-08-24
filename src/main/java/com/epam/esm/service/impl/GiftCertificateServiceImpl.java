@@ -60,8 +60,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 tagEntity.setGiftCertificateEntities(new ArrayList<>());
             }
             tagEntity.getGiftCertificateEntities().add(giftCertificateEntity);
-            Optional<TagEntity> byName = tagDAO.findByName(tagEntity.getName());
-            byName.ifPresent(entity -> tagEntity.setId(entity.getId()));
+            Optional<TagEntity> tagsFoundByName = tagDAO.findByName(tagEntity.getName());
+            tagsFoundByName.ifPresent(entity -> tagEntity.setId(entity.getId()));
         });
         return giftCertificateDAO.create(giftCertificateEntity);
     }
@@ -77,12 +77,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = {SQLException.class})
     public GiftCertificateEntity update(GiftCertificateEntity giftCertificateEntity) {
-        GiftCertificateEntity toDB = giftCertificateDAO.findById(GiftCertificateEntity.class, giftCertificateEntity.getId())
+        GiftCertificateEntity giftCertificateFoundById = giftCertificateDAO.findById(GiftCertificateEntity.class, giftCertificateEntity.getId())
                 .orElseThrow(() -> new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
                         new Object[]{giftCertificateEntity.getId()},
                         LocaleContextHolder.getLocale())));
-        UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateEntity, toDB);
-        return create(toDB);
+        UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateEntity, giftCertificateFoundById);
+        return create(giftCertificateFoundById);
     }
 
     /**
@@ -125,9 +125,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable) {
-        ArrayList<Long> list = new ArrayList<>();
-        tags.forEach(tagEntity -> list.add(tagService.findTagIdByName(tagEntity.getName())));
-        return giftCertificateDAO.findAllByTagsId(list, pageable);
+        ArrayList<Long> tagsId = new ArrayList<>();
+        tags.forEach(tagEntity -> tagsId.add(tagService.findTagIdByName(tagEntity.getName())));
+        return giftCertificateDAO.findAllByTagsId(tagsId, pageable);
     }
 
 

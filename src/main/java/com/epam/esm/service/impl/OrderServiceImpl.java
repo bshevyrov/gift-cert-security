@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -42,40 +44,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * The method prepares {@link OrderEntity} to be stored in the database.
-     * Checks if CustomerEntity and GiftCertificateEntity exist.
-     * Sets for each OrderItemEntity GiftCertificateEntity, calculates and sets the value of the order.
-     * Sets OrderEntity to CustomerEntity.
+     * Guaranteed to throw an exception and leave.
      *
-     * @param entity object for creation
-     * @return saved entity
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Deprecated
     public OrderEntity create(OrderEntity entity) {
-        double sum = 0;
-        if (!customerDAO.findById(CustomerEntity.class, entity.getCustomerEntity().getId()).isPresent()) {
-            throw new CustomerNotFoundException(messageSource.getMessage("customer.notfound.exception",
-                    new Object[]{entity.getCustomerEntity().getId()},
-                    LocaleContextHolder.getLocale()));
-        }
-        entity.getOrderItemEntities().forEach(orderItem -> orderItem.setOrderEntity(entity));
-        for (OrderItemEntity orderItemEntity : entity.getOrderItemEntities()) {
-            Optional<GiftCertificateEntity> currentGiftCertificate = giftCertificateDAO.findById(GiftCertificateEntity.class, orderItemEntity
-                    .getGiftCertificateEntity().getId());
-
-            orderItemEntity.setGiftCertificateEntity(currentGiftCertificate.orElseThrow(() ->
-                    new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
-                            new Object[]{orderItemEntity.getGiftCertificateEntity().getId()},
-                            LocaleContextHolder.getLocale()))));
-
-            sum += currentGiftCertificate.get().getPrice() * orderItemEntity.getQuantity();
-        }
-        entity.setCost(sum);
-        entity.getCustomerEntity().setOrderEntities(new ArrayList<OrderEntity>() {{
-            add(entity);
-        }});
-        return orderDAO.create(entity);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -153,5 +130,66 @@ public class OrderServiceImpl implements OrderService {
                 new PopularOrderNotFoundException(messageSource.getMessage("popular.order.notfound.exception",
                         new Object[]{id},
                         LocaleContextHolder.getLocale())));
+    }
+
+    /**
+     * The method prepares {@link OrderEntity} to be stored in the database.
+     * Checks if CustomerEntity and GiftCertificateEntity exist.
+     * Sets for each OrderItemEntity GiftCertificateEntity, calculates and sets the value of the order.
+     * Sets OrderEntity to CustomerEntity.
+     *
+     * @param purchase parameters of order
+     * @return saved entity
+     */
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public OrderEntity createPurchase(Map<String, Object> purchase) {
+        OrderEntity entity = createOrderEntityFromMap(purchase);
+
+        double sum = 0;
+        if (!customerDAO.findById(CustomerEntity.class, entity.getCustomerEntity().getId()).isPresent()) {
+            throw new CustomerNotFoundException(messageSource.getMessage("customer.notfound.exception",
+                    new Object[]{entity.getCustomerEntity().getId()},
+                    LocaleContextHolder.getLocale()));
+        }
+        entity.getOrderItemEntities().forEach(orderItem -> orderItem.setOrderEntity(entity));
+        for (OrderItemEntity orderItemEntity : entity.getOrderItemEntities()) {
+            Optional<GiftCertificateEntity> currentGiftCertificate = giftCertificateDAO.findById(GiftCertificateEntity.class, orderItemEntity
+                    .getGiftCertificateEntity().getId());
+
+            orderItemEntity.setGiftCertificateEntity(currentGiftCertificate.orElseThrow(() ->
+                    new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
+                            new Object[]{orderItemEntity.getGiftCertificateEntity().getId()},
+                            LocaleContextHolder.getLocale()))));
+
+            sum += currentGiftCertificate.get().getPrice() * orderItemEntity.getQuantity();
+        }
+        entity.setCost(sum);
+        entity.getCustomerEntity().setOrderEntities(new ArrayList<OrderEntity>() {{
+            add(entity);
+        }});
+        return orderDAO.create(entity);
+    }
+
+    /**
+     * Transforms Map to {@link OrderEntity}
+     *
+     * @param purchase lost containing customerId and List of orderItemEntities
+     * @return OrderEntity
+     */
+    private OrderEntity createOrderEntityFromMap(Map<String, Object> purchase) {
+        OrderEntity orderEntity = new OrderEntity();
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setId((Long) purchase.get("customerId"));
+        orderEntity.setCustomerEntity(customerEntity);
+        List<OrderItemEntity> orderItemEntities = (List<OrderItemEntity>) purchase.get("orderItemEntities");
+
+        orderItemEntities.forEach(
+                orderItemDTO -> orderItemDTO.setOrderEntity(orderEntity));
+        orderEntity.setOrderItemEntities(orderItemEntities);
+        orderItemEntities.forEach(orderItemDTO -> orderItemDTO.setOrderEntity(orderEntity));
+
+        return orderEntity;
+
     }
 }

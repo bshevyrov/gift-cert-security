@@ -48,13 +48,24 @@ public class CustomerFacadeImpl implements CustomerFacade {
         return customerMapper.toDTO(customerService.findById(id));
     }
 
-
+    /**
+     * Guaranteed to throw an exception and leave.
+     *
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
+     */
     @Override
     @Deprecated
     public CustomerDTO update(CustomerDTO entity) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Guaranteed to throw an exception and leave.
+     *
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
+     */
     @Override
     @Deprecated
     public void delete(long id) {

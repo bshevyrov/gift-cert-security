@@ -26,7 +26,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -110,8 +112,11 @@ public class CustomerController {
     public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
                                                               @PathVariable @Positive long id,
                                                               UriComponentsBuilder ucb) {
-
-        OrderDTO orderDTO = new OrderDTO();
+        Map<String, Object> purchase = new HashMap<String, Object>() {{
+            put("customerId", id);
+            put("orderItemDTOS", orderItemDTOS);
+        }};
+   /*     OrderDTO orderDTO = new OrderDTO();
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setId(id);
         orderDTO.setCustomerDTO(customerDTO);
@@ -119,8 +124,8 @@ public class CustomerController {
         orderItemDTOS.forEach(
                 orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
         orderDTO.setOrderItemDTOS(orderItemDTOS);
-        orderItemDTOS.forEach(orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
-        OrderDTO dto = orderFacade.create(orderDTO);
+        orderItemDTOS.forEach(orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));*/
+        OrderDTO dto = orderFacade.createPurchase(purchase);
         HttpHeaders headers = new HttpHeaders();
         URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(dto.getId()))
                 .build().toUri();
