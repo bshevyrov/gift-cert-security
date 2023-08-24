@@ -13,10 +13,9 @@ public interface GiftCertificateMapper {
     @Mapping(source = "tagEntities", target = "tagDTOS")
     GiftCertificateDTO toDTO(GiftCertificateEntity giftCertificateEntity);
 
-    @Mapping(target = "createdDate",ignore = true )
-    @Mapping(target = "updatedDate",ignore = true )
-    @Mapping(source ="tagDTOS" , target ="tagEntities" )
-
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updatedDate", ignore = true)
+    @Mapping(source = "tagDTOS", target = "tagEntities")
     GiftCertificateEntity toEntity(GiftCertificateDTO giftCertificateDTO);
 
     List<GiftCertificateDTO> toDTOList(List<GiftCertificateEntity> list);

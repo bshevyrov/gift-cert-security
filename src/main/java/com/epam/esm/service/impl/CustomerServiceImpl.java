@@ -1,10 +1,8 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.customer.CustomerNotFoundException;
-import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.persistence.dao.CustomerDAO;
 import com.epam.esm.persistence.entity.CustomerEntity;
-import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -13,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Used  to manipulate Customer objects and collecting data.
  */
@@ -30,6 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**
      * Method creates CustomerEntity.
+     *
      * @param entity object for creation.
      * @return created object.
      */
@@ -53,6 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**
      * Finds customer by id.
+     *
      * @param id requested parameter
      * @return {@link CustomerEntity} found object.
      * @throws {@link CustomerNotFoundException}
@@ -65,6 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
                                 new Object[]{id},
                                 LocaleContextHolder.getLocale())));
     }
+
     /**
      * Guaranteed to throw an exception and leave.
      *
@@ -76,8 +78,10 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerEntity delete(long id) {
         throw new UnsupportedOperationException();
     }
+
     /**
      * Method finds all customers with pagination.
+     *
      * @param pageable pagination object
      * @return {@link Page} of {@link CustomerEntity}
      */

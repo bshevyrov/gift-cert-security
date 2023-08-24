@@ -16,6 +16,7 @@ public class TagDAOImpl extends BaseDAOImpl<TagEntity> implements TagDAO {
 
     /**
      * Checks if tag exists in database.
+     *
      * @param tagTagEntityName string name parameter.
      * @return true is exists.
      */
@@ -30,6 +31,7 @@ public class TagDAOImpl extends BaseDAOImpl<TagEntity> implements TagDAO {
 
     /**
      * Finds {@link TagEntity} in database by name.
+     *
      * @param tagEntityName string parameter.
      * @return optional of found entity.
      */

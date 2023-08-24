@@ -1,7 +1,10 @@
 package com.epam.esm.persistence.dao.impl;
 
 import com.epam.esm.persistence.dao.OrderDAO;
-import com.epam.esm.persistence.entity.*;
+import com.epam.esm.persistence.entity.CustomerEntity;
+import com.epam.esm.persistence.entity.CustomerEntity_;
+import com.epam.esm.persistence.entity.OrderEntity;
+import com.epam.esm.persistence.entity.OrderEntity_;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +20,7 @@ import java.util.Optional;
 
 @Repository
 public class OrderDAOImpl extends BaseDAOImpl<OrderEntity> implements OrderDAO {
-    @PersistenceContext
-    EntityManager entityManager;
-
-    public static final String GET_POPULAR_ORDER=
+    public static final String GET_POPULAR_ORDER =
             "SELECT distinct o.* " +
                     "from `order` o " +
                     "join order_item oi on o.id = oi.order_id\n" +
@@ -36,11 +36,14 @@ public class OrderDAOImpl extends BaseDAOImpl<OrderEntity> implements OrderDAO {
                     "WHERE customer_id =:customerId\n" +
                     "ORDER BY o.cost DESC\n" +
                     "limit 1";
+    @PersistenceContext
+    EntityManager entityManager;
 
     /**
      * Finds all orders by customer id.
-     * @param id long id.
-     * @param pageable  pagination object.
+     *
+     * @param id       long id.
+     * @param pageable pagination object.
      * @return {@link Page} of {@link OrderEntity}
      */
     @Override
@@ -70,6 +73,7 @@ public class OrderDAOImpl extends BaseDAOImpl<OrderEntity> implements OrderDAO {
 
     /**
      * Counts all customer orders by id.
+     *
      * @param id long identifier.
      * @return number of existing entities in the database.
      */
@@ -81,6 +85,7 @@ public class OrderDAOImpl extends BaseDAOImpl<OrderEntity> implements OrderDAO {
 
     /**
      * Returns the order with the highest value with the most popular tag.
+     *
      * @param id long identifier.
      * @return optional of found order.
      */

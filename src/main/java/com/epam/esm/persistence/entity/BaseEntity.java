@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
 /**
  * Parent for entity with name field.
  */

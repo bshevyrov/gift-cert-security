@@ -13,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * Used  to manipulate GiftCertificate objects and collecting data.
@@ -79,6 +76,7 @@ public class TagServiceImpl implements TagService {
 
     /**
      * Method finds all tags with pagination.
+     *
      * @param pageable pagination object
      * @return {@link Page} of tags
      */
@@ -119,16 +117,17 @@ public class TagServiceImpl implements TagService {
 
     /**
      * Finds tag id by tag na
+     *
      * @param tagName String request parameter.
      * @return Long id
      * @throws TagNotFoundException
      */
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Long findTagIdByName(String tagName) {
-       return tagDAO.findByName(tagName).orElseThrow(() ->
-                        new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
-                                new Object[]{tagName},
-                                LocaleContextHolder.getLocale()))).getId();
+        return tagDAO.findByName(tagName).orElseThrow(() ->
+                new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
+                        new Object[]{tagName},
+                        LocaleContextHolder.getLocale()))).getId();
 
     }
 }

@@ -128,7 +128,8 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * Returns all found orders of customer.
-     * @param id customer id values
+     *
+     * @param id       customer id values
      * @param pageable pagination object.
      * @return {@link Page} of {@link OrderEntity}
      */
@@ -140,6 +141,7 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * Return found order or thows exception.
+     *
      * @param id customer id values
      * @return found {@link OrderEntity}
      * @throws {@link PopularOrderNotFoundException}

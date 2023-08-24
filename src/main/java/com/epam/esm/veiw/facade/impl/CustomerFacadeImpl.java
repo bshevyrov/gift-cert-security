@@ -2,11 +2,8 @@ package com.epam.esm.veiw.facade.impl;
 
 import com.epam.esm.mapper.CustomerMapper;
 import com.epam.esm.persistence.entity.CustomerEntity;
-import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.veiw.dto.CustomerDTO;
-import com.epam.esm.veiw.dto.OrderDTO;
-import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.CustomerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +25,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
         this.customerService = customerService;
         this.customerMapper = customerMapper;
     }
+
     /**
      * Method consume customerDTO and return created customer.
      *
@@ -38,6 +36,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
     public CustomerDTO create(CustomerDTO customerDTO) {
         return customerMapper.toDTO(customerService.create(customerMapper.toEntity(customerDTO)));
     }
+
     /**
      * Method consume id value and return dto object.
      *

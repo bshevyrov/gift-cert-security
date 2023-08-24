@@ -21,8 +21,9 @@ public class GiftCertificateDAOImpl extends BaseDAOImpl<GiftCertificateEntity> i
 
     /**
      * Finds all tags with corresponding tags.
-     * @param tagsId long id.
-     * @param pageable  pagination object.
+     *
+     * @param tagsId   long id.
+     * @param pageable pagination object.
      * @return {@link Page} of {@link GiftCertificateEntity}
      */
     @Override

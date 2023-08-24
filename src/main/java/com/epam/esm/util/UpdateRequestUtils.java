@@ -2,7 +2,6 @@ package com.epam.esm.util;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -26,6 +25,7 @@ public final class UpdateRequestUtils {
                         .toArray(String[]::new);
         return rsl;
     }
+
     public static void copyNotNullOrEmptyProperties(Object src, Object target) {
         BeanUtils.copyProperties(src, target, getNullOrEmptyPropertyNames(src));
     }

@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -69,12 +68,12 @@ public class GiftCertificateController {
      * Produces response object as the result of create operation.
      *
      * @param giftCertificateDTO object for creation
-     * @param ucb    UriComponentsBuilder
+     * @param ucb                UriComponentsBuilder
      * @return ResponseEntity with header and uri of created object.
      */
     @PostMapping
     public ResponseEntity<GiftCertificateModel> create(@Valid @RequestBody GiftCertificateDTO giftCertificateDTO,
-                                                     UriComponentsBuilder ucb) {
+                                                       UriComponentsBuilder ucb) {
         GiftCertificateDTO currentGiftCertificate = giftCertificateFacade.create(giftCertificateDTO);
 
         HttpHeaders headers = new HttpHeaders();
@@ -94,10 +93,10 @@ public class GiftCertificateController {
      **/
     @GetMapping(value = "/{id}")
     public ResponseEntity<GiftCertificateModel> findById(@PathVariable
-                                       @Min(1)
-                                       @Max(Long.MAX_VALUE) long id) {
+                                                         @Min(1)
+                                                         @Max(Long.MAX_VALUE) long id) {
         return new ResponseEntity<>(giftCertificateModelAssembler.toModel(
-                giftCertificateFacade.findById(id)),HttpStatus.OK);
+                giftCertificateFacade.findById(id)), HttpStatus.OK);
     }
 
 
@@ -125,19 +124,20 @@ public class GiftCertificateController {
     @PatchMapping(value = "/{id}")
     public ResponseEntity<GiftCertificateModel> update(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO, @PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         giftCertificateDTO.setId(id);
-       return new ResponseEntity<>( giftCertificateModelAssembler.toModel(
-               giftCertificateFacade.update(giftCertificateDTO)),HttpStatus.OK);
+        return new ResponseEntity<>(giftCertificateModelAssembler.toModel(
+                giftCertificateFacade.update(giftCertificateDTO)), HttpStatus.OK);
     }
 
     /**
      * Method consumes request object and URL param.
+     *
      * @param pageable pagination object
-     * @param tags  body parameter, string  tags name
+     * @param tags     body parameter, string  tags name
      * @return PagedModel
      */
     @GetMapping("/search")
     public ResponseEntity<PagedModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
-                                                                               @RequestBody @NotEmpty  List<TagDTO> tags) {
+                                                                              @RequestBody @NotEmpty List<TagDTO> tags) {
 
         Page<GiftCertificateDTO> allByTags = giftCertificateFacade.findAllByTagsName(tags, pageable);
         PagedModel<GiftCertificateModel> pagedModel =

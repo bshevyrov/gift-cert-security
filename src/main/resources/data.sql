@@ -2,7 +2,7 @@ INSERT INTO gift_certificate(id, created_date, name, description, price, duratio
 VALUES (1, '2023-04-29 22:07:01', 'First Client', 'Special promotion for first customerEntity', 100, 66),
        (2, '2023-04-29 22:17:01', 'Initial promotion campaign -1', 'Promotion for new customers.', 20, 7),
        (3, '2023-04-29 21:07:01', 'Initial promotion campaign -2', 'Promotion for new customers.', 20, 7);
-INSERT INTO tag(id, created_date,  name)
+INSERT INTO tag(id, created_date, name)
 VALUES (10, '2023-04-29 22:07:01', 'birthday'),
        (2, '2023-04-27 22:07:01', 'vip'),
        (3, '2023-04-26 22:07:01', 'promo'),

@@ -32,9 +32,9 @@ public class GiftCertificateModelAssembler extends RepresentationModelAssemblerS
         model.setTagModels(toTagModel(entity.getTagDTOS()));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findById(entity.getId())).withSelfRel());
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findAll(Pageable.unpaged())).withRel("find all"));
-        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findAllByTagsName(Pageable.unpaged(),new ArrayList<>())).withRel("find gift cert by tag name"));
+        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findAllByTagsName(Pageable.unpaged(), new ArrayList<>())).withRel("find gift cert by tag name"));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).deleteById(entity.getId())).withRel("delete"));
-        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).update(new GiftCertificateDTO(),entity.getId())).withRel("update"));
+        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).update(new GiftCertificateDTO(), entity.getId())).withRel("update"));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).create(new GiftCertificateDTO(), UriComponentsBuilder.newInstance())).withRel("create"));
         return model;
     }

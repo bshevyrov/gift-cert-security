@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+
 /**
  * Entity that represent order_item table.
  */

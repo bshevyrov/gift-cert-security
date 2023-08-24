@@ -1,11 +1,8 @@
 package com.epam.esm.veiw.model;
 
 import com.epam.esm.veiw.controller.CustomerController;
-import com.epam.esm.veiw.controller.GiftCertificateController;
-import com.epam.esm.veiw.controller.TagController;
 import com.epam.esm.veiw.dto.CustomerDTO;
 import com.epam.esm.veiw.dto.OrderDTO;
-import com.epam.esm.veiw.dto.TagDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -24,7 +21,6 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
     }
 
 
-
     @Override
     public CustomerModel toModel(CustomerDTO entity) {
         CustomerModel model = new CustomerModel();
@@ -41,7 +37,7 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
         return orderDTOS.stream()
                 .map(orderDTO -> {
                             OrderModel orderModel = new OrderModel();
-                            BeanUtils.copyProperties(orderDTO,orderModel);
+                            BeanUtils.copyProperties(orderDTO, orderModel);
                             return orderModel;
                         }
                 ).collect(Collectors.toList());
