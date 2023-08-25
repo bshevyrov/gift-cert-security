@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class CustomerDTO extends BaseDTO {
+ public class CustomerDTO extends BaseDTO {
     private List<OrderDTO> orderDTOS;
 }

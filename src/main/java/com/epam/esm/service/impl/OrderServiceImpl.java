@@ -36,7 +36,9 @@ public class OrderServiceImpl implements OrderService {
     private final MessageSource messageSource;
 
     @Autowired
-    public OrderServiceImpl(OrderDAO orderDAO, CustomerDAO customerDAO, GiftCertificateDAO giftCertificateDAO, MessageSource messageSource) {
+    public OrderServiceImpl(OrderDAO orderDAO, CustomerDAO customerDAO,
+                            GiftCertificateDAO giftCertificateDAO,
+                            MessageSource messageSource) {
         this.orderDAO = orderDAO;
         this.customerDAO = customerDAO;
         this.giftCertificateDAO = giftCertificateDAO;
@@ -127,8 +129,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public OrderEntity getPopularTagInOrderByCustomerId(Long id) {
         return orderDAO.getPopularTagInOrderByCustomerId(id).orElseThrow(() ->
-                new PopularOrderNotFoundException(messageSource.getMessage("popular.order.notfound.exception",
-                        new Object[]{id},
+                new PopularOrderNotFoundException(messageSource.getMessage(
+                        "popular.order.notfound.exception",
+                        new Object[] {id},
                         LocaleContextHolder.getLocale())));
     }
 
@@ -147,27 +150,38 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity entity = createOrderEntityFromMap(purchase);
 
         double sum = 0;
-        if (!customerDAO.findById(CustomerEntity.class, entity.getCustomerEntity().getId()).isPresent()) {
-            throw new CustomerNotFoundException(messageSource.getMessage("customer.notfound.exception",
-                    new Object[]{entity.getCustomerEntity().getId()},
-                    LocaleContextHolder.getLocale()));
+        if (!customerDAO.findById(CustomerEntity.class,
+                entity.getCustomerEntity().getId()).isPresent()) {
+            throw new CustomerNotFoundException(
+                    messageSource.getMessage("customer.notfound.exception",
+                            new Object[] {entity.getCustomerEntity().getId()},
+                            LocaleContextHolder.getLocale()));
         }
-        entity.getOrderItemEntities().forEach(orderItem -> orderItem.setOrderEntity(entity));
+        entity.getOrderItemEntities()
+                .forEach(orderItem -> orderItem.setOrderEntity(entity));
         for (OrderItemEntity orderItemEntity : entity.getOrderItemEntities()) {
-            Optional<GiftCertificateEntity> currentGiftCertificate = giftCertificateDAO.findById(GiftCertificateEntity.class, orderItemEntity
-                    .getGiftCertificateEntity().getId());
+            Optional<GiftCertificateEntity> currentGiftCertificate =
+                    giftCertificateDAO.findById(GiftCertificateEntity.class,
+                            orderItemEntity
+                                    .getGiftCertificateEntity().getId());
 
-            orderItemEntity.setGiftCertificateEntity(currentGiftCertificate.orElseThrow(() ->
-                    new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
-                            new Object[]{orderItemEntity.getGiftCertificateEntity().getId()},
-                            LocaleContextHolder.getLocale()))));
+            orderItemEntity.setGiftCertificateEntity(
+                    currentGiftCertificate.orElseThrow(() ->
+                            new GiftCertificateNotFoundException(
+                                    messageSource.getMessage(
+                                            "gift.certificate.notfound.exception",
+                                            new Object[] {
+                                                    orderItemEntity.getGiftCertificateEntity().getId()},
+                                            LocaleContextHolder.getLocale()))));
 
-            sum += currentGiftCertificate.get().getPrice() * orderItemEntity.getQuantity();
+            sum += currentGiftCertificate.get().getPrice() *
+                    orderItemEntity.getQuantity();
         }
         entity.setCost(sum);
-        entity.getCustomerEntity().setOrderEntities(new ArrayList<OrderEntity>() {{
-            add(entity);
-        }});
+        entity.getCustomerEntity()
+                .setOrderEntities(new ArrayList<OrderEntity>() {{
+                    add(entity);
+                }});
         return orderDAO.create(entity);
     }
 
@@ -182,12 +196,14 @@ public class OrderServiceImpl implements OrderService {
         CustomerEntity customerEntity = new CustomerEntity();
         customerEntity.setId((Long) purchase.get("customerId"));
         orderEntity.setCustomerEntity(customerEntity);
-        List<OrderItemEntity> orderItemEntities = (List<OrderItemEntity>) purchase.get("orderItemEntities");
+        List<OrderItemEntity> orderItemEntities =
+                (List<OrderItemEntity>) purchase.get("orderItemEntities");
 
         orderItemEntities.forEach(
                 orderItemDTO -> orderItemDTO.setOrderEntity(orderEntity));
         orderEntity.setOrderItemEntities(orderItemEntities);
-        orderItemEntities.forEach(orderItemDTO -> orderItemDTO.setOrderEntity(orderEntity));
+        orderItemEntities.forEach(
+                orderItemDTO -> orderItemDTO.setOrderEntity(orderEntity));
 
         return orderEntity;
 

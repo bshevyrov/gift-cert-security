@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
-
-
 public class TagServiceImpl implements TagService {
     private final MessageSource messageSource;
     private final TagDAO tagDAO;

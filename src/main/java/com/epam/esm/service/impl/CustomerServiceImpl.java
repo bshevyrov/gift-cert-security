@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Used  to manipulate Customer objects and collecting data.
  */
 @Service
-@Transactional
 public class CustomerServiceImpl implements CustomerService {
     private final MessageSource messageSource;
     private final CustomerDAO customerDAO;
@@ -35,6 +34,8 @@ public class CustomerServiceImpl implements CustomerService {
      */
 
     @Override
+    @Transactional(rollbackFor = {Exception.class})
+
     public CustomerEntity create(CustomerEntity entity) {
         return customerDAO.create(entity);
     }
@@ -59,6 +60,8 @@ public class CustomerServiceImpl implements CustomerService {
      * @throws {@link CustomerNotFoundException}
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
+
     public CustomerEntity findById(long id) {
         return customerDAO.findById(CustomerEntity.class, id).orElseThrow(
                 () -> new CustomerNotFoundException(
@@ -86,6 +89,8 @@ public class CustomerServiceImpl implements CustomerService {
      * @return {@link Page} of {@link CustomerEntity}
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
+
     public Page<CustomerEntity> findAll(Pageable pageable) {
         return customerDAO.findAll(CustomerEntity.class, pageable);
     }
