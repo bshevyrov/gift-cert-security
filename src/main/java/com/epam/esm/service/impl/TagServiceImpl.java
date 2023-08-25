@@ -44,7 +44,6 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public TagEntity create(TagEntity tagEntity) {
-
         if (tagDAO.existsByName(tagEntity.getName())) {
             throw new TagExistException(messageSource.getMessage("tag.exist.exception",
                     new Object[]{tagEntity.getName()},
