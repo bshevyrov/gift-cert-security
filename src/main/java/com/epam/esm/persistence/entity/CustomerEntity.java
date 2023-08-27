@@ -1,5 +1,6 @@
 package com.epam.esm.persistence.entity;
 
+import com.epam.esm.persistence.entity.type.Status;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,15 @@ public class CustomerEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "customerEntity")
     private List<OrderEntity> orderEntities;
+    private String username;
+    private String password;
+    private Status status;
+//    @Column(name = "role")
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "user_roles",
+    joinColumns = {@JoinColumn (name = "user_id",referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+    private List<RoleEntity> roleEntities;
 }
 
 
