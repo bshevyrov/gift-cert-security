@@ -1,4 +1,4 @@
-package com.epam.esm.veiw.controller;
+package com.epam.esm.veiw.controller.user;
 
 import com.epam.esm.util.validation.group.Purchase;
 import com.epam.esm.veiw.dto.CustomerDTO;
@@ -33,10 +33,10 @@ import java.util.Map;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/customers",
+@RequestMapping(value = "/api/v1/user/customers",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-public class CustomerController {
+public class UserCustomerController {
     private final CustomerFacade customerFacade;
     private final OrderFacade orderFacade;
     private final CustomerModelAssembler customerModelAssembler;
@@ -86,14 +86,17 @@ public class CustomerController {
      * @return OrderModel
      */
     @PostMapping(value = "{id}/orders")
-    public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class)
-                                                                  @RequestBody OrderDTO orderDTO,
+    public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
                                                               @PathVariable @Positive long id,
                                                               UriComponentsBuilder ucb) {
-        orderDTO.setCustomerDTO(CustomerDTO.builder().id(id).build());
-        OrderDTO createdOrderDTO = orderFacade.create(orderDTO);
+        Map<String, Object> purchase = new HashMap<>();
+        purchase.put("customerId", id);
+        purchase.put("orderItemDTOS", orderItemDTOS);
+
+
+        OrderDTO dto = orderFacade.createPurchase(purchase);
         HttpHeaders headers = new HttpHeaders();
-        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(createdOrderDTO.getId()))
+        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(dto.getId()))
                 .build().toUri();
 
         headers.setLocation(locationUri);

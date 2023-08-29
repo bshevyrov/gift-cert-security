@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface CustomerFacade extends BaseFacade<CustomerDTO> {
     Page<CustomerDTO> findAll(Pageable pageable);
+
+    CustomerDTO findByUsername(String username);
 }

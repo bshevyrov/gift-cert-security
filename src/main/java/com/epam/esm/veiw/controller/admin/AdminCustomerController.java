@@ -1,4 +1,4 @@
-package com.epam.esm.veiw.controller;
+package com.epam.esm.veiw.controller.admin;
 
 import com.epam.esm.util.validation.group.Purchase;
 import com.epam.esm.veiw.dto.CustomerDTO;
@@ -10,6 +10,7 @@ import com.epam.esm.veiw.model.CustomerModel;
 import com.epam.esm.veiw.model.CustomerModelAssembler;
 import com.epam.esm.veiw.model.OrderModel;
 import com.epam.esm.veiw.model.OrderModelAssembler;
+import com.epam.esm.veiw.model.admin.AdminCustomerModelAssembler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,13 +34,13 @@ import java.util.Map;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/customers",
+@RequestMapping(value = "/api/v1/admin/customers",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-public class CustomerController {
+public class AdminCustomerController {
     private final CustomerFacade customerFacade;
     private final OrderFacade orderFacade;
-    private final CustomerModelAssembler customerModelAssembler;
+    private final AdminCustomerModelAssembler customerModelAssembler;
     private final OrderModelAssembler orderModelAssembler;
     private final PagedResourcesAssembler<CustomerDTO> pagedCustomerResourcesAssembler;
     private final PagedResourcesAssembler<OrderDTO> pagedOrderResourcesAssembler;
@@ -59,6 +60,19 @@ public class CustomerController {
                 HttpStatus.OK);
     }
 
+    /**
+     * Method produces set of response objects
+     *
+     * @param pageable pagination object
+     * @return PagedModel of response
+     */
+
+    @GetMapping(value = "")
+    public ResponseEntity<PagedModel<CustomerModel>> findAll(@PageableDefault Pageable pageable) {
+        Page<CustomerDTO> all = customerFacade.findAll(pageable);
+        PagedModel<CustomerModel> pagedModel = pagedCustomerResourcesAssembler.toModel(all, customerModelAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+    }
 
     /**
      * Method produces set of response objects
@@ -86,14 +100,25 @@ public class CustomerController {
      * @return OrderModel
      */
     @PostMapping(value = "{id}/orders")
-    public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class)
-                                                                  @RequestBody OrderDTO orderDTO,
+    public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
                                                               @PathVariable @Positive long id,
                                                               UriComponentsBuilder ucb) {
-        orderDTO.setCustomerDTO(CustomerDTO.builder().id(id).build());
-        OrderDTO createdOrderDTO = orderFacade.create(orderDTO);
+        Map<String, Object> purchase = new HashMap<String, Object>() {{
+            put("customerId", id);
+            put("orderItemDTOS", orderItemDTOS);
+        }};
+   /*     OrderDTO orderDTO = new OrderDTO();
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setId(id);
+        orderDTO.setCustomerDTO(customerDTO);
+
+        orderItemDTOS.forEach(
+                orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));
+        orderDTO.setOrderItemDTOS(orderItemDTOS);
+        orderItemDTOS.forEach(orderItemDTO -> orderItemDTO.setOrderDTO(orderDTO));*/
+        OrderDTO dto = orderFacade.createPurchase(purchase);
         HttpHeaders headers = new HttpHeaders();
-        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(createdOrderDTO.getId()))
+        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(dto.getId()))
                 .build().toUri();
 
         headers.setLocation(locationUri);

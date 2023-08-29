@@ -23,9 +23,7 @@ public class TagModelAssembler extends RepresentationModelAssemblerSupport<TagDT
         TagModel model = new TagModel();
         BeanUtils.copyProperties(entity, model);
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findById(entity.getId())).withSelfRel());
-        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).deleteById(entity.getId())).withRel("delete"));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).findAll(Pageable.unpaged())).withRel("find all"));
-        model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class).create(new TagDTO(), UriComponentsBuilder.newInstance())).withRel("create"));
         return model;
     }
 }

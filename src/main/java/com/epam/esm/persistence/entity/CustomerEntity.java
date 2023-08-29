@@ -5,8 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
@@ -19,22 +23,32 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 
-public class CustomerEntity extends BaseEntity {
+public class CustomerEntity extends AbstractAuditEntity {
     @Id
     @GeneratedValue(generator = "customer-generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "customer-generator", sequenceName = "customer_sequence", allocationSize = 10, initialValue = 50)
     private Long id;
 
+    @Nullable
     @OneToMany(mappedBy = "customerEntity")
     private List<OrderEntity> orderEntities;
+
+    @NotBlank(message = "Username is mandatory")
+    @Pattern(regexp = "^[\\w]+$", message = "Username contains illegal chars.")
     private String username;
+
+    @NotBlank(message = "Password is mandatory")
+//    @Pattern(regexp = "^[\\w]+$", message = "Password contains illegal chars.")
     private String password;
+
+    @Enumerated(EnumType.ORDINAL)
     private Status status;
-//    @Column(name = "role")
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(name = "user_roles",
-    joinColumns = {@JoinColumn (name = "user_id",referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+    //    @Column(name = "role")
+    @NotEmpty
+    @ManyToMany(cascade = {CascadeType.REMOVE,CascadeType.PERSIST},fetch = FetchType.EAGER)
+    @JoinTable(name = "customer_role",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<RoleEntity> roleEntities;
 }
 

@@ -5,26 +5,21 @@ import com.epam.esm.persistence.entity.CustomerEntity;
 import com.epam.esm.service.CustomerService;
 import com.epam.esm.veiw.dto.CustomerDTO;
 import com.epam.esm.veiw.facade.CustomerFacade;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-@Component
 
 /**
  * Class used for conversion  {@link CustomerEntity} and {@link CustomerDTO}.
  */
+@Component
+@RequiredArgsConstructor
 public class CustomerFacadeImpl implements CustomerFacade {
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
-
-    @Autowired
-    public CustomerFacadeImpl(CustomerService customerService, CustomerMapper customerMapper) {
-        this.customerService = customerService;
-        this.customerMapper = customerMapper;
-    }
 
     /**
      * Method consume customerDTO and return created customer.
@@ -83,4 +78,17 @@ public class CustomerFacadeImpl implements CustomerFacade {
         Page<CustomerEntity> all = customerService.findAll(pageable);
         return new PageImpl<>(customerMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
     }
+
+    /**
+     * Method consume username value and return dto object.
+     *
+     * @param username request parameter
+     * @return {@link  CustomerDTO} created object
+     */
+    @Override
+    public CustomerDTO findByUsername(String username) {
+        return customerMapper.toDTO(customerService.findByUsername(username));
+    }
 }
+
+

@@ -11,6 +11,8 @@ import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.persistence.entity.OrderItemEntity;
 import com.epam.esm.service.OrderService;
+import io.jsonwebtoken.JwtException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -28,22 +30,13 @@ import java.util.Optional;
  * Used  to manipulate Order objects and collecting data.
  */
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
     private final OrderDAO orderDAO;
     private final CustomerDAO customerDAO;
     private final GiftCertificateDAO giftCertificateDAO;
     private final MessageSource messageSource;
 
-    @Autowired
-    public OrderServiceImpl(OrderDAO orderDAO, CustomerDAO customerDAO,
-                            GiftCertificateDAO giftCertificateDAO,
-                            MessageSource messageSource) {
-        this.orderDAO = orderDAO;
-        this.customerDAO = customerDAO;
-        this.giftCertificateDAO = giftCertificateDAO;
-        this.messageSource = messageSource;
-    }
 
     /**
      * Guaranteed to throw an exception and leave.
@@ -115,6 +108,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<OrderEntity> findAllByCustomerId(Long id, Pageable pageable) {
+        if (!isAuthenticatedUser(id)) {
+            //Todo
+            throw new JwtException("ERROR");
+        }
         return orderDAO.findAllByCustomerEntityId(id, pageable);
     }
 
@@ -128,10 +125,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public OrderEntity getPopularTagInOrderByCustomerId(Long id) {
+        if (!isAuthenticatedUser(id)) {
+            //Todo
+            throw new JwtException("ERROR");
+        }
         return orderDAO.getPopularTagInOrderByCustomerId(id).orElseThrow(() ->
                 new PopularOrderNotFoundException(messageSource.getMessage(
                         "popular.order.notfound.exception",
-                        new Object[] {id},
+                        new Object[]{id},
                         LocaleContextHolder.getLocale())));
     }
 
@@ -147,19 +148,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public OrderEntity createPurchase(Map<String, Object> purchase) {
-        OrderEntity entity = createOrderEntityFromMap(purchase);
 
+        OrderEntity orderEntity = createOrderEntityFromMap(purchase);
+        if (!isAuthenticatedUser(orderEntity.getId())) {
+            //Todo
+            throw new JwtException("ERROR");
+        }
         double sum = 0;
         if (!customerDAO.findById(CustomerEntity.class,
-                entity.getCustomerEntity().getId()).isPresent()) {
+                orderEntity.getCustomerEntity().getId()).isPresent()) {
             throw new CustomerNotFoundException(
                     messageSource.getMessage("customer.notfound.exception",
-                            new Object[] {entity.getCustomerEntity().getId()},
+                            new Object[]{"id - " + orderEntity.getCustomerEntity().getId()},
                             LocaleContextHolder.getLocale()));
         }
-        entity.getOrderItemEntities()
-                .forEach(orderItem -> orderItem.setOrderEntity(entity));
-        for (OrderItemEntity orderItemEntity : entity.getOrderItemEntities()) {
+        orderEntity.getOrderItemEntities()
+                .forEach(orderItem -> orderItem.setOrderEntity(orderEntity));
+        for (OrderItemEntity orderItemEntity : orderEntity.getOrderItemEntities()) {
             Optional<GiftCertificateEntity> currentGiftCertificate =
                     giftCertificateDAO.findById(GiftCertificateEntity.class,
                             orderItemEntity
@@ -170,19 +175,19 @@ public class OrderServiceImpl implements OrderService {
                             new GiftCertificateNotFoundException(
                                     messageSource.getMessage(
                                             "gift.certificate.notfound.exception",
-                                            new Object[] {
+                                            new Object[]{
                                                     orderItemEntity.getGiftCertificateEntity().getId()},
                                             LocaleContextHolder.getLocale()))));
 
             sum += currentGiftCertificate.get().getPrice() *
                     orderItemEntity.getQuantity();
         }
-        entity.setCost(sum);
-        entity.getCustomerEntity()
+        orderEntity.setCost(sum);
+        orderEntity.getCustomerEntity()
                 .setOrderEntities(new ArrayList<OrderEntity>() {{
-                    add(entity);
+                    add(orderEntity);
                 }});
-        return orderDAO.create(entity);
+        return orderDAO.create(orderEntity);
     }
 
     /**

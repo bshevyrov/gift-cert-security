@@ -6,17 +6,24 @@ import com.epam.esm.persistence.entity.RoleEntity;
 import com.epam.esm.persistence.entity.type.Status;
 import com.epam.esm.persistence.repository.CustomerRepository;
 import com.epam.esm.persistence.repository.RoleRepository;
+import com.epam.esm.security.jwt.JwtUser;
 import com.epam.esm.service.CustomerService;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,28 +33,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final MessageSource messageSource;
-    //    private final CustomerDAO customerDAO;
     private final CustomerRepository customerRepository;
     private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    public CustomerServiceImpl(MessageSource messageSource, CustomerDAO customerDAO) {
-//        this.messageSource = messageSource;
-//        this.customerDAO = customerDAO;
-//    }
 
     /**
-     * Method creates CustomerEntity.
+     * Method adds default role ROLE_USER and sets status ACTIVE to  {@link CustomerEntity}.
+     * <p>
+     * Password encrypts with {@link BCryptPasswordEncoder}. Then saves in database.
      *
      * @param customerEntity object for creation.
      * @return created object.
+     * @throws {@link RuntimeException} if role doesn`t exist
      */
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-
     public CustomerEntity create(CustomerEntity customerEntity) {
+        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Role not found."));
+        List<RoleEntity> roleEntities = new ArrayList<>();
+        roleEntities.add(roleEntity);
+        customerEntity.setPassword(new BCryptPasswordEncoder().encode(customerEntity.getPassword()));
+        customerEntity.setRoleEntities(roleEntities);
+        customerEntity.setStatus(Status.ACTIVE);
         return customerRepository.save(customerEntity);
     }
 
@@ -72,14 +81,19 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
-
     public CustomerEntity findById(long id) {
+        if (!isAuthenticatedUser(id)) {
+            //Todo
+            throw new JwtException("ERROR");
+        }
         return customerRepository.findById(id).orElseThrow(
                 () -> new CustomerNotFoundException(
                         messageSource.getMessage("customer.notfound.exception",
-                                new Object[]{id},
+                                new Object[]{"id - " + id},
                                 LocaleContextHolder.getLocale())));
     }
+
+
 
     /**
      * Guaranteed to throw an exception and leave.
@@ -101,30 +115,30 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
-
     public Page<CustomerEntity> findAll(Pageable pageable) {
         return customerRepository.findAll(pageable);
     }
 
-    /**
-     * Method adds default role ROLE_USER and sets status ACTIVE to  {@link CustomerEntity}. Then saves in database.
-     *
-     * @param customerEntity object for creation.
-     * @return created object.
-     * @throws {@link RuntimeException} if role doesn`t exist
-     */
-    //TODO MOVE TO CREATE
-    @Override
-    public CustomerEntity register(CustomerEntity customerEntity) {
-        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Role not found."));
-        List<RoleEntity> roleEntities = new ArrayList<>();
-        roleEntities.add(roleEntity);
-        customerEntity.setPassword(passwordEncoder.encode(customerEntity.getPassword()));
-        customerEntity.setRoleEntities(roleEntities);
-        customerEntity.setStatus(Status.ACTIVE);
-        return customerRepository.save(customerEntity);
-    }
+//    /**
+//     * Method adds default role ROLE_USER and sets status ACTIVE to  {@link CustomerEntity}. Then saves in database.
+//     *
+//     * @param customerEntity object for creation.
+//     * @return created object.
+//     * @throws {@link RuntimeException} if role doesn`t exist
+//     */
+//    //TODO MOVE TO CREATE
+//    @Override
+//    @Transactional(rollbackFor = {Exception.class})
+//    public CustomerEntity register(CustomerEntity customerEntity) {
+//        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER")
+//                .orElseThrow(() -> new RuntimeException("Role not found."));
+//        List<RoleEntity> roleEntities = new ArrayList<>();
+//        roleEntities.add(roleEntity);
+//        customerEntity.setPassword(new BCryptPasswordEncoder().encode(customerEntity.getPassword()));
+//        customerEntity.setRoleEntities(roleEntities);
+//        customerEntity.setStatus(Status.ACTIVE);
+//        return customerRepository.save(customerEntity);
+//    }
 
     /**
      * Finds customer by username or throw exception.
@@ -134,6 +148,7 @@ public class CustomerServiceImpl implements CustomerService {
      * @throws {@link CustomerNotFoundException} if customer doesn`t exist.
      */
     @Override
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public CustomerEntity findByUsername(String username) {
         return customerRepository.findByUsername(username).orElseThrow(() ->
                 new CustomerNotFoundException(
