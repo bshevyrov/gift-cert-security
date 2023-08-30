@@ -1,6 +1,8 @@
 package com.epam.esm.exception;
 
+import com.epam.esm.exception.auth.InvalidPasswordException;
 import com.epam.esm.exception.auth.InvalidTokenException;
+import com.epam.esm.exception.auth.InvalidUsernameException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateUpdateException;
 import com.epam.esm.exception.tag.TagExistException;
@@ -56,7 +58,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handleInvalidTokenException(InvalidTokenException e) {
-        return new ErrorResponse(Integer.parseInt(HttpStatus.UNAUTHORIZED.value() + "99"), e.getMessage());
+        return new ErrorResponse(Integer.parseInt(HttpStatus.UNAUTHORIZED.value() + "00"), e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidUsernameException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleInvalidTokenException(InvalidUsernameException e) {
+        return new ErrorResponse(Integer.parseInt(HttpStatus.UNAUTHORIZED.value() + "01"), e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleInvalidTokenException(InvalidPasswordException e) {
+        return new ErrorResponse(Integer.parseInt(HttpStatus.UNAUTHORIZED.value() + "02"), e.getMessage());
     }
 
 

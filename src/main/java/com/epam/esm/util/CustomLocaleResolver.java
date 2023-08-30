@@ -28,7 +28,7 @@ public class CustomLocaleResolver extends AcceptHeaderLocaleResolver {
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
         if (StringUtils.isEmpty(request.getHeader("Accept-Language"))) {
-            return new Locale("en", "GB");
+            return new Locale("en", "US");
         } else {
             List<Locale.LanguageRange> list = Locale.LanguageRange.parse(request.getHeader("Accept-Language"));
             return Locale.lookup(list, locales);

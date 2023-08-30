@@ -61,7 +61,12 @@ public class TagFacadeImpl implements TagFacade {
         return new PageImpl<>(tagMapper.toDTOList(all.getContent()), pageable, all.getTotalElements());
     }
 
-
+    /**
+     * Guaranteed to throw an exception and leave.
+     *
+     * @throws UnsupportedOperationException always
+     * @deprecated Unsupported operation.
+     */
     @Override
     @Deprecated
     public TagDTO update(TagDTO tagDTO) {

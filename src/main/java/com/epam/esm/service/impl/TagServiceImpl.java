@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Supplier;
+
 
 /**
  * Used  to manipulate GiftCertificate objects and collecting data.
@@ -60,10 +62,9 @@ public class TagServiceImpl implements TagService {
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public TagEntity findById(long id) {
         return tagRepository.findById(id)
-                .orElseThrow(() -> new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
-                        new Object[]{id},
-                        LocaleContextHolder.getLocale())));
+                .orElseThrow(getTagNotFoundExceptionSupplier("id - " + id));
     }
+
 
     /**
      * Method finds all tags with pagination.
@@ -100,10 +101,8 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public TagEntity delete(long id) {
-        TagEntity tagEntity = tagRepository.findById(id).orElseThrow(() ->
-                new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
-                        new Object[]{id},
-                        LocaleContextHolder.getLocale())));
+        TagEntity tagEntity = tagRepository.findById(id)
+                .orElseThrow(getTagNotFoundExceptionSupplier("id - " + id));
         tagRepository.deleteById(id);
         return tagEntity;
     }
@@ -117,10 +116,21 @@ public class TagServiceImpl implements TagService {
      */
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Long findTagIdByName(String tagName) {
-        return tagRepository.findByName(tagName).orElseThrow(() ->
-                new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
-                        new Object[]{tagName},
-                        LocaleContextHolder.getLocale()))).getId();
+        return tagRepository.findByName(tagName)
+                .orElseThrow(getTagNotFoundExceptionSupplier("Tag name - " + tagName))
+                .getId();
 
+    }
+
+    /**
+     * Creates exception.
+     *
+     * @param args value to insert in massage.
+     * @return {@link TagNotFoundException}
+     */
+    private Supplier<TagNotFoundException> getTagNotFoundExceptionSupplier(String args) {
+        return () -> new TagNotFoundException(messageSource.getMessage("tag.notfound.exception",
+                new Object[]{args},
+                LocaleContextHolder.getLocale()));
     }
 }

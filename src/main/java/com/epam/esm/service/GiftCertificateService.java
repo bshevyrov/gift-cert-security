@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 
 public interface GiftCertificateService extends BaseService<GiftCertificateEntity> {
     Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable);
+
     /**
      * Creates exception.
      *

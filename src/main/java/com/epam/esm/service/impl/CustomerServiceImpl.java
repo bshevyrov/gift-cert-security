@@ -35,11 +35,10 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Method adds default role ROLE_USER and sets status ACTIVE to  {@link CustomerEntity}.
      * <p>
-     * Password encrypts with {@link BCryptPasswordEncoder}. Then saves in database.
+     * Password encrypts with {@link BCryptPasswordEncoder}. Then saves in database.Can throw {@link RuntimeException} if role doesn`t exist
      *
      * @param customerEntity object for creation.
      * @return created object.
-     * @throws {@link RuntimeException} if role doesn`t exist
      */
 
     @Override
@@ -68,11 +67,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     * Finds customer by id.
+     * Finds customer by id. Can throw {@link CustomerNotFoundException} if not found, or {@link ResponseStatusException} if not authorized.
      *
      * @param id requested parameter
      * @return {@link CustomerEntity} found object.
-     * @throws {@link CustomerNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
@@ -115,11 +113,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     /**
-     * Finds customer by username or throw exception.
+     * Finds customer by username or throws  {@link CustomerNotFoundException} if customer doesn`t exists.
      *
      * @param username requested parameter
      * @return {@link CustomerEntity} found object.
-     * @throws {@link CustomerNotFoundException} if customer doesn`t exist.
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
@@ -129,5 +126,16 @@ public class CustomerServiceImpl implements CustomerService {
                         messageSource.getMessage("customer.notfound.exception",
                                 new Object[]{"username - " + username},
                                 LocaleContextHolder.getLocale())));
+    }
+
+    /**
+     * Checks if customer exist by username/
+     *
+     * @param username request value
+     * @return true if exists
+     */
+    @Override
+    public boolean existsByUsername(String username) {
+        return customerRepository.existsByUsername(username);
     }
 }

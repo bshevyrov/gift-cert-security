@@ -3,7 +3,6 @@ package com.epam.esm.veiw.controller.user;
 import com.epam.esm.util.validation.group.Purchase;
 import com.epam.esm.veiw.dto.CustomerDTO;
 import com.epam.esm.veiw.dto.OrderDTO;
-import com.epam.esm.veiw.dto.OrderItemDTO;
 import com.epam.esm.veiw.facade.CustomerFacade;
 import com.epam.esm.veiw.facade.OrderFacade;
 import com.epam.esm.veiw.model.CustomerModel;
@@ -26,9 +25,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @Validated
@@ -51,8 +47,7 @@ public class UserCustomerController {
      * @param id URL parameter, which holds customer id value
      * @return {@link CustomerModel}
      **/
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<CustomerModel> findById(@PathVariable long id) {
         return new ResponseEntity<>(customerModelAssembler.toModel(
                 customerFacade.findById(id)),
@@ -80,28 +75,24 @@ public class UserCustomerController {
      * Method consumes request object and puts together data.
      * Produces response object as the result of create operation
      *
-     * @param orderItemDTOS object for creation
-     * @param id            URL parameter, which holds customer id value
-     * @param ucb           UriComponentsBuilder
+     * @param orderDTO object for creation
+     * @param id       URL parameter, which holds customer id value
+     * @param ucb      UriComponentsBuilder
      * @return OrderModel
      */
     @PostMapping(value = "{id}/orders")
-    public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class) @RequestBody List<OrderItemDTO> orderItemDTOS,
+    public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class)
+                                                              @RequestBody OrderDTO orderDTO,
                                                               @PathVariable @Positive long id,
                                                               UriComponentsBuilder ucb) {
-        Map<String, Object> purchase = new HashMap<>();
-        purchase.put("customerId", id);
-        purchase.put("orderItemDTOS", orderItemDTOS);
-
-
-        OrderDTO dto = orderFacade.createPurchase(purchase);
+        orderDTO.setCustomerDTO(CustomerDTO.builder().id(id).build());
+        OrderDTO createdOrderDTO = orderFacade.create(orderDTO);
         HttpHeaders headers = new HttpHeaders();
-        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(dto.getId()))
+        URI locationUri = ucb.path("/customer/" + id + "/orders/").path(String.valueOf(createdOrderDTO.getId()))
                 .build().toUri();
 
         headers.setLocation(locationUri);
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
-
     }
 
     /**

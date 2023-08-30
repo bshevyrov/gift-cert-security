@@ -4,12 +4,9 @@ import com.epam.esm.persistence.entity.OrderEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Map;
-
 public interface OrderService extends BaseService<OrderEntity> {
     Page<OrderEntity> findAllByCustomerId(Long id, Pageable pageable);
 
     OrderEntity getPopularTagInOrderByCustomerId(Long id);
 
-    OrderEntity createPurchase(Map<String, Object> purchase);
 }

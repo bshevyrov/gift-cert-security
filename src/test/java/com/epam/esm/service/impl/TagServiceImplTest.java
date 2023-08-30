@@ -1,7 +1,7 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.TagEntity;
+import com.epam.esm.persistence.repository.TagRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -9,17 +9,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.ArgumentMatchers.any;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-
 class TagServiceImplTest {
     @Mock
-    private TagDAO tagDAO;
+    private TagRepository tagDAO;
 
     @InjectMocks
     private TagServiceImpl tagService;
@@ -34,20 +32,20 @@ class TagServiceImplTest {
     void create() {
         TagEntity tagEntity = new TagEntity();
         tagService.create(tagEntity);
-        Mockito.verify(tagDAO, Mockito.times(1)).create(tagEntity);
+        Mockito.verify(tagDAO, Mockito.times(1)).save(tagEntity);
     }
 
     @Test
     void findById() {
         long id = 1L;
         tagService.findById(id);
-        Mockito.verify(tagDAO, Mockito.times(1)).findById(TagEntity.class,id);
+        Mockito.verify(tagDAO, Mockito.times(1)).findById(id);
     }
 
     @Test
     void findAll() {
         tagService.findAll(Pageable.unpaged());
-        Mockito.verify(tagDAO, Mockito.times(1)).findAll(TagEntity.class,Pageable.unpaged());
+        Mockito.verify(tagDAO, Mockito.times(1)).findAll(Pageable.unpaged());
     }
 
     @Test
@@ -59,7 +57,7 @@ class TagServiceImplTest {
     void delete() {
         long id = 1L;
         tagService.delete(id);
-        Mockito.verify(tagDAO, Mockito.times(1)).deleteById(TagEntity.class,id);
+        Mockito.verify(tagDAO, Mockito.times(1)).deleteById(id);
     }
 
     @Test

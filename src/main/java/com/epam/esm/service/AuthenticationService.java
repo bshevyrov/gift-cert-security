@@ -6,5 +6,4 @@ import com.epam.esm.veiw.dto.AuthenticationResponseDTO;
 
 public interface AuthenticationService {
     AuthenticationResponseDTO login(AuthenticationRequestDTO authenticationRequestDTO);
-
 }

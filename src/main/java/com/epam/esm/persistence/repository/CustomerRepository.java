@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends PagingAndSortingRepository<CustomerEntity, Long> {
     Optional<CustomerEntity> findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }

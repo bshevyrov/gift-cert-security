@@ -11,7 +11,6 @@ import com.epam.esm.util.UpdateRequestUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * Used  to manipulate GiftCertificate objects and collecting data.
@@ -67,7 +65,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional(rollbackFor = {SQLException.class})
     public GiftCertificateEntity update(GiftCertificateEntity giftCertificateEntity) {
         GiftCertificateEntity giftCertificateFoundById = giftCertificateRepository.findById(giftCertificateEntity.getId())
-                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(giftCertificateEntity.getId(),messageSource));
+                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(giftCertificateEntity.getId(), messageSource));
         UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateEntity, giftCertificateFoundById);
         return create(giftCertificateFoundById);
     }
@@ -85,7 +83,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public GiftCertificateEntity findById(long id) {
         return giftCertificateRepository.findById(id)
-                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(id,messageSource));
+                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(id, messageSource));
     }
 
     /**
@@ -129,7 +127,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional(rollbackFor = {Exception.class})
     public GiftCertificateEntity delete(long id) {
         GiftCertificateEntity giftCertificateEntity = giftCertificateRepository.findById(id)
-                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(id,messageSource));
+                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(id, messageSource));
         giftCertificateRepository.deleteById(id);
         return giftCertificateEntity;
     }

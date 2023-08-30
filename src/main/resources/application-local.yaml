@@ -3,36 +3,29 @@ jwt:
   expiration: 3600
 
   #spring.config.activate.on-profile=local
-  spring:
-    datasource:
-      driver-class-name=: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
-      url: ${SPRING_DATASOURCE_URL}
-      username: ${SPRING_DATASOURCE_USERNAME}
-      password: ${SPRING_DATASOURCE_PASSWORD}
-      dbcp2:
-        initial-size: 50
-        max-idle: 50
-        default-query-timeout: 10000
-        default-auto-commit: true
-    jpa:
-      database:
-        platform: ${SPRING_JPA_DATABASE_PLATFORM}
-      defer-datasource-initialization: true
-      hibernate.ddl-auto: none
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
-    sql:
-      init:
-        mode: embedded
-
-
-SPRING_DATASOURCE_DRIVER_CLASS_NAME=com:
-  mysql:
-    cj:
-      jdbc:
-        Driver;SPRING_DATASOURCE_PASSWORD=root;SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/gift_card;SPRING_DATASOURCE_USERNAME=root;SPRING_JPA_DATABASE_PLATFORM=org:
-          hibernate:
-            dialect:
-              MySQL5Dialect:
+spring:
+  datasource:
+    driver-class-name=: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    dbcp2:
+      initial-size: 50
+      max-idle: 50
+      default-query-timeout: 10000
+      default-auto-commit: true
+  jpa:
+    database:
+      platform: ${SPRING_JPA_DATABASE_PLATFORM}
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: embedded
+  messages:
+    basename: classpath:messages/messages
+    encoding: UTF-8

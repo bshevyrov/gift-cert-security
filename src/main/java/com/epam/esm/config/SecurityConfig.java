@@ -1,5 +1,6 @@
-package com.epam.esm.security;
+package com.epam.esm.config;
 
+import com.epam.esm.security.FilterChainExceptionHandler;
 import com.epam.esm.security.jwt.JwtConfigurer;
 import com.epam.esm.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
