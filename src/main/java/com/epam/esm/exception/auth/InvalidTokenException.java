@@ -1,7 +1,14 @@
 package com.epam.esm.exception.auth;
 
-public class InvalidTokenException extends RuntimeException {
-    public InvalidTokenException(String msg) {
-        super(msg);
+
+import org.springframework.security.core.AuthenticationException;
+
+/**
+ * Exception class.
+ * Objects of this class can be thrown during token validation  operation, if token is invalid or expire.
+ */
+public class InvalidTokenException extends AuthenticationException {
+    public InvalidTokenException(String message) {
+        super(message);
     }
 }

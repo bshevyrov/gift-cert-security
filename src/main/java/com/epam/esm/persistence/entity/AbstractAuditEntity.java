@@ -5,10 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -25,6 +22,8 @@ public abstract class AbstractAuditEntity {
 
     @Nullable
     private LocalDateTime updatedDate;
+    @Nullable
+    private LocalDateTime deletedDate;
 
     @PrePersist
     public void onPrePersist() {
@@ -35,5 +34,11 @@ public abstract class AbstractAuditEntity {
     public void onPreUpdate() {
         updatedDate = LocalDateTime.now();
     }
+
+    @PreRemove
+    public void onPreRemove() {
+        deletedDate = LocalDateTime.now();
+    }
+
 }
 

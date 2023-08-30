@@ -1,11 +1,15 @@
 package com.epam.esm.exception;
 
+import com.epam.esm.exception.auth.InvalidTokenException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.giftcertificate.GiftCertificateUpdateException;
 import com.epam.esm.exception.tag.TagExistException;
 import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.veiw.ErrorResponse;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,8 +26,13 @@ import java.util.Map;
  * Contains handlers to produce response if exception occur.
  */
 @RestControllerAdvice
+@Component
 public class GlobalExceptionHandler {
-
+//public void handleFilterException(Exception e){
+//    if(e instanceof JwtException){
+//        throw new InvalidTokenException(e.getMessage());
+//    }
+//}
 
     @ExceptionHandler(GiftCertificateNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -51,13 +60,19 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(Integer.parseInt(HttpStatus.BAD_REQUEST.value() + "07"), e.getMessage());
     }
 
-    //TODO remove stack trace
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(Exception e) {
-        return new ErrorResponse(Integer.parseInt(HttpStatus.INTERNAL_SERVER_ERROR.value() + "00"), e.getMessage() + "" + Arrays.toString(e.getStackTrace()));
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleInvalidTokenException(InvalidTokenException e) {
+        return new ErrorResponse(Integer.parseInt(HttpStatus.UNAUTHORIZED.value() + "99"), e.getMessage());
     }
 
+//
+//        @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public ErrorResponse handleException(Exception e) {
+//        return new ErrorResponse(Integer.parseInt(HttpStatus.INTERNAL_SERVER_ERROR.value() + "00"), e.getMessage() + "" + Arrays.toString(e.getStackTrace()));
+//    }
+//TODO badrequest
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
