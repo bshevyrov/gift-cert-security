@@ -1,5 +1,6 @@
 package com.epam.esm.veiw.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -12,6 +13,7 @@ import java.util.List;
  **/
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public class GiftCertificateModel extends RepresentationModel<GiftCertificateModel> {
     private long id;
     private String name;

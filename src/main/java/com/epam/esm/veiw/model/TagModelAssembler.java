@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Class transforms  dto to response model.

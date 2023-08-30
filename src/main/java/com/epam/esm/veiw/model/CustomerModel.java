@@ -1,5 +1,6 @@
 package com.epam.esm.veiw.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -10,6 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
  **/
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public class CustomerModel extends RepresentationModel<CustomerModel> {
     private long id;
     private String username;

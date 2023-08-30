@@ -54,7 +54,6 @@ public class GiftCertificateController {
     }
 
 
-
     /**
      * Method consumes URL param.
      * Produces response object as the result of find by id operation.

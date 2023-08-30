@@ -3,7 +3,6 @@ package com.epam.esm.veiw.controller;
 import com.epam.esm.util.validation.group.Purchase;
 import com.epam.esm.veiw.dto.CustomerDTO;
 import com.epam.esm.veiw.dto.OrderDTO;
-import com.epam.esm.veiw.dto.OrderItemDTO;
 import com.epam.esm.veiw.facade.CustomerFacade;
 import com.epam.esm.veiw.facade.OrderFacade;
 import com.epam.esm.veiw.model.CustomerModel;
@@ -26,9 +25,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @Validated
@@ -51,14 +47,12 @@ public class CustomerController {
      * @param id URL parameter, which holds customer id value
      * @return {@link CustomerModel}
      **/
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<CustomerModel> findById(@PathVariable long id) {
         return new ResponseEntity<>(customerModelAssembler.toModel(
                 customerFacade.findById(id)),
                 HttpStatus.OK);
     }
-
 
     /**
      * Method produces set of response objects
@@ -80,14 +74,14 @@ public class CustomerController {
      * Method consumes request object and puts together data.
      * Produces response object as the result of create operation
      *
-     * @param orderItemDTOS object for creation
-     * @param id            URL parameter, which holds customer id value
-     * @param ucb           UriComponentsBuilder
+     * @param orderDTO object for creation
+     * @param id       URL parameter, which holds customer id value
+     * @param ucb      UriComponentsBuilder
      * @return OrderModel
      */
     @PostMapping(value = "{id}/orders")
     public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class)
-                                                                  @RequestBody OrderDTO orderDTO,
+                                                              @RequestBody OrderDTO orderDTO,
                                                               @PathVariable @Positive long id,
                                                               UriComponentsBuilder ucb) {
         orderDTO.setCustomerDTO(CustomerDTO.builder().id(id).build());

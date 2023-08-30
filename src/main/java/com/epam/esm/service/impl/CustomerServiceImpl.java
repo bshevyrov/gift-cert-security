@@ -6,24 +6,19 @@ import com.epam.esm.persistence.entity.RoleEntity;
 import com.epam.esm.persistence.entity.type.Status;
 import com.epam.esm.persistence.repository.CustomerRepository;
 import com.epam.esm.persistence.repository.RoleRepository;
-import com.epam.esm.security.jwt.JwtUser;
 import com.epam.esm.service.CustomerService;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -83,8 +78,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public CustomerEntity findById(long id) {
         if (!isAuthenticatedUser(id)) {
-            //Todo
-            throw new JwtException("ERROR");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND);
         }
         return customerRepository.findById(id).orElseThrow(
                 () -> new CustomerNotFoundException(
@@ -92,7 +87,6 @@ public class CustomerServiceImpl implements CustomerService {
                                 new Object[]{"id - " + id},
                                 LocaleContextHolder.getLocale())));
     }
-
 
 
     /**
@@ -119,26 +113,6 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll(pageable);
     }
 
-//    /**
-//     * Method adds default role ROLE_USER and sets status ACTIVE to  {@link CustomerEntity}. Then saves in database.
-//     *
-//     * @param customerEntity object for creation.
-//     * @return created object.
-//     * @throws {@link RuntimeException} if role doesn`t exist
-//     */
-//    //TODO MOVE TO CREATE
-//    @Override
-//    @Transactional(rollbackFor = {Exception.class})
-//    public CustomerEntity register(CustomerEntity customerEntity) {
-//        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER")
-//                .orElseThrow(() -> new RuntimeException("Role not found."));
-//        List<RoleEntity> roleEntities = new ArrayList<>();
-//        roleEntities.add(roleEntity);
-//        customerEntity.setPassword(new BCryptPasswordEncoder().encode(customerEntity.getPassword()));
-//        customerEntity.setRoleEntities(roleEntities);
-//        customerEntity.setStatus(Status.ACTIVE);
-//        return customerRepository.save(customerEntity);
-//    }
 
     /**
      * Finds customer by username or throw exception.

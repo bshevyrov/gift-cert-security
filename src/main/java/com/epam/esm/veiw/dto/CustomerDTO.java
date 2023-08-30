@@ -8,13 +8,12 @@ import net.minidev.json.annotate.JsonIgnore;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
- public class CustomerDTO  extends AbstractDTO {
+public class CustomerDTO extends AbstractDTO {
     @NotBlank(message = "Username is mandatory")
     @Pattern(regexp = "^[\\w]+$", message = "Username contains illegal chars.")
     private String username;

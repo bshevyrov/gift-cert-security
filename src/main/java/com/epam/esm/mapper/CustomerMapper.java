@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = OrderMapper.class)
 public interface CustomerMapper {
-//    @Mapping(target = "orderDTOS", source = "orderEntities")
+    //    @Mapping(target = "orderDTOS", source = "orderEntities")
     CustomerDTO toDTO(CustomerEntity customerEntity);
 
     @Mapping(target = "createdDate", ignore = true)

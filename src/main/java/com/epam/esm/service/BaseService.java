@@ -2,7 +2,6 @@ package com.epam.esm.service;
 
 import com.epam.esm.persistence.entity.AbstractAuditEntity;
 import com.epam.esm.security.jwt.JwtUser;
-import io.jsonwebtoken.JwtException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;

@@ -3,10 +3,8 @@ package com.epam.esm.veiw.controller.admin;
 import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.facade.TagFacade;
 import com.epam.esm.veiw.model.TagModel;
-import com.epam.esm.veiw.model.TagModelAssembler;
 import com.epam.esm.veiw.model.admin.AdminTagModelAssembler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -39,7 +37,6 @@ public class AdminTagController {
     private final TagFacade tagFacade;
     private final AdminTagModelAssembler tagModelAssembler;
     private final PagedResourcesAssembler<TagDTO> pagedTagResourcesAssembler;
-
 
 
     /**

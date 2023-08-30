@@ -45,7 +45,7 @@ public class CustomerEntity extends AbstractAuditEntity {
     private Status status;
     //    @Column(name = "role")
     @NotEmpty
-    @ManyToMany(cascade = {CascadeType.REMOVE,CascadeType.PERSIST},fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "customer_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})

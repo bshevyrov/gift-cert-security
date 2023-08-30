@@ -31,14 +31,13 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+    private final UserDetailsService userDetailsService;
+    private final CustomerService customerService;
+    private final MessageSource messageSource;
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.expiration}")
     private long expirationInSeconds;
-    private final UserDetailsService userDetailsService;
-    private final CustomerService customerService;
-    private final MessageSource messageSource;
-
 
     /**
      * Creates token.

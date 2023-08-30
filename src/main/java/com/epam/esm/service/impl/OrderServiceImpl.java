@@ -1,30 +1,29 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.customer.CustomerNotFoundException;
-import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
 import com.epam.esm.exception.order.PopularOrderNotFoundException;
-import com.epam.esm.persistence.dao.CustomerDAO;
-import com.epam.esm.persistence.dao.GiftCertificateDAO;
-import com.epam.esm.persistence.dao.OrderDAO;
 import com.epam.esm.persistence.entity.CustomerEntity;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.OrderEntity;
 import com.epam.esm.persistence.entity.OrderItemEntity;
+import com.epam.esm.persistence.repository.CustomerRepository;
+import com.epam.esm.persistence.repository.OrderRepository;
+import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Used  to manipulate Order objects and collecting data.
@@ -32,9 +31,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private final OrderDAO orderDAO;
-    private final CustomerDAO customerDAO;
-    private final GiftCertificateDAO giftCertificateDAO;
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+    private final GiftCertificateService giftCertificateService;
     private final MessageSource messageSource;
 
 
@@ -112,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
             //Todo
             throw new JwtException("ERROR");
         }
-        return orderDAO.findAllByCustomerEntityId(id, pageable);
+        return orderRepository.findAllByCustomerEntity_Id(id, pageable);
     }
 
     /**
@@ -126,10 +125,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public OrderEntity getPopularTagInOrderByCustomerId(Long id) {
         if (!isAuthenticatedUser(id)) {
-            //Todo
-            throw new JwtException("ERROR");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND);
         }
-        return orderDAO.getPopularTagInOrderByCustomerId(id).orElseThrow(() ->
+
+        return orderRepository.getPopularTagInOrderByCustomerId(id).orElseThrow(() ->
                 new PopularOrderNotFoundException(messageSource.getMessage(
                         "popular.order.notfound.exception",
                         new Object[]{id},
@@ -151,12 +151,12 @@ public class OrderServiceImpl implements OrderService {
 
         OrderEntity orderEntity = createOrderEntityFromMap(purchase);
         if (!isAuthenticatedUser(orderEntity.getId())) {
-            //Todo
-            throw new JwtException("ERROR");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND);
         }
+
         double sum = 0;
-        if (!customerDAO.findById(CustomerEntity.class,
-                orderEntity.getCustomerEntity().getId()).isPresent()) {
+        if (!customerRepository.findById(orderEntity.getCustomerEntity().getId()).isPresent()) {
             throw new CustomerNotFoundException(
                     messageSource.getMessage("customer.notfound.exception",
                             new Object[]{"id - " + orderEntity.getCustomerEntity().getId()},
@@ -165,30 +165,23 @@ public class OrderServiceImpl implements OrderService {
         orderEntity.getOrderItemEntities()
                 .forEach(orderItem -> orderItem.setOrderEntity(orderEntity));
         for (OrderItemEntity orderItemEntity : orderEntity.getOrderItemEntities()) {
-            Optional<GiftCertificateEntity> currentGiftCertificate =
-                    giftCertificateDAO.findById(GiftCertificateEntity.class,
-                            orderItemEntity
-                                    .getGiftCertificateEntity().getId());
+            Long giftCertificateId = orderItemEntity.getGiftCertificateEntity().getId();
 
-            orderItemEntity.setGiftCertificateEntity(
-                    currentGiftCertificate.orElseThrow(() ->
-                            new GiftCertificateNotFoundException(
-                                    messageSource.getMessage(
-                                            "gift.certificate.notfound.exception",
-                                            new Object[]{
-                                                    orderItemEntity.getGiftCertificateEntity().getId()},
-                                            LocaleContextHolder.getLocale()))));
+            GiftCertificateEntity currentGiftCertificate =
+                    giftCertificateService.findById(giftCertificateId);
 
-            sum += currentGiftCertificate.get().getPrice() *
-                    orderItemEntity.getQuantity();
+            orderItemEntity.setGiftCertificateEntity(currentGiftCertificate);
+
+            sum += currentGiftCertificate.getPrice() * orderItemEntity.getQuantity();
         }
         orderEntity.setCost(sum);
         orderEntity.getCustomerEntity()
                 .setOrderEntities(new ArrayList<OrderEntity>() {{
                     add(orderEntity);
                 }});
-        return orderDAO.create(orderEntity);
+        return orderRepository.save(orderEntity);
     }
+
 
     /**
      * Transforms Map to {@link OrderEntity}
@@ -213,4 +206,5 @@ public class OrderServiceImpl implements OrderService {
         return orderEntity;
 
     }
+
 }

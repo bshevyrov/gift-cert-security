@@ -1,15 +1,15 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.giftcertificate.GiftCertificateNotFoundException;
-import com.epam.esm.persistence.dao.GiftCertificateDAO;
-import com.epam.esm.persistence.dao.TagDAO;
 import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.TagEntity;
+import com.epam.esm.persistence.repository.GiftCertificateRepository;
+import com.epam.esm.persistence.repository.TagRepository;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import com.epam.esm.util.UpdateRequestUtils;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
@@ -17,32 +17,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Used  to manipulate GiftCertificate objects and collecting data.
  */
 @Service
-
+@RequiredArgsConstructor
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final MessageSource messageSource;
-    private final GiftCertificateDAO giftCertificateDAO;
-    private final TagDAO tagDAO;
+    private final GiftCertificateRepository giftCertificateRepository;
+    private final TagRepository tagRepository;
     private final TagService tagService;
-
-    @Autowired
-
-    public GiftCertificateServiceImpl(MessageSource messageSource, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO, EntityManager entityManager, TagService tagService) {
-        this.messageSource = messageSource;
-        this.giftCertificateDAO = giftCertificateDAO;
-        this.tagDAO = tagDAO;
-        this.tagService = tagService;
-    }
-
 
     /**
      * Method creates gift certificate.
@@ -60,27 +50,24 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 tagEntity.setGiftCertificateEntities(new ArrayList<>());
             }
             tagEntity.getGiftCertificateEntities().add(giftCertificateEntity);
-            Optional<TagEntity> tagsFoundByName = tagDAO.findByName(tagEntity.getName());
+            Optional<TagEntity> tagsFoundByName = tagRepository.findByName(tagEntity.getName());
             tagsFoundByName.ifPresent(entity -> tagEntity.setId(entity.getId()));
         });
-        return giftCertificateDAO.create(giftCertificateEntity);
+        return giftCertificateRepository.save(giftCertificateEntity);
     }
 
     /**
      * Updates entity in database.
-     * Throws exception if GiftCertificate doesn't exist.
+     * Throws {@link GiftCertificateNotFoundException} if GiftCertificate doesn't exist.
      *
-     * @param giftCertificateEntity
+     * @param giftCertificateEntity request entity
      * @return created entity
-     * @throws {@link GiftCertificateNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {SQLException.class})
     public GiftCertificateEntity update(GiftCertificateEntity giftCertificateEntity) {
-        GiftCertificateEntity giftCertificateFoundById = giftCertificateDAO.findById(GiftCertificateEntity.class, giftCertificateEntity.getId())
-                .orElseThrow(() -> new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
-                        new Object[]{giftCertificateEntity.getId()},
-                        LocaleContextHolder.getLocale())));
+        GiftCertificateEntity giftCertificateFoundById = giftCertificateRepository.findById(giftCertificateEntity.getId())
+                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(giftCertificateEntity.getId(),messageSource));
         UpdateRequestUtils.copyNotNullOrEmptyProperties(giftCertificateEntity, giftCertificateFoundById);
         return create(giftCertificateFoundById);
     }
@@ -89,30 +76,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Method finds gift certificate by id.
      * <p>
      * If gift certificate doesn't exist throw exception.
+     * Throws  {@link GiftCertificateNotFoundException} if nothing found
      *
      * @param id requested parameter
      * @return {@link  GiftCertificateEntity} found object
-     * @throws {@link GiftCertificateNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public GiftCertificateEntity findById(long id) {
-        return giftCertificateDAO.findById(GiftCertificateEntity.class, id).orElseThrow(() ->
-                new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exception",
-                        new Object[]{id},
-                        LocaleContextHolder.getLocale())));
+        return giftCertificateRepository.findById(id)
+                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(id,messageSource));
     }
 
     /**
      * Method finds all gift certificates.
      *
      * @param pageable pagination object
-     * @return {@list Page} of objects
+     * @return {@link  Page} of objects
      */
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<GiftCertificateEntity> findAll(Pageable pageable) {
-        return giftCertificateDAO.findAll(GiftCertificateEntity.class, pageable);
+        return giftCertificateRepository.findAll(pageable);
     }
 
     /**
@@ -127,7 +112,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable) {
         ArrayList<Long> tagsId = new ArrayList<>();
         tags.forEach(tagEntity -> tagsId.add(tagService.findTagIdByName(tagEntity.getName())));
-        return giftCertificateDAO.findAllByTagsId(tagsId, pageable);
+        return giftCertificateRepository.findAllByTags(tagsId, tagsId.size(), pageable);
     }
 
 
@@ -135,19 +120,19 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Method deletes gift certificate
      * <p>
      * Checks if gift certificate exists by id.
-     * Throws exception if it doesn't exist.
+     * Throws {@link GiftCertificateNotFoundException} if it doesn't exist.
      *
      * @param id requested parameter
      * @return found entity
-     * @throws {@link GiftCertificateNotFoundException}
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
-
     public GiftCertificateEntity delete(long id) {
-        return giftCertificateDAO.deleteById(GiftCertificateEntity.class, id).orElseThrow(() ->
-                new GiftCertificateNotFoundException(messageSource.getMessage("gift.certificate.notfound.exceptoion",
-                        new Object[]{id},
-                        LocaleContextHolder.getLocale())));
+        GiftCertificateEntity giftCertificateEntity = giftCertificateRepository.findById(id)
+                .orElseThrow(getGiftCertificateNotFoundExceptionSupplier(id,messageSource));
+        giftCertificateRepository.deleteById(id);
+        return giftCertificateEntity;
     }
+
+
 }

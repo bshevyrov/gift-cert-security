@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * GiftCertificateDTO is the data class, which used for data transportation .
  */
-//TODO check when update
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -23,7 +22,7 @@ public class GiftCertificateDTO extends BaseDTO {
     //    @Null(groups = Purchase.class)
     @NotEmpty(groups = GiftCertificateCreateValidationGroup.class,
             message = "Description can`t be empty.")
-    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$", message = "Illegal chars in decription/ Only letters and whitespaces allowed.")
+    @Pattern(regexp = "^(?! )[A-Za-z\\s]*$", message = "Illegal chars in description. Only letters and whitespaces allowed.")
     private String description;
     //    @Null(groups = Purchase.class)
     @Positive(groups = GiftCertificateCreateValidationGroup.class,

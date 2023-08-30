@@ -1,6 +1,5 @@
 package com.epam.esm.veiw.model.admin;
 
-import com.epam.esm.veiw.controller.TagController;
 import com.epam.esm.veiw.controller.admin.AdminTagController;
 import com.epam.esm.veiw.dto.TagDTO;
 import com.epam.esm.veiw.model.TagModel;

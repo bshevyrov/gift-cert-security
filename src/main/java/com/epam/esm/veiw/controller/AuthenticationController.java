@@ -27,13 +27,14 @@ public class AuthenticationController {
     private final CustomerModelAssembler customerModelAssembler;
 
     @PostMapping(value = "login")
-    private ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         AuthenticationResponseDTO authenticationResponseDTO = authenticationFacade.login(authenticationRequestDTO);
         return new ResponseEntity<>(authenticationResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping(value = "signup")
-    private ResponseEntity<CustomerModel> register(@RequestBody CustomerDTO customerDTO) {
-        return new ResponseEntity<>(customerModelAssembler.toModel(customerFacade.create(customerDTO)), HttpStatus.OK);
+    public ResponseEntity<CustomerModel> register(@RequestBody CustomerDTO customerDTO) {
+        return new ResponseEntity<>(customerModelAssembler.toModel(
+                customerFacade.create(customerDTO)), HttpStatus.OK);
     }
 }

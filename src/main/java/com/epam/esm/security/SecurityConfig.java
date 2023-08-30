@@ -19,12 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtTokenProvider jwtTokenProvider;
-
-    private final FilterChainExceptionHandler filterChainExceptionHandler;
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
     private static final String USER_ENDPOINT = "/api/v1/user/**";
     private static final String GUEST_ENDPOINT = "/api/v1/**";
+    private final JwtTokenProvider jwtTokenProvider;
+    private final FilterChainExceptionHandler filterChainExceptionHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

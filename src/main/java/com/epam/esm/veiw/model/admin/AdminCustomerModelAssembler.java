@@ -1,6 +1,5 @@
 package com.epam.esm.veiw.model.admin;
 
-import com.epam.esm.veiw.controller.CustomerController;
 import com.epam.esm.veiw.controller.admin.AdminCustomerController;
 import com.epam.esm.veiw.dto.CustomerDTO;
 import com.epam.esm.veiw.model.CustomerModel;

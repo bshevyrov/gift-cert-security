@@ -1,6 +1,5 @@
 package com.epam.esm.veiw.model.admin;
 
-import com.epam.esm.veiw.controller.GiftCertificateController;
 import com.epam.esm.veiw.controller.TagController;
 import com.epam.esm.veiw.controller.admin.AdminGiftCertificateController;
 import com.epam.esm.veiw.dto.GiftCertificateDTO;

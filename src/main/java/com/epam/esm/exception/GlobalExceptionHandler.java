@@ -6,9 +6,7 @@ import com.epam.esm.exception.giftcertificate.GiftCertificateUpdateException;
 import com.epam.esm.exception.tag.TagExistException;
 import com.epam.esm.exception.tag.TagNotFoundException;
 import com.epam.esm.veiw.ErrorResponse;
-import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,11 +26,6 @@ import java.util.Map;
 @RestControllerAdvice
 @Component
 public class GlobalExceptionHandler {
-//public void handleFilterException(Exception e){
-//    if(e instanceof JwtException){
-//        throw new InvalidTokenException(e.getMessage());
-//    }
-//}
 
     @ExceptionHandler(GiftCertificateNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -66,13 +59,13 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(Integer.parseInt(HttpStatus.UNAUTHORIZED.value() + "99"), e.getMessage());
     }
 
-//
-//        @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorResponse handleException(Exception e) {
-//        return new ErrorResponse(Integer.parseInt(HttpStatus.INTERNAL_SERVER_ERROR.value() + "00"), e.getMessage() + "" + Arrays.toString(e.getStackTrace()));
-//    }
-//TODO badrequest
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleException(Exception e) {
+        return new ErrorResponse(Integer.parseInt(HttpStatus.INTERNAL_SERVER_ERROR.value() + "00"), e.getMessage() + "" + Arrays.toString(e.getStackTrace()));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
@@ -85,7 +78,7 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
