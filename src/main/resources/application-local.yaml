@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 jwt:
   secret: 44e805d3c3bb5129cbfe8e9001fe13c8df16ff5918d23996f23c9506e0ad1421
   expiration: 3600
@@ -29,3 +32,6 @@ spring:
   messages:
     basename: classpath:messages/messages
     encoding: UTF-8
+  mvc:
+    pathmatch:
+     matching-strategy: ANT_PATH_MATCHER

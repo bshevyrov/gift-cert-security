@@ -49,8 +49,8 @@ public class SecurityConfig {
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(USER_ENDPOINT).hasRole("USER")
                 .antMatchers(GUEST_ENDPOINT).permitAll()
-                .anyRequest()
-                .authenticated()
+//                .anyRequest()
+//                .authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
 
