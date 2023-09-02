@@ -21,16 +21,14 @@ public class OrderFacadeImpl implements OrderFacade {
     private final OrderService orderService;
 
     /**
-     * Guaranteed to throw an exception and leave.
+     * Method consume orderDTO and return created customer.
      *
-     * @throws UnsupportedOperationException always
-     * @deprecated Unsupported operation.
-     */
-
-    @Override
-    @Deprecated
+     * @param orderDTO dto object
+     * @return {@link OrderDTO}
+     **/
     public OrderDTO create(OrderDTO orderDTO) {
-        throw new UnsupportedOperationException();
+        return orderMapper.toDTO(
+                orderService.create(orderMapper.toEntity(orderDTO)));
     }
 
     /**

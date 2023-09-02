@@ -22,7 +22,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-
 public class CustomerEntity extends AbstractAuditEntity {
     @Id
     @GeneratedValue(generator = "customer-generator", strategy = GenerationType.SEQUENCE)
@@ -38,12 +37,11 @@ public class CustomerEntity extends AbstractAuditEntity {
     private String username;
 
     @NotBlank(message = "Password is mandatory")
-//    @Pattern(regexp = "^[\\w]+$", message = "Password contains illegal chars.")
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
     private Status status;
-    //    @Column(name = "role")
+
     @NotEmpty
     @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "customer_role",

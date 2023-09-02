@@ -1,7 +1,8 @@
 package com.epam.esm.security;
 
 import com.epam.esm.persistence.entity.CustomerEntity;
-import com.epam.esm.security.jwt.JwtUserFactory;
+import com.epam.esm.persistence.entity.type.Status;
+import com.epam.esm.security.jwt.JwtUser;
 import com.epam.esm.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,12 @@ public class JwtDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         CustomerEntity customerEntity = customerService.findByUsername(username);
-        return JwtUserFactory.create(customerEntity);
+        return JwtUser.builder()
+                .id(customerEntity.getId())
+                .username(customerEntity.getUsername())
+                .authorities(customerEntity.getRoleEntities())
+                .password(customerEntity.getPassword())
+                .enabled(customerEntity.getStatus().equals(Status.ACTIVE))
+                .build();
     }
 }

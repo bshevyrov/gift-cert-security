@@ -1,5 +1,6 @@
 package com.epam.esm.security.jwt;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import java.util.Collection;
  * Data class.
  */
 @RequiredArgsConstructor
+@Builder
 public class JwtUser implements UserDetails {
     private final long id;
     private final String username;

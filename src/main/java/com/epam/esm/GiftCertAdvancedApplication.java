@@ -15,5 +15,3 @@ public class GiftCertAdvancedApplication {
         SpringApplication.run(GiftCertAdvancedApplication.class, args);
     }
 }
-
-

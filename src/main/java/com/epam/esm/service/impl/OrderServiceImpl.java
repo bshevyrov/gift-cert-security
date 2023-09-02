@@ -1,8 +1,11 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.order.PopularOrderNotFoundException;
+import com.epam.esm.persistence.entity.GiftCertificateEntity;
 import com.epam.esm.persistence.entity.OrderEntity;
+import com.epam.esm.persistence.entity.OrderItemEntity;
 import com.epam.esm.persistence.repository.OrderRepository;
+import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+
 /**
  * Used  to manipulate Order objects and collecting data.
  */
@@ -22,17 +27,41 @@ import org.springframework.web.server.ResponseStatusException;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final MessageSource messageSource;
+    private final GiftCertificateService giftCertificateService;
 
     /**
-     * Guaranteed to throw an exception and leave.
+     * The method prepares {@link OrderEntity} to be stored in the database.
+     * Checks if request valid and GiftCertificateEntity exist.
+     * Sets for each OrderItemEntity GiftCertificateEntity, calculates and sets the value of the order.
+     * Sets OrderEntity to CustomerEntity.
      *
-     * @throws UnsupportedOperationException always
-     * @deprecated Unsupported operation.
+     * @param orderEntity object to save
+     * @return saved entity
      */
     @Override
-    @Deprecated
-    public OrderEntity create(OrderEntity entity) {
-        throw new UnsupportedOperationException();
+
+    public OrderEntity create(OrderEntity orderEntity) {
+        validateRequestId(orderEntity.getId());
+
+        double sum = 0;
+
+        orderEntity.getOrderItemEntities()
+                .forEach(orderItem -> orderItem.setOrderEntity(orderEntity));
+        for (OrderItemEntity orderItemEntity : orderEntity.getOrderItemEntities()) {
+            Long giftCertificateId = orderItemEntity.getGiftCertificateEntity().getId();
+
+            GiftCertificateEntity currentGiftCertificate =
+                    giftCertificateService.findById(giftCertificateId);
+
+            orderItemEntity.setGiftCertificateEntity(currentGiftCertificate);
+
+            sum += currentGiftCertificate.getPrice() * orderItemEntity.getQuantity();
+        }
+        orderEntity.setCost(sum);
+        ArrayList<OrderEntity> orderEntities = new ArrayList<>();
+        orderEntities.add(orderEntity);
+        orderEntity.getCustomerEntity().setOrderEntities(orderEntities);
+        return orderRepository.save(orderEntity);
     }
 
     /**
