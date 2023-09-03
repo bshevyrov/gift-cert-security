@@ -8,9 +8,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +35,14 @@ public class GiftCertificateModelAssembler extends RepresentationModelAssemblerS
         GiftCertificateModel model = new GiftCertificateModel();
         BeanUtils.copyProperties(entity, model);
         model.setTagModels(toTagModel(entity.getTagDTOS()));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        if (authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).deleteById(entity.getId())).withRel("delete"));
+            model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).update(new GiftCertificateDTO(), entity.getId())).withRel("update"));
+            model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).create(new GiftCertificateDTO(), UriComponentsBuilder.newInstance())).withRel("create"));
+        }
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findById(entity.getId())).withSelfRel());
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findAll(Pageable.unpaged())).withRel("find all"));
         model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class).findAllByTagsName(Pageable.unpaged(), new ArrayList<>())).withRel("find gift cert by tag name"));

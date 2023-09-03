@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @SuperBuilder
-public abstract class AbstractAuditEntity {
+public abstract class AbstractAuditEntity implements Serializable {
     @Nullable
     @Column(updatable = false)
     private LocalDateTime createdDate;

@@ -10,17 +10,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.net.URI;
 
 /**
  * TagController class is the REST controller which consumes JSON as the request, forwards to relevant
@@ -37,6 +39,27 @@ public class TagController {
     private final TagModelAssembler tagModelAssembler;
     private final PagedResourcesAssembler<TagDTO> pagedTagResourcesAssembler;
 
+    /**
+     * Method consumes request object.
+     * Produces response object as the result of create operation.
+     *
+     * @param tagDTO object for creation
+     * @param ucb    UriComponentsBuilder
+     * @return {@link ResponseEntity} with header and uri of created object.
+     */
+    @PostMapping
+    @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<TagDTO> create(@RequestBody @Valid TagDTO tagDTO, UriComponentsBuilder ucb) {
+
+        TagDTO currentTag = tagFacade.create(tagDTO);
+        HttpHeaders headers = new HttpHeaders();
+        URI locationUri = ucb.path("/tags/")
+                .path(String.valueOf(currentTag.getId()))
+                .build().toUri();
+
+        headers.setLocation(locationUri);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
 
     /**
      * Method consumes URL param.
@@ -67,6 +90,20 @@ public class TagController {
         return new ResponseEntity<>(tagModels, HttpStatus.OK);
     }
 
+
+    /**
+     * Method consumes URL param.
+     * Produces response object as the result of delete operation.
+     *
+     * @param id URL parameter, which holds tag id value
+     * @return Http status
+     */
+    @RolesAllowed("ROLE_ADMIN")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<TagModel> deleteById(@PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
+        tagFacade.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
 
