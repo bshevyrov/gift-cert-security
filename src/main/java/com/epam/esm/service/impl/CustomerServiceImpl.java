@@ -13,6 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public CustomerEntity create(CustomerEntity customerEntity) {
-        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER")
+        RoleEntity roleEntity = roleRepository.findByName(RoleEntity.ROLE_USER.getName())
                 .orElseThrow(() -> new RuntimeException("Role not found."));
         List<RoleEntity> roleEntities = new ArrayList<>();
         roleEntities.add(roleEntity);
@@ -76,8 +77,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public CustomerEntity findById(long id) {
         if (!isAuthenticatedUser(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND);
+            throw new AccessDeniedException(messageSource.getMessage(
+                    "access.denied.exception",
+                    new Object[]{id},
+                    LocaleContextHolder.getLocale()));
         }
         return customerRepository.findById(id).orElseThrow(
                 () -> new CustomerNotFoundException(

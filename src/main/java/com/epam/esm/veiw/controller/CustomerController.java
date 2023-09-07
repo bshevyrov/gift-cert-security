@@ -19,11 +19,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 
@@ -47,7 +47,7 @@ public class CustomerController {
      * @param id URL parameter, which holds customer id value
      * @return {@link CustomerModel}
      **/
-    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<CustomerModel> findById(@PathVariable long id) {
         return new ResponseEntity<>(customerModelAssembler.toModel(
@@ -62,7 +62,7 @@ public class CustomerController {
      * @param pageable pagination object
      * @return PagedModel of response
      */
-    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping(value = "/{id}/orders")
     public ResponseEntity<PagedModel<OrderModel>> findAllOrders(@PathVariable long id,
                                                                 @PageableDefault Pageable pageable) {
@@ -80,7 +80,7 @@ public class CustomerController {
      * @param ucb      UriComponentsBuilder
      * @return OrderModel
      */
-    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PostMapping(value = "{id}/orders")
     public ResponseEntity<OrderModel> createOrderByOrderItems(@Validated(Purchase.class)
                                                               @RequestBody OrderDTO orderDTO,
@@ -103,7 +103,7 @@ public class CustomerController {
      * @param id URL parameter, which holds customer id value
      * @return {@link OrderModel}
      **/
-    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping(value = "{id}/orders/popularity")
     public ResponseEntity<OrderModel> getPopularTagInOrderByCustomerId(@Positive @PathVariable long id) {
         OrderDTO popularTagInOrderByCustomerId = orderFacade.getPopularTagInOrderByCustomerId(id);

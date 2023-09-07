@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -66,7 +67,7 @@ public class GiftCertificateController {
      * @param ucb                UriComponentsBuilder
      * @return ResponseEntity with header and uri of created object.
      */
-    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("{hasRole('ROLE_ADMIN')}")
     @PostMapping
     public ResponseEntity<GiftCertificateModel> create(@Valid @RequestBody GiftCertificateDTO giftCertificateDTO,
                                                        UriComponentsBuilder ucb) {
@@ -102,7 +103,7 @@ public class GiftCertificateController {
      * @param id URL parameter, which holds gift certificate id value
      * @return Http status
      */
-    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("{hasRole('ROLE_ADMIN')}")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<GiftCertificateModel> deleteById(@PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         giftCertificateFacade.delete(id);
@@ -117,7 +118,7 @@ public class GiftCertificateController {
      * @param id                 URL parameter, which holds gift certificate id value
      * @return GiftCertificateModel of updated object
      */
-    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("{hasRole('ROLE_ADMIN')}")
     @PatchMapping(value = "/{id}")
     public ResponseEntity<GiftCertificateModel> update(@RequestBody @Valid GiftCertificateDTO giftCertificateDTO, @PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         giftCertificateDTO.setId(id);

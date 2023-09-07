@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity(jsr250Enabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final FilterChainExceptionHandler filterChainExceptionHandler;
@@ -43,8 +43,8 @@ public class SecurityConfig {
                 .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests().anyRequest().authenticated()
+//                .and()
+//                .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
 

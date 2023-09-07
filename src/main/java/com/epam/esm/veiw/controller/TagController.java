@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -48,9 +49,8 @@ public class TagController {
      * @return {@link ResponseEntity} with header and uri of created object.
      */
     @PostMapping
-    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("{hasRole('ROLE_ADMIN')}")
     public ResponseEntity<TagDTO> create(@RequestBody @Valid TagDTO tagDTO, UriComponentsBuilder ucb) {
-
         TagDTO currentTag = tagFacade.create(tagDTO);
         HttpHeaders headers = new HttpHeaders();
         URI locationUri = ucb.path("/tags/")
@@ -98,7 +98,7 @@ public class TagController {
      * @param id URL parameter, which holds tag id value
      * @return Http status
      */
-    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("{hasRole('ROLE_ADMIN')}")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<TagModel> deleteById(@PathVariable @Min(1) @Max(Long.MAX_VALUE) long id) {
         tagFacade.delete(id);

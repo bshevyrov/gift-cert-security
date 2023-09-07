@@ -13,6 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -39,12 +40,11 @@ public class OrderServiceImpl implements OrderService {
      * @return saved entity
      */
     @Override
-
+    @Transactional(rollbackFor = {Exception.class})
     public OrderEntity create(OrderEntity orderEntity) {
-        validateRequestId(orderEntity.getId());
-
         double sum = 0;
 
+        validateRequestId(orderEntity.getId());
         orderEntity.getOrderItemEntities()
                 .forEach(orderItem -> orderItem.setOrderEntity(orderEntity));
         for (OrderItemEntity orderItemEntity : orderEntity.getOrderItemEntities()) {
@@ -152,8 +152,10 @@ public class OrderServiceImpl implements OrderService {
      */
     private void validateRequestId(Long id) {
         if (!isAuthenticatedUser(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND);
+            throw new AccessDeniedException(messageSource.getMessage(
+                    "access.denied.exception",
+                    new Object[]{id},
+                    LocaleContextHolder.getLocale()));
         }
     }
 }
