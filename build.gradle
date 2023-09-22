@@ -74,9 +74,3 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-sonar {
-    properties {
-        property "sonar.projectKey", "Gift_Cart"
-        property "sonar.projectName", "Gift_Cart"
-    }
-}
