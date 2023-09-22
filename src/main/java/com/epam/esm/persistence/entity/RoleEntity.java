@@ -1,6 +1,7 @@
 package com.epam.esm.persistence.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -21,19 +22,20 @@ public class RoleEntity implements GrantedAuthority {
     @ManyToMany(mappedBy = "roleEntities", fetch = FetchType.LAZY)
     private List<CustomerEntity> customerEntities;
 
-    @Override
-    public String getAuthority() {
-        return name;
-    }
-
-    private static RoleEntity getRoleUser(){
+    private static RoleEntity getRoleUser() {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setName("ROLE_USER");
         return roleEntity;
     }
-    private static RoleEntity getRoleAdmin(){
+
+    private static RoleEntity getRoleAdmin() {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setName("ROLE_ADMIN");
         return roleEntity;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

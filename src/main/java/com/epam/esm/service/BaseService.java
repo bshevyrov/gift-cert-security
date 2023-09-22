@@ -25,7 +25,7 @@ public interface BaseService<E extends AbstractAuditEntity> {
     default boolean isAuthenticatedUser(long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-         return (authorities.stream()
+        return (authorities.stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(RoleEntity.ROLE_ADMIN.getAuthority()))
                 || isRoleUserAndIdBelongsToUser(id, authentication, authorities));
     }
