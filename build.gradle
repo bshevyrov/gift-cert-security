@@ -11,7 +11,8 @@ group = 'ua.com.company'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '1.8'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 }
 
 repositories {
