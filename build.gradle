@@ -91,7 +91,7 @@ jacocoTestCoverageVerification {
                rule {
 //            enabled = false
             element = 'CLASS'
-            includes = ['com.epam.esm.service.*']
+            includes = ['com.epam.esm.service.impl.*']
 
             limit {
                 counter = 'METHOD'

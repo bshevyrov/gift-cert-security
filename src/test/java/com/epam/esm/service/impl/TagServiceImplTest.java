@@ -16,7 +16,6 @@ import org.springframework.util.Assert;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class TagServiceImplTest {
     @Mock
@@ -25,10 +24,7 @@ class TagServiceImplTest {
     @InjectMocks
     private TagServiceImpl tagService ;
 
-//    @BeforeEach
-//    void setMockOutput() {
-//        when(helloRepository.get()).thenReturn("Hello Mockito From Repository");
-//    }
+
     @Test
     void create() {
         Assertions.assertTrue(true);
