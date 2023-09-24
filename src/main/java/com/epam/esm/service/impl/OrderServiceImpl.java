@@ -149,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param id request parameter.
      */
-    private void validateRequestId(Long id) {
+    void validateRequestId(Long id) {
         if (!isAuthenticatedUser(id)) {
             throw new AccessDeniedException(messageSource.getMessage(
                     "access.denied.exception",
