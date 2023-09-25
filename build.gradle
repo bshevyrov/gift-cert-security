@@ -90,15 +90,20 @@ jacocoTestCoverageVerification {
     violationRules {
                rule {
 //            enabled = false
-            element = 'CLASS'
-            includes = ['com.epam.esm.service.impl.*']
-
-            limit {
-                counter = 'METHOD'
-                value = 'COVEREDRATIO'
+                   element = 'CLASS'
+                   includes = ['com.epam.esm.service.impl.*']
+//
+//            limit {
+//                counter = 'METHOD'
+//                value = 'COVEREDRATIO'
+//                minimum = 0.8
+//            }
+                   limt {
+                       counter = 'INSTRUCTION'
+                       value = 'COVEREDRATIO'
                 minimum = 0.8
-            }
-        }
+//            }                   }
+               }
     }
 }
 
