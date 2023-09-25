@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
