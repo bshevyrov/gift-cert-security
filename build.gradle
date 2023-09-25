@@ -37,7 +37,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 
-
     compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
@@ -74,7 +73,7 @@ jar {
 
 tasks.named('test') {
     useJUnitPlatform()
-   finalizedBy jacocoTestReport
+    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport {
@@ -82,28 +81,27 @@ jacocoTestReport {
     reports {
         xml.required = true
     }
-    }
-
+}
 
 
 jacocoTestCoverageVerification {
     violationRules {
-               rule {
+        rule {
 //            enabled = false
-                   element = 'CLASS'
-                   includes = ['com.epam.esm.service.impl.*']
+            element = 'CLASS'
+            includes = ['com.epam.esm.service.impl.*']
 //
 //            limit {
 //                counter = 'METHOD'
 //                value = 'COVEREDRATIO'
 //                minimum = 0.8
 //            }
-                   limt {
-                       counter = 'INSTRUCTION'
-                       value = 'COVEREDRATIO'
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'COVEREDRATIO'
                 minimum = 0.8
 //            }                   }
-               }
+            }
+        }
     }
-}
 
