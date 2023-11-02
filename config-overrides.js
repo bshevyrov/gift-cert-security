@@ -6,8 +6,8 @@ module.exports = {
 
 		root = paths.appPath
 		paths.appBuild = `${root}/target/classes/public`
-		paths.appPublic = `${root}/src/main/static`
-		paths.appHtml = `${root}/src/main/static/index.html`
+		paths.appPublic = `${root}/src/main/webapp`
+		paths.appHtml = `${root}/src/main/webapp/index.html`
 		paths.appIndexJs = `${root}/src/main/js/index.js`
 		// paths.appPackageJson = `${root}/package.json`
 		paths.appSrc = `${root}/src/main/js`
