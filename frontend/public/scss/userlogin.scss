@@ -1,0 +1,66 @@
+@use 'navbar';
+@use 'variables';
+
+body {
+  background-color: #{variables.$body-color};
+}
+
+.main-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 94vh;
+  justify-content: center;
+
+  .main-content {
+    align-items: end;
+    background-color: #{variables.$second-color};
+    display: flex;
+    height: 250px;
+    justify-content: center;
+    outline: 1px solid #{variables.$outline-color};
+    position: relative;
+    width: 300px;
+
+    .logo-container {
+      bottom: 60%;
+      overflow: visible;
+      position: absolute;
+
+      img {
+        border-radius: 50%;
+      }
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 10%;
+
+      .login-content {
+        flex-direction: column;
+        display: flex;
+        row-gap: 10px;
+
+        input {
+          border: 2px solid #{variables.$outline-color};
+          font-size: medium;
+          height: 30px;
+
+          &::placeholder {
+            text-align: center;
+          }
+        }
+
+        button {
+          background-color: variables.$ok-btn-color;
+          color: #{variables.$second-color};
+          font-size: medium;
+          font-weight: bold;
+          height: 30px;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

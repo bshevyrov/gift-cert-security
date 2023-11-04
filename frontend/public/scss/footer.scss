@@ -1,0 +1,6 @@
+@use "variables";
+
+footer {
+  background-color: #{variables.$second-color};
+  height: 40px;
+}

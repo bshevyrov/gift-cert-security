@@ -1,0 +1,81 @@
+@use "navbar";
+@use "panelname";
+@use "variables";
+
+body {
+  background-color: #{variables.$body-color};
+}
+
+.main-container {
+  align-items: center;
+  display: flex;
+  height: 94vh;
+  justify-content: center;
+
+  .main-content {
+    flex-direction: column;
+    width: 800px;
+
+    .outer-container {
+      background: #{variables.$second-color};
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-around;
+
+        .column {
+          display: flex;
+          flex-direction: column;
+          padding-top: 15px;
+          width: 46%;
+
+          label {
+            color: #{variables.$text-color};
+            font-size: 14px;
+            font-weight: bold;
+            padding-bottom: 5px;
+          }
+
+          input {
+            height: 30px;
+            outline: 1px solid #{variables.$outline-color};
+          }
+
+          .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding-top: 15px;
+            padding-bottom: 15px;
+
+            .cancel-btn {
+              background-color: #{variables.$second-color};
+              color: #{variables.$text-color};
+              font-weight: bold;
+              height: 25px;
+              outline: 2px solid #{variables.$outline-color};
+              width: 46%;
+            }
+          }
+
+          .sign-up-btn {
+            background-color: #{variables.$ok-btn-color};
+            color: #{variables.$second-color};
+            font-weight: bold;
+            height: 25px;
+            padding-right: 15px;
+            position: relative;
+            width: 46%;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+

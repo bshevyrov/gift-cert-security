@@ -1,0 +1,19 @@
+@use "variables";
+
+.category-panel {
+  align-items: center;
+  background-color: #{variables.$category-panel-color};
+  color: #{variables.$second-color};
+  display: flex;
+  font-size: medium;
+  font-weight: bold;
+  height: 50px;
+  width: 100%;
+
+  p {
+    left: 50px;
+    position: relative;
+  }
+}
+
+

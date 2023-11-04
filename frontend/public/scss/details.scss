@@ -1,0 +1,107 @@
+@use "navbar";
+@use "variables";
+
+body {
+  background-color: #{variables.$body-color}
+}
+
+.main-container {
+  display: flex;
+  width: 100%;
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 25px;
+
+    .first-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      height: 250px;
+      justify-content: space-between;
+
+      .image-content {
+        height: 100%;
+        width: 60%;
+
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      .card-container {
+        background: #{variables.$second-color};
+        display: block;
+        width: 30%;
+
+        .card-content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 15px;
+
+          .card-name {
+            font-size: 16px;
+            font-weight: 700;
+            padding-bottom: 15px
+          }
+
+          .card-short-descr {
+            color: #{variables.$text-color};
+            padding-bottom: 30px;
+          }
+
+          .time-left-container {
+            p {
+              color: #{variables.$text-color};
+              font-size: 10px;
+              padding-bottom: 3px;
+            }
+          }
+
+          .time-left-content {
+            font-weight: 700
+          }
+
+          .bottom-card-container {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 30px;
+
+            .price {
+              font-weight: 700
+            }
+
+            .add-button {
+              align-items: center;
+              display: flex;
+
+              a {
+                margin-right: 5px
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .description-content {
+      padding-top: 25px;
+      width: 60%;
+
+      .description-title {
+        font-size: 16px;
+        padding-bottom: 15px
+      }
+
+      .description-text {
+        color: #{variables.$text-color}
+      }
+    }
+  }
+}
