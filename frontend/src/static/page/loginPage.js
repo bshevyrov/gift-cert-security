@@ -1,15 +1,10 @@
-import React from "react";
-
-function Login() {
-
-    return(
-
-        <!DOCTYPE html>
+module.exports = `
+<!DOCTYPE html>
     <html lang="en">
         <head>
         <meta charset="UTF-8">
-        <title>Title</title>
-    <link rel="stylesheet" href="css/login.css"/>
+        <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css"/>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
     </head>
@@ -22,7 +17,7 @@ function Login() {
                 <a href="#">Home</a> <a href="#">Page2</a></div>
         </div>
         <div class="mini-logo-container">
-            <img src="img/Safeimagekit-resized-img.png" alt="Mini Logo" class="logo-mini">
+            <img src="../img/Safeimagekit-resized-img.png" alt="Mini Logo" class="logo-mini" />
         </div>
     </div>
     <div class="search-container">
@@ -44,7 +39,7 @@ function Login() {
     <div class="main-container">
         <div class="main-content">
             <div class="logo-container">
-                <img src="img/Safeimagekit-resized-img.png" alt="Logo" class="logo-big">
+                <img src="../img/Safeimagekit-resized-img.png" alt="Logo" class="logo-big">
             </div>
             <div class="input-container">
                 <div class="login-content">
@@ -59,6 +54,4 @@ function Login() {
 <footer></footer>
 </body>
 </html>
-)
-}
-    export default Login;
+`;

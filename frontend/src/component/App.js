@@ -1,11 +1,11 @@
-// import Login from "./Login";
+import Login from "./Login";
 import GiftList from "./GiftList";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import React, {Component} from "react";
 
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {getAllCapabilitiesHandler} from "../src/actions/GiftAction"
+import {getAllCapabilitiesHandler} from "../actions/GiftAction"
 
 //
 class App extends Component {
@@ -54,8 +54,8 @@ class App extends Component {
 
             <BrowserRouter>
         <Routes>
-        {/*<Route path="login" exact={true} component={Login}/>*/}
-            <Route path="certificates"  element={<GiftList />}></Route>
+        <Route path="login"  element={<Login />}/>
+            <Route path="certificates"  element={<GiftList />}/>
 
         </Routes>
         </BrowserRouter>
