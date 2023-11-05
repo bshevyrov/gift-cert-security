@@ -1,58 +1,97 @@
-import './App.css';
-import Login from "./Login";
+// import Login from "./Login";
+import GiftList from "./GiftList";
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import React, {Component} from "react";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import login from "./login.html"
+import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {getAllCapabilitiesHandler} from "../src/actions/GiftAction"
 
+//
 class App extends Component {
+
+/*
 
     state = {
         certificates: []
     };
 
+
     async componentDidMount() {
-      const response = await fetch("/api/v1/gifts");
-      const body = await response.json();
-      this.setState({certificates:body})
+        const response = await fetch("/api/v1/gifts", {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+            },
+        })
+        const body = await response.json();
+        // console.log(body._embedded.giftCertificateModelList);
+        this.setState({certificates: body._embedded.giftCertificateModelList})
     }
+*/
+
 
     render() {
-    const certificates = this.state
+        /*   const {certificates} = this.state;
+           return (
+               <div className="App">
+                   <header className="App-header">
+                       <div className="App-intro">
+                   <h2>DATA</h2>
+                   {certificates.map(certificate=>
+                   <div key={certificate.id}>
+                       {certificate.name}({certificate.price})
+                   </div>
+                   )}
+                       </div>
+                   </header>
+               </div>
+           );
+       }
+   }*/
 
-        <div>
+        return (
 
-        </div>
-        // return (
-        //     <BrowserRouter>
-        //         <Routes>
-        //             <Route path="login" exact={true} component={Login}/>
-        //
-        //         </Routes>
-        //     </BrowserRouter>
-        // )
+            <BrowserRouter>
+        <Routes>
+        {/*<Route path="login" exact={true} component={Login}/>*/}
+            <Route path="certificates"  element={<GiftList />}></Route>
+
+        </Routes>
+        </BrowserRouter>
+        )
     }
 }
 
-//
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-//
-export default App;
+    //
+    //   return (
+    //
+    //     <div className="App">
+            // <header className="App-header">
+            // <img src={logo} className="App-logo" alt="logo"/>
+            // <p>
+            // Edit <code>src/App.js</code> and save to reload.
+            // </p>
+            // <a
+            //           className="App-link"
+            //           href="https://reactjs.org"
+            //           target="_blank"
+            //           rel="noopener noreferrer"
+            //         >
+            //           Learn React
+            //         </a>
+            //       </header>
+            //     </div>
+            //   );
+            // }
+            //
+
+            // function App() {
+            //     return(
+            //         <div className="App">
+            //             <h1>Hello React</h1>
+            //
+            //         </div>
+            //     )
+            // }
+            export default App;
