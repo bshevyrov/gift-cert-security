@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class GiftCertificateDTO extends BaseDTO {
     @Positive(groups = GiftCertificateCreateValidationGroup.class,
             message = "Duration can`t be less one day.")
     private Integer duration;
+    private LocalDateTime createdDate;
 
     @JsonProperty("tags")
     @Valid

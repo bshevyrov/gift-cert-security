@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,6 +22,7 @@ public class GiftCertificateModel extends RepresentationModel<GiftCertificateMod
     private String description;
     private double price;
     private int duration;
+    private LocalDateTime createdDate;
     private List<TagModel> tagModels;
 }
 
