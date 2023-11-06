@@ -1,7 +1,9 @@
 import React, {Component} from "react";
+
 import "../static/css/userlogin.css";
 
 class LoginForm extends Component {
+
 
     // initialState = {
     //     login: "",
@@ -31,13 +33,17 @@ class LoginForm extends Component {
         let errors = {};
         let formIsValid = true;
 
-        if (!fields["login"]) {
+        if (!fields["username"]) {
             formIsValid = false;
-            errors["login"] = "Cannot be empty."
+            errors["username"] = "Cannot be empty."
         }
-        if (new String(fields["login"]).length < 3 || new String(fields["login"]).length > 30) {
+        if (new String(fields["username"]).length < 3 || new String(fields["username"]).length > 30) {
             formIsValid = false;
-            errors["login"] = "Length must between 3 and 30."
+            errors["username"] = "Length must between 3 and 30."
+        }
+        if (!new String(fields["username"]).match("^[\\w]+$")) {
+            formIsValid = false;
+            errors["username"] = "Only chars and numbers allowed."
         }
 
         if (!fields["password"]) {
@@ -48,7 +54,10 @@ class LoginForm extends Component {
             formIsValid = false;
             errors["password"] = "Length must between 4 and 30."
         }
-
+        if (!new String(fields["password"]).match("^[\\w]+$")) {
+            formIsValid = false;
+            errors["password"] = "Only chars and numbers allowed."
+        }
         this.setState({errors: errors});
         return formIsValid;
     }
@@ -57,11 +66,45 @@ class LoginForm extends Component {
         e.preventDefault();
 
         if (this.handleValidation()) {
-            alert("Form submitted");
+            // alert("Form submitted");
+            try {
+                this.sendRequest()
+
+            } catch (error) {
+                alert(error);
+            }
         } else {
             // alert("Form has errors.");
         }
 
+    }
+
+    async sendRequest() {
+
+        let fields = this.state.fields;
+        let errors = {};
+
+        const response = await fetch("/api/v1/auth/login", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({
+                "password": fields["password"].valueOf(),
+                "username": fields["username"].valueOf(),
+            })
+        })
+
+        const responseCode = response.status;
+        const body = await response.json();
+
+        if (responseCode < 300) {
+            localStorage.setItem("token", body.token);
+            window.location.replace("/")
+        } else {
+            errors["server"] = body.message;
+            this.setState({errors: errors});
+        }
     }
 
     handleChange(field, e) {
@@ -71,45 +114,39 @@ class LoginForm extends Component {
     }
 
     render() {
-        const {login, password} = this.state;
+        const {username, password} = this.state;
         return (
             <form name="loginForm"
                   className="login-form"
                   onSubmit={this.loginSubmit.bind(this)}
             >
-                {/*  <label htmlFor="login">Login*/}
-                {/*</label>*/}
-                <div className="login-content">
 
+                <div className="login-content">
                     <input
                         type="text"
-                        name="login"
-                        placeholder="Login"
+                        name="username"
+                        placeholder="Username"
                         // id="login"
-                        // value={login}
-                        onChange={this.handleChange.bind(this, "login")}
-                        value={this.state.fields["login"]}
+                        value={username}
+                        onChange={this.handleChange.bind(this, "username")}
                     />
-                    <span className="error-span">{this.state.errors["login"]}</span>
-                    {/*<label htmlFor="password">Password</label>*/}
+                    <span className="error-span">{this.state.errors["username"]}</span>
                     <input
                         type="password"
                         name="password"
                         placeholder="Password"
-
                         // id="password"
-                        // value={password}
+                        value={password}
                         onChange={this.handleChange.bind(this, "password")}
-                        value={this.state.fields["password"]}
                     />
                     <span className="error-span">{this.state.errors["password"]}</span>
+                    {/*{error?<Label>{error}</Label>:null}*/}
                     <button type="submit" value="Submit">Login</button>
+                    <span className="error-span" id="server-error">{this.state.errors["server"]}</span>
                 </div>
-
             </form>
         );
     }
-
 }
 
 export default LoginForm
