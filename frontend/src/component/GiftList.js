@@ -77,7 +77,7 @@ class GiftList extends Component {
         return (
             <div>
                 {/*<AppNavBar/>*/}
-                <Container fluid>
+                {/*<Container fluid>*/}
                     {/*<div className="float-right">*/}
                     {/*    <Button color="success" tag={Link} to="/api/v1/gifts/">Add Certificate</Button>*/}
                     {/*</div>*/}
@@ -97,7 +97,7 @@ class GiftList extends Component {
                         {certificateList}
                         </tbody>
                     </Table>
-                </Container>
+                {/*</Container>*/}
             </div>
         );
     }
