@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
+import "../static/css/navbar.css";
 
 
 export default class NavBar extends Component {
@@ -28,7 +29,7 @@ export default class NavBar extends Component {
                         </div>
                     </div>
                     <div className="mini-logo-container">
-                        <img src="../img/Safeimagekit-resized-img.png" alt="Mini Logo" className="logo-mini"/>
+                        <img src="./img/Safeimagekit-resized-img.png" alt="Mini Logo" className="logo-mini"/>
                     </div>
                 </div>
                 <div className="search-container">

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import NavBar from "./NavBar";
-let __html = require("../static/page/loginPage");
-let template = { __html: __html };
+import LoginForm from "./LoginForm";
+import "../static/css/userlogin.css";
 
 class Login extends Component {
 
@@ -9,9 +9,21 @@ class Login extends Component {
         return (
 
             <div className="innerHTML-container">
-            <NavBar />
-
-                <span dangerouslySetInnerHTML={template}/>
+                <NavBar />
+                <main>
+                    <div className="main-container">
+                        <div className="main-content">
+                            <div className="logo-container">
+                                <img src="./img/Safeimagekit-resized-img.png" alt="Logo" className="logo-big"/>
+                            </div>
+                            <div className="input-container">
+                                <div className="login-content">
+                                    <LoginForm />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
             </div>
         );
     }
