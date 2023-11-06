@@ -11,10 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth/",
@@ -27,13 +30,13 @@ public class AuthenticationController {
     private final CustomerModelAssembler customerModelAssembler;
 
     @PostMapping(value = "login")
-    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+    public ResponseEntity<AuthenticationResponseDTO> login(@Valid @RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         AuthenticationResponseDTO authenticationResponseDTO = authenticationFacade.login(authenticationRequestDTO);
         return new ResponseEntity<>(authenticationResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping(value = "signup")
-    public ResponseEntity<CustomerModel> register(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerModel> register(@Valid @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerModelAssembler.toModel(
                 customerFacade.create(customerDTO)), HttpStatus.OK);
     }
