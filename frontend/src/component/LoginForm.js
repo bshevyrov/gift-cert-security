@@ -4,24 +4,8 @@ import "../static/css/userlogin.css";
 
 class LoginForm extends Component {
 
-
-    // initialState = {
-    //     login: "",
-    //     password: ""
-    // }
-    // state = this.initialState;
-    //
-    // handleChange = (event) => {
-    //     const {name, value} = event.target
-    //
-    //     this.setState({
-    //         [name]: value,
-    //     })
-    // }
-
     constructor(props) {
         super(props);
-
         this.state = {
             fields: {},
             errors: {},
@@ -66,17 +50,8 @@ class LoginForm extends Component {
         e.preventDefault();
 
         if (this.handleValidation()) {
-            // alert("Form submitted");
-            try {
-                this.sendRequest()
-
-            } catch (error) {
-                alert(error);
-            }
-        } else {
-            // alert("Form has errors.");
+            this.sendRequest()
         }
-
     }
 
     async sendRequest() {
@@ -100,6 +75,7 @@ class LoginForm extends Component {
 
         if (responseCode < 300) {
             localStorage.setItem("token", body.token);
+            localStorage.setItem("username", body.username);
             window.location.replace("/")
         } else {
             errors["server"] = body.message;
@@ -120,7 +96,6 @@ class LoginForm extends Component {
                   className="login-form"
                   onSubmit={this.loginSubmit.bind(this)}
             >
-
                 <div className="login-content">
                     <input
                         type="text"

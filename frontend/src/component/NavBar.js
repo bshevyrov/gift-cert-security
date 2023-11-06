@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import "../static/css/navbar.css";
+import {Button} from "reactstrap";
 
 
 export default class NavBar extends Component {
@@ -46,8 +47,17 @@ export default class NavBar extends Component {
                 <div className="sign-in-container"><span className="material-icons-outlined"> favorite </span> <span
                     className="material-icons-outlined"> shopping_cart </span>
                     <span>
-                        <Link to="/login">Login</Link> |  <Link to="/login">Sing Up</Link> </span></div>
+                        {!localStorage.getItem("username") ?
+                            (<div><Link to="/login">Login</Link> | <Link to="/login">Sing Up</Link></div>)
+                            :
+                            (<div><p>{localStorage.getItem("username")}</p> |<Button onClick={() => {
+                                localStorage.clear();
+                                window.location.replace("/login");
+                            }
+                            } name="Log out"> log out</Button></div>)
+                        }
+                    </span></div>
             </nav>);
 
     }
-    }
+}
