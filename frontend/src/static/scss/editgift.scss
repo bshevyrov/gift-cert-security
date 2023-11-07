@@ -1,32 +1,32 @@
 @use "panelname";
 @use "variables";
-
-#company, #valid,
-#price, #images, #item-name,
-#short-descr, #long-descr,
-.input-images {
-  height: 35px;
-  padding-left: 20px;
-  outline: 1px solid #{variables.$outline-color};
-  width: 350px;
-}
-
-#long-descr, #short-descr {
-  height: 115px;
-}
-
-#category {
-  background: #{variables.$second-color};
-  font-size: 12px;
-  font-weight: bold;
-  height: 35px;
-  outline: 1px solid #{variables.$outline-color};
-  padding-left: 20px;
-}
-
-#valid {
-  font-weight: bold;
-}
+//
+//#company, #valid,
+//#price, #images, #item-name,
+//#short-descr, #long-descr,
+//.input-images {
+//  height: 35px;
+//  padding-left: 20px;
+//  outline: 1px solid #{variables.$outline-color};
+//  width: 350px;
+//}
+//
+//#long-descr, #short-descr {
+//  height: 115px;
+//}
+//
+//#category {
+//  background: #{variables.$second-color};
+//  font-size: 12px;
+//  font-weight: bold;
+//  height: 35px;
+//  outline: 1px solid #{variables.$outline-color};
+//  padding-left: 20px;
+//}
+//
+//#valid {
+//  font-weight: bold;
+//}
 
 .modal-div-container {
   display: flex;
@@ -36,7 +36,7 @@
   .modal-div-content {
 
     //height: 400px;
-    //width: 400px;
+    //width: 70%;
     background-color: #{variables.$modal-color};
     //display: flex;
     //justify-content: center;
@@ -48,23 +48,62 @@
     top: 20%;
     //left: 30%;
 
-  .outer-container {
-    display: flex;
-    flex-direction: row;
-  .column-container-left {
-    display: flex;
-    flex-direction: column;
-    .row {
-      //display: flex;
-      //flex-direction: row;
-    }
-  }
-    .button-container {
+    .outer-container {
+      align-content: center;
       display: flex;
+      flex-direction: column;
       justify-content: center;
-    }
-  }
+      flex-wrap: wrap;
 
+      //justify-content: flex-start;
+      .internal-container {
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        column-gap: 40px;
+        row-gap: 20px;
+
+
+        .row {
+          display: flex;
+          flex-direction: row;
+          column-gap: 40px;
+      //padding-top: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+          .column-label {
+            width: 20%;
+          }
+
+          .column {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            width: 400px;
+            .error-span {
+              //height: 0px;
+            }
+            textarea, .css-b62m3t-container {
+              width: 100%;
+            }
+
+
+            input, select, .css-b62m3t-contain {
+              width: 100%;
+              height: 40px;
+            }
+          }
+        }
+
+        .button-container {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          padding: 20px;
+
+        }
+      }
+    }
 
 
     //.input-containerr {

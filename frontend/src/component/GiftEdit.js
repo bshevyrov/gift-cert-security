@@ -86,9 +86,40 @@ class GiftEdit extends Component {
             this.sendRequest()
         }
     }
+    async sendRequest() {
 
+        let fields = this.state.fields;
+        let multiValue = this.state.multiValue.map(tagValue => ({name: tagValue.value}));
+        let errors = {};
+        const tagBody = JSON.stringify(multiValue.valueOf());
+
+        const response = await fetch("/api/v1/gifts", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                "Authorization": "Bearer "+ localStorage.getItem("token").valueOf(),
+            },
+            body: JSON.stringify({
+                "name": fields["name"].valueOf(),
+                "description": fields["description"].valueOf(),
+                "price": fields["price"].valueOf(),
+                "duration": fields["duration"].valueOf(),
+                "tags": multiValue,
+            }),
+        }
+        )
+
+        const responseCode = response.status;
+        const body = await response.json();
+
+        if (responseCode < 300) {
+            window.location.reload();
+        } else {
+            errors["server"] = body.message;
+            this.setState({errors: errors});
+        }
+    }
     async componentDidMount() {
-
         const response = await fetch("/api/v1/tags", {
             method: "GET",
             headers: {
@@ -96,7 +127,6 @@ class GiftEdit extends Component {
             },
         })
         const body = await response.json();
-        // console.log(body._embedded.giftCertificateModelList);
 
         this.setState({
             tags: body._embedded.tagModelList.map(
@@ -120,16 +150,12 @@ class GiftEdit extends Component {
 
     handleCreate(inputValue) {
         const newOption = {value: inputValue, label: inputValue};
-
         this.setState({multiValue: [...this.state.multiValue, newOption]});
-
     };
 
 
     render() {
-        const {tags} = this.state
-
-
+        const {tags} = this.state;
         return (
 
             <div className="modal-div-container">
@@ -139,85 +165,82 @@ class GiftEdit extends Component {
                         <p>Add New Gift Certificate</p>
                     </div>
                     <div className="outer-container">
-                        <div className="column-container-left">
-                            <div className="row">
+                    <div className="internal-container">
+                        <div className="row">
+                            <div className="column-label">
                                 <p>Title</p>
                             </div>
-                            <div className="row">
-                                <p>Description</p>
-                            </div>
-                            <div className="row">
-                                <p>Duration</p>
-                            </div>
-                            <div className="row">
-                                <p>Price</p>
-                            </div>
-                            <div className="row">
-                                <p>Tags</p>
+                            <div className="column">
+                                <input type="text" id="name"
+                                       name="name" onChange={this.handleChange.bind(this, "name")}/>
+                                <span className="error-span">{this.state.errors["name"]}</span>
                             </div>
                         </div>
-                        <div className="column-container-right">
-                            <form
 
-                                // onSubmit={this.loginSubmit.bind(this)}
-                            >
-                                <div className="row">
-                                    <input type="text" id="name"
-                                           name="name" onChange={this.handleChange.bind(this, "name")}/>
-                                    <span className="error-span">{this.state.errors["name"]}</span>
-
-                                </div>
-                                <div className="row">
+                    <div className="row">
+                        <div className="column-label">
+                            <p>Description</p>
+                        </div>
+                        <div className="column">
                                     <textarea id="description" rows="6"
                                               name="description"
                                               onChange={this.handleChange.bind(this, "description")}/>
-                                    <span className="error-span">{this.state.errors["description"]}</span>
-
-                                </div>
-                                <div className="row">
-                                    <input type="number" id="duration"
-                                           name="duration" onChange={this.handleChange.bind(this, "duration")}/>
-                                    <span className="error-span">{this.state.errors["duration"]}</span>
-
-                                </div>
-                                <div className="row">
-                                    <input type="number" id="price"
-                                           name="price" onChange={this.handleChange.bind(this, "price")}
-                                    />
-                                    <span className="error-span">{this.state.errors["price"]}</span>
-
-                                </div>
-                                <div className="row">
-                                    <CreatableSelect
-                                        isMulti
-                                        isClearable
-                                        onChange={this.handleMultiChange}
-                                        onCreateOption={this.handleCreate}
-                                        options={tags}
-                                        value={this.state.multiValue}
-                                    />
-                                    <span className="error-span">{this.state.errors["tags"]}</span>
-
-                                </div>
-                                {/*//TODO console.log(value);*/}
-                            </form>
-                        </div>
-
-
-                        <div className="button-container">
-                            {/*<Button>Save</Button>*/}
-                            <button type="submit" value="Submit" onClick={this.loginSubmit.bind(this)}>Login</button>
-
-                            <Button>Cancel</Button>
+                            <span className="error-span">{this.state.errors["description"]}</span>
                         </div>
                     </div>
+                    <div className="row">
+                        <div className="column-label">
+                            <p>Duration</p>
+                        </div>
+                        <div className="column">
+                            <input type="number" id="duration"
+                                   name="duration" onChange={this.handleChange.bind(this, "duration")}/>
+                            <span className="error-span">{this.state.errors["duration"]}</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="column-label">
+                            <p>Price</p>
+                        </div>
+                        <div className="column">
+                            <input type="number" id="price"
+                                   name="price" onChange={this.handleChange.bind(this, "price")}
+                            />
+                            <span className="error-span">{this.state.errors["price"]}</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="column-label">
+                            <p>Tags</p>
+                        </div>
+                        <div className="column">
+                            <CreatableSelect
+                                isMulti
+                                isClearable
+                                onChange={this.handleMultiChange}
+                                onCreateOption={this.handleCreate}
+                                options={tags}
+                                value={this.state.multiValue}
+                            />
+                            <span className="error-span">{this.state.errors["tags"]}</span>
 
+                        </div>
+                    </div>
+                    <div className="button-container">
+                        {/*<Button>Save</Button>*/}
+                        <button type="submit" value="Submit" onClick={this.loginSubmit.bind(this)}>Login</button>
 
+                        <Button>Cancel</Button>
+                    </div>
                 </div>
 
             </div>
-        );
+            </div>
+            </div>
+        ) ;
     }
 }
 
-export default GiftEdit;
+export
+default
+GiftEdit;
