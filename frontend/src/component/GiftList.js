@@ -1,6 +1,10 @@
 import React,{Component} from "react";
 import {Link} from "react-router-dom";
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
+import NavBar from "./NavBar";
+import "../static/css/giftlist.css";
+
+
 
 class GiftList extends Component {
 
@@ -33,8 +37,6 @@ class GiftList extends Component {
         this.setState({certificates: body._embedded.giftCertificateModelList})
     }
 
-
-
     async remove(id) {
         await fetch("/api/v1/gifts/${id}", {
             method: "DELETE",
@@ -54,35 +56,44 @@ class GiftList extends Component {
         if (isLoading) {
             return <p>Loading...</p>
         }
-
         const certificateList = certificates.map(certificate => {
+
             return <tr key={certificate.id}>
-                <td> {certificate.createdDate}</td>
-                <td style={{whitespace: "nowrap"}}> {certificate.name}</td>
-                <td> {certificate.tags}</td>
+                <td> {new String(certificate.createdDate).replace("T"," ")}</td>
+                <td > {certificate.name}</td>
+                <td className="tag-container"><div> {certificate.tagModels.map((number) =>
+                    <p key={number.id}>{number.name}</p>)
+
+                }
+                </div>
+                </td>
                 <td> {certificate.description}</td>
-                <td> {certificate.price}</td>
+                <td> {Math.ceil(certificate.price * 100) / 100}</td>
                 <td>
-                    <ButtonGroup>
+                    {/*<ButtonGroup>*/}
                         <Button size="sm" color="primary" tag={Link}
                                 to={"/api/v1/gifts/" + certificate.id}>View???</Button>
                         <Button size="sm" color="primary" tag={Link}
                                 to={"/api/v1/gifts/" + certificate.id}>Edit</Button>
                         <Button size="sm" color="danger" onClick={() => this.remove(certificate.id)}>Delete</Button>
-                    </ButtonGroup>
+                    {/*</ButtonGroup>*/}
                 </td>
             </tr>
         });
 
         return (
-            <div>
+            <div className="innerHTML-container">
+                <NavBar />
+                <main>
+                    <div className="main-container">
                 {/*<AppNavBar/>*/}
                 {/*<Container fluid>*/}
                     {/*<div className="float-right">*/}
                     {/*    <Button color="success" tag={Link} to="/api/v1/gifts/">Add Certificate</Button>*/}
                     {/*</div>*/}
-                    <h3>Gift Certificates</h3>
-                    <Table className="mt-4">
+
+                    <div className="table-container">
+                    <Table>
                         <thead>
                         <tr>
                             <th>Create date</th>
@@ -97,7 +108,12 @@ class GiftList extends Component {
                         {certificateList}
                         </tbody>
                     </Table>
-                {/*</Container>*/}
+                    </div>
+{/*
+                </Container>
+*/}
+                    </div>
+                </main>
             </div>
         );
     }

@@ -1,0 +1,63 @@
+@use "navbar";
+@use "variables";
+
+body {
+  background-color: #{variables.$body-color}
+}
+
+.innerHTML-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .main-container {
+
+    display: flex;
+    justify-content: center;
+    //flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+
+    //.main-content {
+    //  display: flex;
+    //  flex-direction: column;
+    //  margin-left: 40px;
+    //  margin-right: 40px;
+    //  margin-top: 25px;
+    //}
+    .table-container {
+      display: flex;
+      flex-direction: column;
+
+      //width: 90%;
+      tr {
+
+        th {
+          padding: 10px;
+        }
+        td {
+          padding: 5px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          //white-space: nowrap;
+        //text-align: center;
+        }
+        .tag-container {
+
+           div {
+             display: flex;
+             overflow: hidden;
+             text-overflow: ellipsis;
+
+           p {
+             padding-right: 3px;
+           }
+           }
+
+        }
+      }
+
+    }
+
+  }
+}
