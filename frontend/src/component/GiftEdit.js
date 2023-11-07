@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 
 import "../static/css/editgift.css";
-import {Button} from "reactstrap";
 import CreatableSelect from 'react-select/creatable';
 
 class GiftEdit extends Component {
@@ -86,6 +85,7 @@ class GiftEdit extends Component {
             this.sendRequest()
         }
     }
+
     async sendRequest() {
 
         let fields = this.state.fields;
@@ -94,19 +94,19 @@ class GiftEdit extends Component {
         const tagBody = JSON.stringify(multiValue.valueOf());
 
         const response = await fetch("/api/v1/gifts", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                "Authorization": "Bearer "+ localStorage.getItem("token").valueOf(),
-            },
-            body: JSON.stringify({
-                "name": fields["name"].valueOf(),
-                "description": fields["description"].valueOf(),
-                "price": fields["price"].valueOf(),
-                "duration": fields["duration"].valueOf(),
-                "tags": multiValue,
-            }),
-        }
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token").valueOf(),
+                },
+                body: JSON.stringify({
+                    "name": fields["name"].valueOf(),
+                    "description": fields["description"].valueOf(),
+                    "price": fields["price"].valueOf(),
+                    "duration": fields["duration"].valueOf(),
+                    "tags": multiValue,
+                }),
+            }
         )
 
         const responseCode = response.status;
@@ -119,6 +119,7 @@ class GiftEdit extends Component {
             this.setState({errors: errors});
         }
     }
+
     async componentDidMount() {
         const response = await fetch("/api/v1/tags", {
             method: "GET",
@@ -158,89 +159,91 @@ class GiftEdit extends Component {
         const {tags} = this.state;
         return (
 
-            <div className="modal-div-container">
+            <div className="modal-div-container" id="modal-div-container">
                 <div className="modal-div-content">
 
                     <div className="category-panel ">
                         <p>Add New Gift Certificate</p>
                     </div>
                     <div className="outer-container">
-                    <div className="internal-container">
-                        <div className="row">
-                            <div className="column-label">
-                                <p>Title</p>
+                        <div className="internal-container">
+                            <div className="row">
+                                <div className="column-label">
+                                    <p>Title</p>
+                                </div>
+                                <div className="column">
+                                    <input type="text" id="name"
+                                           name="name" onChange={this.handleChange.bind(this, "name")}/>
+                                    <span className="error-span">{this.state.errors["name"]}</span>
+                                </div>
                             </div>
-                            <div className="column">
-                                <input type="text" id="name"
-                                       name="name" onChange={this.handleChange.bind(this, "name")}/>
-                                <span className="error-span">{this.state.errors["name"]}</span>
-                            </div>
-                        </div>
 
-                    <div className="row">
-                        <div className="column-label">
-                            <p>Description</p>
-                        </div>
-                        <div className="column">
+                            <div className="row">
+                                <div className="column-label">
+                                    <p>Description</p>
+                                </div>
+                                <div className="column">
                                     <textarea id="description" rows="6"
                                               name="description"
                                               onChange={this.handleChange.bind(this, "description")}/>
-                            <span className="error-span">{this.state.errors["description"]}</span>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="column-label">
-                            <p>Duration</p>
-                        </div>
-                        <div className="column">
-                            <input type="number" id="duration"
-                                   name="duration" onChange={this.handleChange.bind(this, "duration")}/>
-                            <span className="error-span">{this.state.errors["duration"]}</span>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="column-label">
-                            <p>Price</p>
-                        </div>
-                        <div className="column">
-                            <input type="number" id="price"
-                                   name="price" onChange={this.handleChange.bind(this, "price")}
-                            />
-                            <span className="error-span">{this.state.errors["price"]}</span>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="column-label">
-                            <p>Tags</p>
-                        </div>
-                        <div className="column">
-                            <CreatableSelect
-                                isMulti
-                                isClearable
-                                onChange={this.handleMultiChange}
-                                onCreateOption={this.handleCreate}
-                                options={tags}
-                                value={this.state.multiValue}
-                            />
-                            <span className="error-span">{this.state.errors["tags"]}</span>
+                                    <span className="error-span">{this.state.errors["description"]}</span>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="column-label">
+                                    <p>Duration</p>
+                                </div>
+                                <div className="column">
+                                    <input type="number" id="duration"
+                                           name="duration" onChange={this.handleChange.bind(this, "duration")}/>
+                                    <span className="error-span">{this.state.errors["duration"]}</span>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="column-label">
+                                    <p>Price</p>
+                                </div>
+                                <div className="column">
+                                    <input type="number" id="price"
+                                           name="price" onChange={this.handleChange.bind(this, "price")}
+                                    />
+                                    <span className="error-span">{this.state.errors["price"]}</span>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="column-label">
+                                    <p>Tags</p>
+                                </div>
+                                <div className="column">
+                                    <CreatableSelect
+                                        isMulti
+                                        isClearable
+                                        onChange={this.handleMultiChange}
+                                        onCreateOption={this.handleCreate}
+                                        options={tags}
+                                        value={this.state.multiValue}
+                                    />
+                                    <span className="error-span">{this.state.errors["tags"]}</span>
 
-                        </div>
-                    </div>
-                    <div className="button-container">
-                        {/*<Button>Save</Button>*/}
-                        <button type="submit" value="Submit" onClick={this.loginSubmit.bind(this)}>Login</button>
+                                </div>
+                            </div>
+                            <div className="button-container">
+                                {/*<Button>Save</Button>*/}
+                                <button className="submit-btn" type="submit" value="Submit"
+                                        onClick={this.loginSubmit.bind(this)}>Submit
+                                </button>
 
-                        <Button>Cancel</Button>
+                                <button className="back-btn"
+                                        onClick={() => document.getElementById("modal-div-container").style.display = "none"}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-            </div>
             </div>
         ) ;
     }
 }
 
-export
-default
-GiftEdit;
+export default GiftEdit;
