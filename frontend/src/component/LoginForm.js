@@ -23,7 +23,7 @@ class LoginForm extends Component {
         }
         if (new String(fields["username"]).length < 3 || new String(fields["username"]).length > 30) {
             formIsValid = false;
-            errors["username"] = "Length must between 3 and 30."
+            errors["username"] = "Length must be between 3 and 30."
         }
         if (!new String(fields["username"]).match("^[\\w]+$")) {
             formIsValid = false;
@@ -36,7 +36,7 @@ class LoginForm extends Component {
         }
         if (new String(fields["password"]).length < 4 || new String(fields["password"]).length > 30) {
             formIsValid = false;
-            errors["password"] = "Length must between 4 and 30."
+            errors["password"] = "Length must be between 4 and 30."
         }
         if (!new String(fields["password"]).match("^[\\w]+$")) {
             formIsValid = false;

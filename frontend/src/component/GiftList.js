@@ -2,6 +2,7 @@ import React,{Component} from "react";
 import {Link} from "react-router-dom";
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import NavBar from "./NavBar";
+import GiftEdit from "./GiftEdit";
 import "../static/css/giftlist.css";
 
 
@@ -76,13 +77,16 @@ class GiftList extends Component {
                         <Button size="sm" color="primary" tag={Link}
                                 to={"/api/v1/gifts/" + certificate.id}>Edit</Button>
                         <Button size="sm" color="danger" onClick={() => this.remove(certificate.id)}>Delete</Button>
+
                     {/*</ButtonGroup>*/}
                 </td>
             </tr>
         });
 
         return (
+
             <div className="innerHTML-container">
+
                 <NavBar />
                 <main>
                     <div className="main-container">
@@ -114,7 +118,10 @@ class GiftList extends Component {
 */}
                     </div>
                 </main>
+                <GiftEdit />
+
             </div>
+
         );
     }
 

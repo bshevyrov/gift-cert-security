@@ -3,9 +3,7 @@ import GiftList from "./GiftList";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import React, {Component} from "react";
 
-import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
-import {getAllCapabilitiesHandler} from "../actions/GiftAction"
+
 
 //
 class App extends Component {
