@@ -6,28 +6,44 @@ import GiftEdit from "./GiftEdit";
 import "../static/css/giftlist.css";
 
 
+
 class GiftList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             certificates: [],
+            pageInfo: {},
             errors: {},
 
         };
 
         this.remove = this.remove.bind(this);
-        // this.showModal = this.showModal.bind(this);
+        this.goToPage = this.goToPage.bind(this);
+        this.preparedUrl = this.preparedUrl.bind(this);
     }
 
     //
     // showModal () {
     //     document.getElementById("modal-div-container").style.display = "flex";
     // }
+    goToPage(pageNum) {
+        console.log(this.state.pageInfo);
+        localStorage.setItem("page",pageNum);
+        window.location.reload();
+    }
+preparedUrl () {
+        let url ="/api/v1/gifts?"
+            +"page="+(localStorage.getItem("page")||"0")+"&"
+            +"sort="+(localStorage.getItem("sort")||"createdDate,desc")+"&"
+            +"size="+(localStorage.getItem("size")||"10");
+
+            return url;
+    }
 
     async componentDidMount() {
 
-        const response = await fetch("/api/v1/gifts?sort=createdDate,desc", {
+        const response = await fetch(this.preparedUrl(), {
             method: "GET",
             headers: {
                 "content-type": "application/json",
@@ -36,6 +52,8 @@ class GiftList extends Component {
         const body = await response.json();
         // console.log(body._embedded.giftCertificateModelList);
         this.setState({certificates: body._embedded.giftCertificateModelList})
+        this.setState({pageInfo: body.page})
+
     }
 
     async remove(id) {
@@ -53,7 +71,6 @@ class GiftList extends Component {
             },
         })
         const responseCode = response.status;
-        // const body = await response.json();
 
         if (responseCode < 300) {
             window.location.reload();
@@ -133,7 +150,26 @@ class GiftList extends Component {
                             onClick={() => document.getElementById("modal-div-container").style.display = "flex"}>Add
                             New
                         </button>
-
+<div>
+    <select name="cars" id="cars"
+    onChange={(e)=>{
+        localStorage.setItem("size",e.target.value)
+        localStorage.setItem("page",0)
+        window.location.reload()
+    }}
+    defaultValue={localStorage.getItem("size")||"10"}>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+    </select>
+</div>
+                    </div>
+                    <div className="pages-container">
+                        <button onClick={()=>this.goToPage(0)}>First</button>
+                        <button>Prev</button>
+                        <button>Self</button>
+                        <button>Next</button>
+                        <button onClick={()=>this.goToPage(this.state.pageInfo.totalPages-1)}>Last</button>
                     </div>
                     <GiftEdit/>
                 </main>
