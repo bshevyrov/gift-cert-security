@@ -8,6 +8,9 @@ import React, {Component} from "react";
 //
 class App extends Component {
 
+ // clearPagination(){
+ //    location.set();
+ //    }
 /*
 
     state = {
@@ -53,7 +56,9 @@ class App extends Component {
             <BrowserRouter>
         <Routes>
         <Route path="login"  element={<Login />}/>
-            <Route path="certificates"  element={<GiftList />}/>
+            <Route path="certificates"
+                   // onLeave={clearPagination}
+                   element={<GiftList />}/>
 
         </Routes>
         </BrowserRouter>
