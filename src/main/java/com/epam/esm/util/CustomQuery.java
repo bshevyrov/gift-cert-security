@@ -6,7 +6,7 @@ public final class CustomQuery {
                     "SELECT distinct o.*\n" +
                     "from `order` o\n" +
                     "join order_item oi on o.id = oi.order_id\n" +
-                    "    join gift_certificate_has_tag gcht on oi.gift_certificate_id = gcht.gift_certificate_id\n" +
+                    "    join tag_has_certificate gcht on oi.gift_certificate_id = gcht.gift_certificate_id\n" +
                     "join (SELECT  gcht.tag_id\n" +
                     "       FROM gift_certificate_has_tag gcht\n" +
                     "                join order_item oi on gcht.gift_certificate_id = oi.gift_certificate_id\n" +
@@ -19,7 +19,7 @@ public final class CustomQuery {
                     "ORDER BY o.cost DESC\n" +
                     "limit 1;";
     public static final String FIND_ALL_GIFT_CERTIFICATE_BY_TAGS_ID_AND_SIZE = "select gc.* from gift_certificate gc\n" +
-            "    join gift_certificate_has_tag gcht on gc.id = gcht.gift_certificate_id\n" +
+            "    join tag_has_certificate gcht on gc.id = gcht.gift_certificate_id\n" +
             "where gcht.tag_id in :tags group by gc.id having count(gc.id) = :tagCount";
 
 

@@ -2,6 +2,9 @@ import React, {Component} from "react";
 
 import "../static/css/editgift.css";
 import CreatableSelect from 'react-select/creatable';
+import {sendRequestCreate} from "./Utils";
+import {sendTagRequest} from "./Utils";
+
 
 class GiftEdit extends Component {
     constructor(props) {
@@ -91,44 +94,24 @@ class GiftEdit extends Component {
         let fields = this.state.fields;
         let multiValue = this.state.multiValue.map(tagValue => ({name: tagValue.value}));
         let errors = {};
-        const tagBody = JSON.stringify(multiValue.valueOf());
 
-        const response = await fetch("/api/v1/gifts", {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token").valueOf(),
-                },
-                body: JSON.stringify({
-                    "name": fields["name"].valueOf(),
-                    "description": fields["description"].valueOf(),
-                    "price": fields["price"].valueOf(),
-                    "duration": fields["duration"].valueOf(),
-                    "tags": multiValue,
-                }),
-            }
-        )
-
+        const response = await sendRequestCreate(this.state.multiValue,fields);
         const responseCode = response.status;
-        const body = await response.json();
+
+
 
         if (responseCode < 300) {
             window.location.reload();
         } else {
+            const body =  response.json();
+            //TODO ERROR
             errors["server"] = body.message;
             this.setState({errors: errors});
         }
     }
 
     async componentDidMount() {
-        const response = await fetch("/api/v1/tags", {
-            method: "GET",
-            headers: {
-                "content-type": "application/json",
-            },
-        })
-        const body = await response.json();
-
+        const body = await sendTagRequest();
         this.setState({
             tags: body._embedded.tagModelList.map(
                 tag => ({value: tag.name, label: tag.name}))
