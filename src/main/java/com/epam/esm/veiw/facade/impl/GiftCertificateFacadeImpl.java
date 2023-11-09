@@ -59,6 +59,25 @@ public class GiftCertificateFacadeImpl implements GiftCertificateFacade {
 
 
     /**
+     * Method consumes pagination object and string search query.
+     * Produce list of dto object.
+     *
+     * @param pageable pagination objects
+     * @param query string objects
+     * @return {@page} of dtos
+     */
+    @Override
+    public Page<GiftCertificateDTO> findAllByNameLikeOrDescriptionLike(String query, Pageable pageable) {
+        String searchRequest = query.substring(
+                query.indexOf(":")+1)
+                .replace("\"","")
+                .replace("}","")
+                .trim();
+        Page<GiftCertificateEntity> entities =
+                giftCertificateService.findAllByNameLikeOrDescriptionLike(searchRequest, pageable);
+        return new PageImpl<>(giftCertificateMapper.toDTOList(entities.getContent()), pageable, entities.getTotalElements());    }
+
+    /**
      * Method consumes pagination object.
      * Produce list of dto object.
      *

@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public interface GiftCertificateService extends BaseService<GiftCertificateEntity> {
+
+    Page<GiftCertificateEntity> findAllByNameLikeOrDescriptionLike(String searchRequest, Pageable pageable);
+
     Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable);
 
     /**

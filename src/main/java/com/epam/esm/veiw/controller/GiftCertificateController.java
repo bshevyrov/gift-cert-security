@@ -6,6 +6,7 @@ import com.epam.esm.veiw.facade.GiftCertificateFacade;
 import com.epam.esm.veiw.model.GiftCertificateModel;
 import com.epam.esm.veiw.model.GiftCertificateModelAssembler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -132,11 +133,28 @@ public class GiftCertificateController {
      * @param tags     body parameter, string  tags name
      * @return PagedModel
      */
-    @PostMapping("/search")
+    @PostMapping("/search/tag")
     public ResponseEntity<PagedModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
                                                                               @RequestBody @NotEmpty List<TagDTO> tags) {
 
         Page<GiftCertificateDTO> allByTags = giftCertificateFacade.findAllByTagsName(tags, pageable);
+        PagedModel<GiftCertificateModel> pagedModel =
+                pagedResourcesAssembler.toModel(allByTags, giftCertificateModelAssembler);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+    }
+
+    /**
+     * Method consumes request object and URL param.
+     *
+     * @param pageable pagination object
+     * @param query     body parameter, string query
+     * @return PagedModel
+     */
+    @PostMapping("/search/query")
+    public ResponseEntity<PagedModel<GiftCertificateModel>> findAllByNameLikeOrDescriptionLike(@PageableDefault Pageable pageable,
+                                                                              @RequestBody @NotEmpty  String query) {
+
+        Page<GiftCertificateDTO> allByTags = giftCertificateFacade.findAllByNameLikeOrDescriptionLike(query, pageable);
         PagedModel<GiftCertificateModel> pagedModel =
                 pagedResourcesAssembler.toModel(allByTags, giftCertificateModelAssembler);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);

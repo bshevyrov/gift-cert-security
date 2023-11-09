@@ -15,6 +15,10 @@ import java.util.List;
 @Repository
 public interface GiftCertificateRepository extends PagingAndSortingRepository<GiftCertificateEntity, Long>, JpaSpecificationExecutor<GiftCertificateEntity> {
     Page<GiftCertificateEntity> findAll(Pageable pageable);
+
+    @Query("SELECT e FROM GiftCertificateEntity e WHERE e.name LIKE %:searchRequest% OR e.description LIKE %:searchRequest%")
+    Page<GiftCertificateEntity> findAllByNameLikeOrDescriptionLike(@Param("searchRequest") String searchRequest, Pageable pageable);
+
     Page<GiftCertificateEntity> findAllByTagEntities_Id(Long tagId, Pageable pageable);
 
     @Query(value = CustomQuery.FIND_ALL_GIFT_CERTIFICATE_BY_TAGS_ID_AND_SIZE, nativeQuery = true)

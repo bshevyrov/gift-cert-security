@@ -99,6 +99,20 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     /**
+     * Method finds all gift certificates which contains in name or description search request.
+     *
+     * @param pageable pagination object
+     * @param searchRequest string object
+     * @return {@link  Page} of objects
+     */
+    @Override
+    @Transactional(rollbackFor = {Exception.class}, readOnly = true)
+    public Page<GiftCertificateEntity> findAllByNameLikeOrDescriptionLike(String searchRequest, Pageable pageable) {
+        System.out.println(searchRequest);
+        return giftCertificateRepository.findAllByNameLikeOrDescriptionLike(searchRequest,pageable);
+    }
+
+    /**
      * Method finds all gift certificates based on tags name.
      *
      * @param tags     List of {@link TagEntity}

@@ -11,6 +11,7 @@ import java.util.List;
 public interface GiftCertificateFacade extends BaseFacade<GiftCertificateDTO> {
 
     Page<GiftCertificateDTO> findAll(Pageable pageable);
+    Page<GiftCertificateDTO> findAllByNameLikeOrDescriptionLike(String query, Pageable pageable);
 
     Page<GiftCertificateDTO> findAllByTagsName(List<TagDTO> tags, Pageable pageable);
 }
