@@ -132,7 +132,7 @@ public class GiftCertificateController {
      * @param tags     body parameter, string  tags name
      * @return PagedModel
      */
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<PagedModel<GiftCertificateModel>> findAllByTagsName(@PageableDefault Pageable pageable,
                                                                               @RequestBody @NotEmpty List<TagDTO> tags) {
 

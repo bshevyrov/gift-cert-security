@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public interface GiftCertificateRepository extends PagingAndSortingRepository<GiftCertificateEntity, Long>, JpaSpecificationExecutor<GiftCertificateEntity> {
     Page<GiftCertificateEntity> findAll(Pageable pageable);
+    Page<GiftCertificateEntity> findAllByTagEntities_Id(Long tagId, Pageable pageable);
 
     @Query(value = CustomQuery.FIND_ALL_GIFT_CERTIFICATE_BY_TAGS_ID_AND_SIZE, nativeQuery = true)
     Page<GiftCertificateEntity> findAllByTags(@Param("tags") List<Long> tagEntities, @Param("tagCount") int tagEntitiesSize, Pageable pageable);

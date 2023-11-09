@@ -108,11 +108,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = {Exception.class}, readOnly = true)
     public Page<GiftCertificateEntity> findAllByTagsName(List<TagEntity> tags, Pageable pageable) {
+        if (tags.size() == 1) {
+            return giftCertificateRepository.findAllByTagEntities_Id(
+                    tagService.findTagIdByName(
+                            tags.get(0).getName()), pageable);
+        }
         ArrayList<Long> tagsId = new ArrayList<>();
         tags.forEach(tagEntity -> tagsId.add(tagService.findTagIdByName(tagEntity.getName())));
         return giftCertificateRepository.findAllByTags(tagsId, tagsId.size(), pageable);
     }
-
 
     /**
      * Method deletes gift certificate
@@ -131,6 +135,4 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         giftCertificateRepository.deleteById(id);
         return giftCertificateEntity;
     }
-
-
 }

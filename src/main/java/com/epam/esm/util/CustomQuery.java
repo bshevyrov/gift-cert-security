@@ -19,7 +19,7 @@ public final class CustomQuery {
                     "ORDER BY o.cost DESC\n" +
                     "limit 1;";
     public static final String FIND_ALL_GIFT_CERTIFICATE_BY_TAGS_ID_AND_SIZE = "select gc.* from gift_certificate gc\n" +
-            "    join tag_has_certificate gcht on gc.id = gcht.gift_certificate_id\n" +
+            "    join tag_has_gift_certificate gcht on gc.id = gcht.gift_certificate_id\n" +
             "where gcht.tag_id in :tags group by gc.id having count(gc.id) = :tagCount";
 
 
