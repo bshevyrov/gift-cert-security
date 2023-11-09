@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import "../static/css/navbar.css";
 import {Button, InputGroup} from "reactstrap";
-import {sendSearchRequest} from "./Utils";
+import {sendSearchTagRequest,sendSearchNameOrDesrRequest} from "./Utils";
 
 
 export default class NavBar extends Component {
@@ -20,8 +20,7 @@ export default class NavBar extends Component {
     }
 
     prepareSearch = async ()=> {
-        console.log("inn");
-
+        //TODO SEARCH PAGINATION
         let search = document.getElementById("search").value;
         let words = new String(search).split(" ");
         let tags = [];
@@ -33,11 +32,29 @@ export default class NavBar extends Component {
                    .replace(")",""));
            }
            else {
-               name+=word.trim();
+               name=word.trim();
            }
         })
-      let res= await sendSearchRequest(tags);
-        console.log(res);
+        let  filteredRequest;
+        if(tags.length>0){
+          const  response = await sendSearchTagRequest(tags);
+
+          if(name){
+              filteredRequest = response._embedded.giftCertificateModelList.filter((giftCert)=>{
+                  giftCert.name.contains(name) || giftCert.description.contains(name)
+          })
+          } else {
+            filteredRequest = response._embedded.giftCertificateModelList;
+          }
+
+        } else {
+            const  response = await sendSearchNameOrDesrRequest(name);
+            filteredRequest = response._embedded.giftCertificateModelList;
+
+        }
+        this.props.change(filteredRequest);
+        document.getElementById("nav-panel").style.display="none";
+
 
     }
 
@@ -49,7 +66,7 @@ export default class NavBar extends Component {
                         <span className="material-icons md-dark"> menu </span>
                         <div className="dropdown-content">
                             <Link to="/">Home</Link>
-                            <Link to="/certificates">Certificates</Link>
+                            <Link to="/certificates" onClick={() => window.location.reload()}>Certificates</Link>
                             <Link to="/login">Login</Link>
                         </div>
                     </div>
@@ -62,7 +79,7 @@ export default class NavBar extends Component {
                         <input id = "search" type="search" name="query" placeholder="Search by item name"/>
                     </div>
                     <div className="search-dropdown">
-                      <Button color="primary" onClick={()=>this.prepareSearch()}>Search</Button>
+                      <Button color="primary" onClick={this.prepareSearch}>Search</Button>
                     </div>
                 </div>
                 <div className="sign-in-container"><span className="material-icons-outlined"> favorite </span> <span

@@ -17,6 +17,13 @@ export const sendRequest = async (methodType) => {
 
 }
 const createTagBodyArr =(arr)=> {
+    console.log(arr);
+
+if(arr instanceof Array){
+    let qqq=  arr.map(tagValue => ({name: tagValue}));
+
+    return qqq;
+}
     let qqq= arr.map(tagValue => ({name: tagValue.value}));
 console.log(qqq);
 return qqq;
@@ -41,10 +48,10 @@ export const sendRequestCreate = async (arr, fields) => {
 }
 
 
-export const sendTagRequest = async (methodType) => {
+export const sendTagRequest = async () => {
 
     const response = await fetch("api/v1/tags", {
-        method: methodType,
+        method: "GET",
         headers: {
             "content-type": "application/json",
         },
@@ -53,16 +60,27 @@ export const sendTagRequest = async (methodType) => {
 
 }
 
-export const sendSearchRequest = async (arr)=> {
-console.log("in");
-    const response = await fetch("/api/v1/gifts/search", {
+export const sendSearchTagRequest = async (arr)=> {
+    const response = await fetch("/api/v1/gifts/search/tag", {
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+            body: JSON.stringify(
+                 createTagBodyArr(arr)
+            ),
+        }
+    );
+    return await response.json();
+}
+export const sendSearchNameOrDesrRequest = async (query)=> {
+    const response = await fetch("/api/v1/gifts/search/query", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
             },
             body: JSON.stringify({
-                "tags": createTagBodyArr(arr),
+                query: query
             }),
         }
     );

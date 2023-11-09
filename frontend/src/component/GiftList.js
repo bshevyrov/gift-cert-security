@@ -24,6 +24,7 @@ class GiftList extends Component {
         // this.goToPage = this.goToPage.bind(this);
         // this.preparedUrl = this.preparedUrl.bind(this);
         this.changeCertificates = this.changeCertificates.bind(this);
+        this.setSearchCertificates = this.setSearchCertificates.bind(this);
     }
 
 
@@ -53,7 +54,11 @@ class GiftList extends Component {
         this.setState({certificates: response._embedded.giftCertificateModelList})
 
     }
+  setSearchCertificates = (cert) =>{
+        console.log("111 "+cert);
+        this.setState({certificates: cert});
 
+    }
 
     // async loadData() {
     //     const response = await fetch(this.preparedUrl(), {
@@ -130,7 +135,7 @@ class GiftList extends Component {
 
             <div className="innerHTML-container">
 
-                <NavBar/>
+                <NavBar change = {this.setSearchCertificates}/>
                 <main>
                     <div className="main-container">
                         <div className="table-container">
