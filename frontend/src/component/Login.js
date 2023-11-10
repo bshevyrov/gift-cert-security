@@ -11,7 +11,7 @@ class Login extends Component {
             <div className="innerHTML-container">
                 <NavBar />
                 <main>
-                    <div className="main-container">
+                    <div className="main-container" id="login-container">
                         <div className="main-content">
                             <div className="logo-container">
                                 <img src="./img/Safeimagekit-resized-img.png" alt="Logo" className="logo-big"/>

@@ -69,7 +69,27 @@ export const sendGiftFindRequest = async (id) => {
     return await response.json();
 
 }
+export const sendRemoveRequest = async (id)=> {
+    const response = await fetch("/api/v1/gifts/" + id, {
+        method: "DELETE",
 
+        headers: {
+            "content-type": "application/json",
+            "accept": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token").valueOf(),
+
+        },
+    })
+//Todo error
+    const responseCode = response.status;
+
+    if (responseCode < 300) {
+        window.location.reload();
+    } else {
+        const body = await response.json();
+        return body;
+    }
+}
 export const sendSearchTagRequest = async (arr)=> {
     const response = await fetch("/api/v1/gifts/search/tag", {
             method: "POST",

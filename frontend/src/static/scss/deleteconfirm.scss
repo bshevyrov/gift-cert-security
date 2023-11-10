@@ -1,0 +1,38 @@
+@use "variables";
+
+.delete-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  .delete-alert {
+display: flex;
+    flex-direction: column;
+    height: 200px;
+    width:  400px;
+    background-color: #{variables.$body-color};
+    //display: flex;
+    //justify-content: center;
+    //align-items: center;
+    //opacity: 1;
+    //visibility: visible;
+    z-index: 99;
+    position: absolute;
+    top: 20%;
+   left: 30%;
+  .panel-header {
+   background-color:      #{variables.$second-color}  ;
+  }
+.panel-body {
+  width: 100%;
+  height: 100%;
+}
+    .button-container {
+      display: flex;
+      justify-content: center;
+      column-gap: 20px;
+      position: relative;
+      bottom: 0;
+    }
+  }
+}

@@ -66,7 +66,7 @@ export default class NavBar extends Component {
                         <span className="material-icons md-dark"> menu </span>
                         <div className="dropdown-content">
                             <Link to="/">Home</Link>
-                            <Link to="/certificates" onClick={() => window.location.reload()}>Certificates</Link>
+                            <Link to="/certificates" >Certificates</Link>
                             <Link to="/login">Login</Link>
                         </div>
                     </div>

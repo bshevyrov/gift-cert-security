@@ -4,15 +4,19 @@
 body {
   background-color: #{variables.$body-color};
 }
-
+#login-container{
+align-content: space-around;
+}
 .main-container {
   align-items: center;
+
   display: flex;
   flex-direction: row;
   height: 94vh;
   justify-content: center;
 
   .main-content {
+
     align-items: end;
     background-color: #{variables.$second-color};
     display: flex;

@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import PaginationButton from "./PaginationButton";
 import { sendRequest} from "./Utils";
 import GiftEdit from "./GiftEdit";
+import DeleteConfirm from "./DeleteCоnfirm";
 import "../static/css/giftlist.css";
 
 
@@ -12,6 +13,7 @@ class GiftList extends Component {
     constructor(props) {
         super(props);
         this.child=React.createRef();
+        this.childRemove=React.createRef();
         this.state = {
             certificates: [],
             pageInfo: {},
@@ -50,34 +52,15 @@ class GiftList extends Component {
     startEditModal =  (id) => {
            let currentGf= this.state.certificates.filter((gift)=> gift.id===id);
             this.child.current.initTable(currentGf);
+            document.getElementById( "category-panel-title").textContent="Edit certificate with ID = "+id;
+
         document.getElementById("modal-div-container").style.display = "flex";
     }
 
 
     async remove(id) {
-        let errors = {};
-        const response = await fetch("/api/v1/gifts/" + id, {
-            method: "DELETE",
-
-            headers: {
-                "content-type": "application/json",
-                "accept": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").valueOf(),
-
-            },
-        })
-        const responseCode = response.status;
-
-        if (responseCode < 300) {
-            window.location.reload();
-        } else {
-            const body = await response.json();
-            //todo if code ok  then
-            errors["server"] = body.message;
-            this.setState({errors: errors});
-            console.log(responseCode);
-        }
-
+        document.getElementById("delete-container").style.display="flex";
+      this.childRemove.current.setId(id);
     }
 
     changeSort = async (e) => {
@@ -133,8 +116,7 @@ class GiftList extends Component {
                 <td className="price-col"> {Math.ceil(certificate.price * 100) / 100}</td>
                 <td className="action-col">
                     <ButtonGroup size="sm">
-                        {/*<Button color="primary" tag={Link}*/}
-                        {/*        to={"/api/v1/gifts/" + certificate.id}>View???</Button>*/}
+
                         <Button color="primary" onClick={() => this.startEditModal(certificate.id)}>Edit</Button>
                         <Button color="danger" onClick={() => this.remove(certificate.id)}>Delete</Button>
                     </ButtonGroup>
@@ -220,10 +202,10 @@ class GiftList extends Component {
                     <GiftEdit
                         setErrorMessage={this.setErrorMessage}
                         gift={this.state.gift}
-                        // getG={this.getGiftInfo}
                         ref={this.child}
 
                     />
+                    <DeleteConfirm ref = {this.childRemove}/>
                 </main>
             </div>
         );

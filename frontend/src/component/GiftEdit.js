@@ -5,7 +5,7 @@ import CreatableSelect from 'react-select/creatable';
 import {sendRequestCreate, sendTagRequest} from "./Utils";
 
 
-class GiftEdit extends Component {
+export default class GiftEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,8 +19,6 @@ class GiftEdit extends Component {
         this.handleCreate = this.handleCreate.bind(this);
 
     }
-
-
 
 
 
@@ -161,14 +159,14 @@ class GiftEdit extends Component {
         document.getElementById("description").value = "";
         document.getElementById("price").value = "";
         document.getElementById("duration").value = "";
-        this.state.multiValue={};
+        this.setState({multiValue: []});
         this.setState.fields = {};
     }
 
     handleCreate(inputValue) {
         const newOption = {value: inputValue, label: inputValue};
         this.setState({multiValue: [...this.state.multiValue, newOption]});
-        console.log(this.state.multiValue);
+
     };
 
 
@@ -180,8 +178,8 @@ class GiftEdit extends Component {
             <div className="modal-div-container" id="modal-div-container">
                 <div className="modal-div-content">
 
-                    <div className="category-panel ">
-                        <p>Add New Gift Certificate</p>
+                    <div className="category-panel" id ="category-panel">
+                        <p id ="category-panel-title">Add New Gift Certificate</p>
                     </div>
                     <div className="outer-container">
                         <div className="internal-container">
@@ -264,4 +262,3 @@ class GiftEdit extends Component {
     }
 }
 
-export default GiftEdit;
