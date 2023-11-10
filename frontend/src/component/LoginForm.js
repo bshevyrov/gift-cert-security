@@ -76,7 +76,7 @@ class LoginForm extends Component {
         if (responseCode < 300) {
             localStorage.setItem("token", body.token);
             localStorage.setItem("username", body.username);
-            window.location.replace("/")
+            window.location.replace("/certificates")
         } else {
             errors["server"] = body.message;
             this.setState({errors: errors});

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import "../static/css/navbar.css";
-import {Button, InputGroup} from "reactstrap";
+import {Button} from "reactstrap";
 import {sendSearchTagRequest,sendSearchNameOrDesrRequest} from "./Utils";
 
 
@@ -9,15 +9,15 @@ export default class NavBar extends Component {
     constructor(props) {
         super(props);
         this.state = {isOpen: false}
-        this.toggle = this.toggle.bind(this);
+        // this.toggle = this.toggle.bind(this);
         this.prepareSearch = this.prepareSearch.bind(this);
     }
 
-    toggle() {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
-    }
+    // toggle() {
+    //     this.setState({
+    //         isOpen: !this.state.isOpen
+    //     });
+    // }
 
     prepareSearch = async ()=> {
         //TODO SEARCH PAGINATION

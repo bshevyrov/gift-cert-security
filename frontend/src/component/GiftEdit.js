@@ -2,8 +2,7 @@ import React, {Component} from "react";
 
 import "../static/css/editgift.css";
 import CreatableSelect from 'react-select/creatable';
-import {sendRequestCreate} from "./Utils";
-import {sendTagRequest} from "./Utils";
+import {sendRequestCreate, sendTagRequest} from "./Utils";
 
 
 class GiftEdit extends Component {
@@ -90,24 +89,18 @@ class GiftEdit extends Component {
     }
 
     async sendRequest() {
-
         let fields = this.state.fields;
-        let multiValue = this.state.multiValue.map(tagValue => ({name: tagValue.value}));
         let errors = {};
-
-        const response = await sendRequestCreate(this.state.multiValue,fields);
+        const response = await sendRequestCreate(this.state.multiValue, fields);
         const responseCode = response.status;
-
-
-
+        let rsl;
         if (responseCode < 300) {
             window.location.reload();
         } else {
-            const body =  response.json();
-            //TODO ERROR
-            errors["server"] = body.message;
-            this.setState({errors: errors});
+            const body = await response.json();
+            this.props.setErrorMessage( ""+await body.message);
         }
+        document.getElementById("modal-div-container").style.display = "none";
     }
 
     async componentDidMount() {
@@ -225,7 +218,7 @@ class GiftEdit extends Component {
                     </div>
                 </div>
             </div>
-        ) ;
+        );
     }
 }
 

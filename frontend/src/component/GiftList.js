@@ -2,9 +2,8 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import {Button, ButtonGroup, Table} from 'reactstrap';
 import NavBar from "./NavBar";
-// import PaginatedItems from "./PaginatedItems";
 import PaginationButton from "./PaginationButton";
-import  {sendRequest}  from "./Utils";
+import {sendRequest} from "./Utils";
 import GiftEdit from "./GiftEdit";
 import "../static/css/giftlist.css";
 
@@ -21,60 +20,33 @@ class GiftList extends Component {
         };
 
         this.remove = this.remove.bind(this);
-        // this.goToPage = this.goToPage.bind(this);
-        // this.preparedUrl = this.preparedUrl.bind(this);
+        this.setErrorMessage = this.setErrorMessage.bind(this);
         this.changeCertificates = this.changeCertificates.bind(this);
         this.setSearchCertificates = this.setSearchCertificates.bind(this);
     }
 
 
+    async componentDidMount() {
+        let rsl = await sendRequest();
 
-
-    //
-    // showModal () {
-    //     document.getElementById("modal-div-container").style.display = "flex";
-    // }
-    // goToPage(pageNum) {
-    //     console.log(this.state.pageInfo);
-    //     localStorage.setItem("page", pageNum);
-    //     window.location.reload();
-    // }
-
-
-
-     async componentDidMount() {
-        let  rsl = await sendRequest();
-
-         this.setState({certificates: rsl._embedded.giftCertificateModelList})
+        this.setState({certificates: rsl._embedded.giftCertificateModelList})
         this.setState({pageInfo: rsl.page})
     }
-   async  changeCertificates(){
-        // localStorage.setItem("currentPage",localStorage.getItem("currentPage"));
-        let response =  await sendRequest();
+
+    async changeCertificates() {
+        let response = await sendRequest();
         this.setState({certificates: response._embedded.giftCertificateModelList})
 
     }
-  setSearchCertificates = (cert) =>{
-        console.log("111 "+cert);
+
+    setSearchCertificates = (cert) => {
+        console.log("111 " + cert);
         this.setState({certificates: cert});
 
     }
 
-    // async loadData() {
-    //     const response = await fetch(this.preparedUrl(), {
-    //         method: "GET",
-    //         headers: {
-    //             "content-type": "application/json",
-    //         },
-    //     })
-    //     // console.log(body._embedded.giftCertificateModelList);
-    //     return   await response.json();
-    // }
-
     async remove(id) {
         let errors = {};
-
-
         const response = await fetch("/api/v1/gifts/" + id, {
             method: "DELETE",
 
@@ -91,14 +63,19 @@ class GiftList extends Component {
             window.location.reload();
         } else {
             const body = await response.json();
-
+            //todo if code ok  then
             errors["server"] = body.message;
             this.setState({errors: errors});
             console.log(responseCode);
         }
-        //todo if code ok  then
 
 
+    }
+
+    setErrorMessage = async (err) => {
+        let errors = {};
+        errors["server"] = await err;
+        this.setState({errors: errors});
     }
 
     render() {
@@ -113,19 +90,19 @@ class GiftList extends Component {
                 <td className="tag-col">
                     <div id="tag-div">
                         {certificate.tagModels.map((number) =>
-                        <p key={number.id}>{number.name}</p>)
-                    }
+                            <p key={number.id}>{number.name}</p>)
+                        }
                     </div>
                 </td>
                 <td className="descr-col"> {certificate.description}</td>
                 <td className="price-col"> {Math.ceil(certificate.price * 100) / 100}</td>
                 <td className="action-col">
                     <ButtonGroup size="sm">
-                    <Button  color="primary" tag={Link}
-                            to={"/api/v1/gifts/" + certificate.id}>View???</Button>
-                    <Button  color="primary" tag={Link}
-                            to={"/api/v1/gifts/" + certificate.id}>Edit</Button>
-                    <Button  color="danger" onClick={() => this.remove(certificate.id)}>Delete</Button>
+                        <Button color="primary" tag={Link}
+                                to={"/api/v1/gifts/" + certificate.id}>View???</Button>
+                        <Button color="primary" tag={Link}
+                                to={"/api/v1/gifts/" + certificate.id}>Edit</Button>
+                        <Button color="danger" onClick={() => this.remove(certificate.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
             </tr>
@@ -135,8 +112,11 @@ class GiftList extends Component {
 
             <div className="innerHTML-container">
 
-                <NavBar change = {this.setSearchCertificates}/>
+                <NavBar change={this.setSearchCertificates}/>
                 <main>
+                    <div className="error-field">
+                        <span className="error-span">{this.state.errors["server"]}</span>
+                    </div>
                     <div className="main-container">
                         <div className="table-container">
                             <Table>
@@ -160,27 +140,27 @@ class GiftList extends Component {
 */}
                         <div id="nav-panel">
                             <div>
-                        <Button color="success"
-                            onClick={() => document.getElementById("modal-div-container").style.display = "flex"}>Add
-                            New
-                        </Button>
+                                <Button color="success"
+                                        onClick={() => document.getElementById("modal-div-container").style.display = "flex"}>Add
+                                    New
+                                </Button>
                             </div>
 
-                        <div className="pages-container">
-                            <PaginationButton
-                                pageInfo={this.state.pageInfo}
-                                reloadFunction = {this.changeCertificates}
-                            />
+                            <div className="pages-container">
+                                <PaginationButton
+                                    pageInfo={this.state.pageInfo}
+                                    reloadFunction={this.changeCertificates}
+                                />
 
-                        </div>
+                            </div>
                             <div>
                                 <select className="form-select"
-                                    onChange={(e) => {
-                                        localStorage.setItem("size", e.target.value)
-                                        localStorage.setItem("currentPage", 0)
-                                        window.location.reload()
-                                    }}
-                                    defaultValue={localStorage.getItem("size") || "10"}>
+                                        onChange={(e) => {
+                                            localStorage.setItem("size", e.target.value)
+                                            localStorage.setItem("currentPage", 0)
+                                            window.location.reload()
+                                        }}
+                                        defaultValue={localStorage.getItem("size") || "10"}>
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                     <option value="50">50</option>
@@ -189,7 +169,7 @@ class GiftList extends Component {
                         </div>
                     </div>
 
-                    <GiftEdit/>
+                    <GiftEdit setErrorMessage={this.setErrorMessage}/>
                 </main>
             </div>
         );
