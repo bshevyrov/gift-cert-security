@@ -1,5 +1,6 @@
 export const sendRequest = async (methodType) => {
     function preparedUrl() {
+
         let url = "/api/v1/gifts?"
             + "page=" + (localStorage.getItem("currentPage") || "0") + "&"
             + "sort=" + (localStorage.getItem("sort") || "createdDate,desc") + "&"

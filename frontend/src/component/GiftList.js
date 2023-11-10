@@ -40,7 +40,6 @@ class GiftList extends Component {
     }
 
     setSearchCertificates = (cert) => {
-        console.log("111 " + cert);
         this.setState({certificates: cert});
 
     }
@@ -69,18 +68,57 @@ class GiftList extends Component {
             console.log(responseCode);
         }
 
-
     }
 
+    changeSort = async (e) => {
+        let id = e.target.id;
+        let field = id === "date-sort-btn" ? "createdDate" : "name";
+        let textContext = document.getElementById(id).textContent;
+        if (textContext.indexOf("down") === -1) {
+            if (textContext.indexOf("double") === -1) {
+                document.getElementById(id).textContent = "keyboard_double_arrow_up";
+                localStorage.setItem("sort", field + ",asc");
+
+            } else {
+                document.getElementById(id).textContent = "keyboard_double_arrow_down";
+                localStorage.setItem("sort", field + ",desc");
+            }
+        } else {
+            if (textContext.indexOf("double") === -1) {
+                document.getElementById(id).textContent = "keyboard_double_arrow_down";
+                localStorage.setItem("sort", field + ",desc");
+            } else {
+                document.getElementById(id).textContent = "keyboard_double_arrow_up";
+                localStorage.setItem("sort", field + ",asc");
+            }
+        }
+        let rsl = await sendRequest();
+
+
+        this.setState({certificates: rsl._embedded.giftCertificateModelList});
+        this.setState({pageInfo: rsl.page});
+        //
+        //
+        //
+        // document.getElementById("date-sort-btn").textContent === "keyboard_double_arrow_up" ?
+        //     document.getElementById("date-sort-btn").textContent = "keyboard_double_arrow_down"
+        //
+        //
+        //
+        //     console.log(e.target.id);
+        // console.log("id");
+        // document.getElementById("date-sort-btn");
+        // document.getElementById("name-sort-btn");
+    }
     setErrorMessage = async (err) => {
         let errors = {};
         errors["server"] = await err;
         this.setState({errors: errors});
+        document.getElementById("error-field").style.display = "flex";
     }
 
     render() {
         const {certificates} = this.state;
-
 
         const certificateList = certificates.map(certificate => {
 
@@ -114,16 +152,30 @@ class GiftList extends Component {
 
                 <NavBar change={this.setSearchCertificates}/>
                 <main>
-                    <div className="error-field">
+                    <div className="error-field" id="error-field">
                         <span className="error-span">{this.state.errors["server"]}</span>
+                        <Button id="close-btn" color="danger" onClick={
+                            () => document.getElementById("error-field").style.display = "none"
+                        }>X</Button>
                     </div>
                     <div className="main-container">
                         <div className="table-container">
                             <Table>
                                 <thead>
                                 <tr>
-                                    <th className="date-col">Create date</th>
-                                    <th className="name-col">Name</th>
+
+                                    <th className="date-col">Create date
+                                        <button id="date-sort-btn" onClick={(e) => this.changeSort(e)}
+                                                className="material-symbols-outlined">
+                                            keyboard_double_arrow_up
+                                        </button>
+                                    </th>
+
+                                    <th className="name-col">Name
+                                        <span id="name-sort-btn" onClick={(e) => this.changeSort(e)}
+                                              className="material-symbols-outlined">
+                                        keyboard_double_arrow_down
+                                        </span></th>
                                     <th className="tag-col">Tag</th>
                                     <th className="descr-col">Description</th>
                                     <th className="price-col">Price</th>

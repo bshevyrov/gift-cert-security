@@ -5,14 +5,31 @@
 
 * {
 }
+
 body {
   background-color: #{variables.$body-color}
 }
+#data-sort-btn{
 
+}
 .innerHTML-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
+
+  .error-field {
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    .error-span {
+      color: #{variables.$error-color};
+    }
+    #close-btn {
+      position: relative;
+      left: 43%;
+    }
+  }
 
   .main-container {
 
@@ -21,6 +38,7 @@ body {
     //flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
+    align-content: flex-start;
     //padding: 10px;
     //.main-content {
     //  display: flex;
@@ -30,14 +48,15 @@ body {
     //  margin-top: 25px;
     //}
     .table-container {
-width: 100%;
+      width: 100%;
+
       #tag-div {
 
 
-          display: flex;
-         flex-wrap: wrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         p {
           margin: 0;
@@ -46,12 +65,15 @@ width: 100%;
           padding-left: 5px;
         }
       }
+
       .date-col {
-        width: 9%;
+        width: 12%;
       }
+
       .name-col {
-        width:fit-content ;
+        width: fit-content;
       }
+
       .tag-col {
         width: 35%;
         //max-width: 20%;
@@ -60,6 +82,7 @@ width: 100%;
         //        overflow: hidden;
         //        text-overflow: ellipsis;
       }
+
       .descr-col {
         //min-width: 20%;
         //max-width: 30%;
@@ -69,18 +92,21 @@ width: 100%;
       .price-col {
         width: 4%;
       }
+
       .action-col {
         width: 15%;
       }
 
 
-      }
+    }
+
     #nav-panel {
       display: flex;
       justify-content: space-between;
       width: 100%;
       padding-left: 15px;
       padding-right: 15px;
+
       .page-container {
         display: flex;
         align-items: center;
@@ -88,7 +114,7 @@ width: 100%;
 
     }
 
-    }
-
-
   }
+
+
+}
