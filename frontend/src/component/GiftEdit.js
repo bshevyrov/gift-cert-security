@@ -20,6 +20,10 @@ class GiftEdit extends Component {
 
     }
 
+
+
+
+
     handleValidation() {
         let fields = this.state.fields;
         let multiValue = this.state.multiValue;
@@ -90,20 +94,46 @@ class GiftEdit extends Component {
 
     async sendRequest() {
         let fields = this.state.fields;
-        let errors = {};
         const response = await sendRequestCreate(this.state.multiValue, fields);
         const responseCode = response.status;
-        let rsl;
+
         if (responseCode < 300) {
             window.location.reload();
         } else {
             const body = await response.json();
-            this.props.setErrorMessage( ""+await body.message);
+            this.props.setErrorMessage("" + await body.message);
         }
         document.getElementById("modal-div-container").style.display = "none";
     }
+    initTable  (input)  {
+       let gift = input.pop();
+        let fields = this.state.fields;
 
+        console.log(this.props.gift)
+        document.getElementById("name").value = gift.name;
+        fields["name"] = gift.name;
+        document.getElementById("description").value = gift.description;
+        fields["description"] = gift.description;
+
+        document.getElementById("price").value = gift.price;
+        fields["price"] = gift.price;
+
+        document.getElementById("duration").value = gift.duration;
+        fields["duration"] = gift.duration;
+
+        this.state.multiValue = gift.tagModels.map((tag)=>({value: tag.name, label: tag.name}));
+        fields["tags"] = this.state.multiValue;
+
+
+        // fields[field] = e.target.value;
+        this.setState({fields});
+        console.log("!!! " + this.state.multiValue);
+        console.log(this.props.gift.tagModels);
+
+
+    }
     async componentDidMount() {
+
         const body = await sendTagRequest();
         this.setState({
             tags: body._embedded.tagModelList.map(
@@ -125,14 +155,26 @@ class GiftEdit extends Component {
         this.setState({fields});
     }
 
+    exitModal = () => {
+        document.getElementById("modal-div-container").style.display = "none";
+        document.getElementById("name").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("duration").value = "";
+        this.state.multiValue={};
+        this.setState.fields = {};
+    }
+
     handleCreate(inputValue) {
         const newOption = {value: inputValue, label: inputValue};
         this.setState({multiValue: [...this.state.multiValue, newOption]});
+        console.log(this.state.multiValue);
     };
 
 
     render() {
         const {tags} = this.state;
+        // this.setState.multiValue=this.props.gift.tags;
         return (
 
             <div className="modal-div-container" id="modal-div-container">
@@ -210,7 +252,7 @@ class GiftEdit extends Component {
                                 </button>
 
                                 <button className="back-btn"
-                                        onClick={() => document.getElementById("modal-div-container").style.display = "none"}>
+                                        onClick={() => this.exitModal()}>
                                     Cancel
                                 </button>
                             </div>

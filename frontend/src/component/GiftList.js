@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
 import {Button, ButtonGroup, Table} from 'reactstrap';
 import NavBar from "./NavBar";
 import PaginationButton from "./PaginationButton";
-import {sendRequest} from "./Utils";
+import { sendRequest} from "./Utils";
 import GiftEdit from "./GiftEdit";
 import "../static/css/giftlist.css";
 
@@ -12,14 +11,18 @@ class GiftList extends Component {
 
     constructor(props) {
         super(props);
+        this.child=React.createRef();
         this.state = {
             certificates: [],
             pageInfo: {},
             errors: {},
             body: {},
+            gift: {},
+
         };
 
         this.remove = this.remove.bind(this);
+        this.startEditModal= this.startEditModal.bind(this);
         this.setErrorMessage = this.setErrorMessage.bind(this);
         this.changeCertificates = this.changeCertificates.bind(this);
         this.setSearchCertificates = this.setSearchCertificates.bind(this);
@@ -43,6 +46,13 @@ class GiftList extends Component {
         this.setState({certificates: cert});
 
     }
+
+    startEditModal =  (id) => {
+           let currentGf= this.state.certificates.filter((gift)=> gift.id===id);
+            this.child.current.initTable(currentGf);
+        document.getElementById("modal-div-container").style.display = "flex";
+    }
+
 
     async remove(id) {
         let errors = {};
@@ -93,23 +103,11 @@ class GiftList extends Component {
             }
         }
         let rsl = await sendRequest();
-
-
         this.setState({certificates: rsl._embedded.giftCertificateModelList});
         this.setState({pageInfo: rsl.page});
-        //
-        //
-        //
-        // document.getElementById("date-sort-btn").textContent === "keyboard_double_arrow_up" ?
-        //     document.getElementById("date-sort-btn").textContent = "keyboard_double_arrow_down"
-        //
-        //
-        //
-        //     console.log(e.target.id);
-        // console.log("id");
-        // document.getElementById("date-sort-btn");
-        // document.getElementById("name-sort-btn");
+
     }
+
     setErrorMessage = async (err) => {
         let errors = {};
         errors["server"] = await err;
@@ -119,7 +117,6 @@ class GiftList extends Component {
 
     render() {
         const {certificates} = this.state;
-
         const certificateList = certificates.map(certificate => {
 
             return <tr key={certificate.id}>
@@ -136,10 +133,9 @@ class GiftList extends Component {
                 <td className="price-col"> {Math.ceil(certificate.price * 100) / 100}</td>
                 <td className="action-col">
                     <ButtonGroup size="sm">
-                        <Button color="primary" tag={Link}
-                                to={"/api/v1/gifts/" + certificate.id}>View???</Button>
-                        <Button color="primary" tag={Link}
-                                to={"/api/v1/gifts/" + certificate.id}>Edit</Button>
+                        {/*<Button color="primary" tag={Link}*/}
+                        {/*        to={"/api/v1/gifts/" + certificate.id}>View???</Button>*/}
+                        <Button color="primary" onClick={() => this.startEditModal(certificate.id)}>Edit</Button>
                         <Button color="danger" onClick={() => this.remove(certificate.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
@@ -221,7 +217,13 @@ class GiftList extends Component {
                         </div>
                     </div>
 
-                    <GiftEdit setErrorMessage={this.setErrorMessage}/>
+                    <GiftEdit
+                        setErrorMessage={this.setErrorMessage}
+                        gift={this.state.gift}
+                        // getG={this.getGiftInfo}
+                        ref={this.child}
+
+                    />
                 </main>
             </div>
         );

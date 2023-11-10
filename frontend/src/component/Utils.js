@@ -18,15 +18,13 @@ export const sendRequest = async (methodType) => {
 
 }
 const createTagBodyArr =(arr)=> {
-    console.log(arr);
 
-if(arr instanceof Array){
-    let qqq=  arr.map(tagValue => ({name: tagValue}));
-
-    return qqq;
-}
+// if(arr instanceof Array){
+//     let qqq=  arr.map(tagValue => ({name: tagValue}));
+// console.log("!!")
+//     return qqq;
+// }
     let qqq= arr.map(tagValue => ({name: tagValue.value}));
-console.log(qqq);
 return qqq;
 }
 export const sendRequestCreate = async (arr, fields) => {
@@ -52,6 +50,17 @@ export const sendRequestCreate = async (arr, fields) => {
 export const sendTagRequest = async () => {
 
     const response = await fetch("api/v1/tags", {
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+        },
+    })
+    return await response.json();
+
+}
+export const sendGiftFindRequest = async (id) => {
+
+    const response = await fetch("api/v1/gifts/"+id, {
         method: "GET",
         headers: {
             "content-type": "application/json",
