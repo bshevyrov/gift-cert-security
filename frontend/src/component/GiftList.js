@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, ButtonGroup, Table} from 'reactstrap';
 import NavBar from "./NavBar";
 import PaginationButton from "./PaginationButton";
-import { sendRequest} from "./Utils";
+import {sendRequest} from "./Utils";
 import GiftEdit from "./GiftEdit";
 import DeleteConfirm from "./DeleteCоnfirm";
 import "../static/css/giftlist.css";
@@ -12,8 +12,8 @@ class GiftList extends Component {
 
     constructor(props) {
         super(props);
-        this.child=React.createRef();
-        this.childRemove=React.createRef();
+        this.child = React.createRef();
+        this.childRemove = React.createRef();
         this.state = {
             certificates: [],
             pageInfo: {},
@@ -24,7 +24,7 @@ class GiftList extends Component {
         };
 
         this.remove = this.remove.bind(this);
-        this.startEditModal= this.startEditModal.bind(this);
+        this.startEditModal = this.startEditModal.bind(this);
         this.setErrorMessage = this.setErrorMessage.bind(this);
         this.changeCertificates = this.changeCertificates.bind(this);
         this.setSearchCertificates = this.setSearchCertificates.bind(this);
@@ -32,15 +32,13 @@ class GiftList extends Component {
 
 
     async componentDidMount() {
-        let rsl = await sendRequest();
-
-        this.setState({certificates: rsl._embedded.giftCertificateModelList})
-        this.setState({pageInfo: rsl.page})
+        await this.changeCertificates();
     }
 
     async changeCertificates() {
         let response = await sendRequest();
         this.setState({certificates: response._embedded.giftCertificateModelList})
+        this.setState({pageInfo: response.page})
 
     }
 
@@ -49,18 +47,16 @@ class GiftList extends Component {
 
     }
 
-    startEditModal =  (id) => {
-           let currentGf= this.state.certificates.filter((gift)=> gift.id===id);
-            this.child.current.initTable(currentGf);
-            document.getElementById( "category-panel-title").textContent="Edit certificate with ID = "+id;
-
+    startEditModal = (cert) => {
+        this.child.current.prepareModal(cert);
+        document.getElementById("category-panel-title").textContent = "Edit certificate with ID = " + cert.id;
         document.getElementById("modal-div-container").style.display = "flex";
     }
 
 
     async remove(id) {
-        document.getElementById("delete-container").style.display="flex";
-      this.childRemove.current.setId(id);
+        document.getElementById("delete-container").style.display = "flex";
+        this.childRemove.current.setId(id);
     }
 
     changeSort = async (e) => {
@@ -117,7 +113,7 @@ class GiftList extends Component {
                 <td className="action-col">
                     <ButtonGroup size="sm">
 
-                        <Button color="primary" onClick={() => this.startEditModal(certificate.id)}>Edit</Button>
+                        <Button color="primary" onClick={() => this.startEditModal(certificate)}>Edit</Button>
                         <Button color="danger" onClick={() => this.remove(certificate.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
@@ -171,8 +167,8 @@ class GiftList extends Component {
                         <div id="nav-panel">
                             <div>
                                 <Button color="success"
-                                        onClick={() => document.getElementById("modal-div-container").style.display = "flex"}>Add
-                                    New
+                                        onClick={() => this.showCreateCertModalWindow()}>
+                                    Add New
                                 </Button>
                             </div>
 
@@ -205,12 +201,15 @@ class GiftList extends Component {
                         ref={this.child}
 
                     />
-                    <DeleteConfirm ref = {this.childRemove}/>
+                    <DeleteConfirm ref={this.childRemove}/>
                 </main>
             </div>
         );
     }
 
+    showCreateCertModalWindow() {
+        return document.getElementById("modal-div-container").style.display = "flex";
+    }
 }
 
 export default GiftList;

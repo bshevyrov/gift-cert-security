@@ -2,14 +2,14 @@ import React, {Component} from "react";
 
 import "../static/css/editgift.css";
 import CreatableSelect from 'react-select/creatable';
-import {sendRequestCreate, sendTagRequest} from "./Utils";
+import {sendRequestCreate, sendRequestUpdate, sendTagRequest} from "./Utils";
 
 
 export default class GiftEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tags: [],
+            id:0,
             multiValue: [],
             fields: {},
             errors: {},
@@ -21,12 +21,12 @@ export default class GiftEdit extends Component {
     }
 
 
-
     handleValidation() {
         let fields = this.state.fields;
         let multiValue = this.state.multiValue;
         let errors = {};
         let formIsValid = true;
+
 
         if (!fields["name"]) {
             formIsValid = false;
@@ -83,7 +83,7 @@ export default class GiftEdit extends Component {
         return formIsValid;
     }
 
-    loginSubmit(e) {
+      crateSubmit(e) {
         e.preventDefault();
         if (this.handleValidation()) {
             this.sendRequest()
@@ -91,10 +91,16 @@ export default class GiftEdit extends Component {
     }
 
     async sendRequest() {
-        let fields = this.state.fields;
-        const response = await sendRequestCreate(this.state.multiValue, fields);
-        const responseCode = response.status;
+        let fields = this.state;
+        let response;
+        if (fields.id===0) {
+            response = await sendRequestCreate(this.state.multiValue, fields.fields);
 
+        } else {
+            response = await sendRequestUpdate(this.state.multiValue, fields.fields);
+
+        }
+        const responseCode = response.status;
         if (responseCode < 300) {
             window.location.reload();
         } else {
@@ -103,40 +109,39 @@ export default class GiftEdit extends Component {
         }
         document.getElementById("modal-div-container").style.display = "none";
     }
-    initTable  (input)  {
-       let gift = input.pop();
+
+    prepareModal(gift) {
         let fields = this.state.fields;
+         this.getAllTags();
 
-        console.log(this.props.gift)
-        document.getElementById("name").value = gift.name;
-        fields["name"] = gift.name;
-        document.getElementById("description").value = gift.description;
-        fields["description"] = gift.description;
-
-        document.getElementById("price").value = gift.price;
-        fields["price"] = gift.price;
-
-        document.getElementById("duration").value = gift.duration;
-        fields["duration"] = gift.duration;
-
-        this.state.multiValue = gift.tagModels.map((tag)=>({value: tag.name, label: tag.name}));
-        fields["tags"] = this.state.multiValue;
-
-
-        // fields[field] = e.target.value;
+        document.getElementById("name").value = fields["name"] = gift ? gift.name : "";
+        document.getElementById("description").value = fields["description"] = gift ? gift.description : "";
+        document.getElementById("price").value = fields["price"] = gift ? gift.price : "";
+        document.getElementById("duration").value = fields["duration"] = gift ? gift.duration : "";
+       this.setState({id:  gift ? gift.id : 0});
         this.setState({fields});
-        console.log("!!! " + this.state.multiValue);
-        console.log(this.props.gift.tagModels);
-
-
-    }
-    async componentDidMount() {
-
-        const body = await sendTagRequest();
         this.setState({
-            tags: body._embedded.tagModelList.map(
-                tag => ({value: tag.name, label: tag.name}))
-        });
+            multiValue: gift ?
+                gift.tagModels.map(
+                    (tag) => ({value: tag.name, label: tag.name}))
+                : []
+        })
+        if (!gift) {
+            document.getElementById("modal-div-container").style.display = "none";
+        }
+    }
+
+    async componentDidMount() {
+        await this.getAllTags();
+        this.prepareModal()
+    }
+
+    async getAllTags() {
+        const body = await sendTagRequest();
+        let fields = this.state.fields;
+        fields["tags"] = body._embedded.tagModelList.map(
+            tag => ({value: tag.name, label: tag.name}));
+        this.setState({fields});
     }
 
     handleMultiChange(option) {
@@ -153,15 +158,6 @@ export default class GiftEdit extends Component {
         this.setState({fields});
     }
 
-    exitModal = () => {
-        document.getElementById("modal-div-container").style.display = "none";
-        document.getElementById("name").value = "";
-        document.getElementById("description").value = "";
-        document.getElementById("price").value = "";
-        document.getElementById("duration").value = "";
-        this.setState({multiValue: []});
-        this.setState.fields = {};
-    }
 
     handleCreate(inputValue) {
         const newOption = {value: inputValue, label: inputValue};
@@ -171,15 +167,14 @@ export default class GiftEdit extends Component {
 
 
     render() {
-        const {tags} = this.state;
-        // this.setState.multiValue=this.props.gift.tags;
+        const {tags} = this.state.fields;
         return (
 
             <div className="modal-div-container" id="modal-div-container">
                 <div className="modal-div-content">
 
-                    <div className="category-panel" id ="category-panel">
-                        <p id ="category-panel-title">Add New Gift Certificate</p>
+                    <div className="category-panel" id="category-panel">
+                        <p id="category-panel-title">Add New Gift Certificate</p>
                     </div>
                     <div className="outer-container">
                         <div className="internal-container">
@@ -244,13 +239,12 @@ export default class GiftEdit extends Component {
                                 </div>
                             </div>
                             <div className="button-container">
-                                {/*<Button>Save</Button>*/}
                                 <button className="submit-btn" type="submit" value="Submit"
-                                        onClick={this.loginSubmit.bind(this)}>Submit
+                                        onClick={this.crateSubmit.bind(this)}>Submit
                                 </button>
 
                                 <button className="back-btn"
-                                        onClick={() => this.exitModal()}>
+                                        onClick={() => this.prepareModal()}>
                                     Cancel
                                 </button>
                             </div>

@@ -17,18 +17,9 @@ export const sendRequest = async (methodType) => {
     return await response.json();
 
 }
-const createTagBodyArr =(arr)=> {
 
-// if(arr instanceof Array){
-//     let qqq=  arr.map(tagValue => ({name: tagValue}));
-// console.log("!!")
-//     return qqq;
-// }
-    let qqq= arr.map(tagValue => ({name: tagValue.value}));
-return qqq;
-}
 export const sendRequestCreate = async (arr, fields) => {
-    return await fetch("/api/v1/gifts", {
+    return await fetch("/api/v1/gifts/", {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -39,7 +30,25 @@ export const sendRequestCreate = async (arr, fields) => {
                 "description": fields["description"].valueOf(),
                 "price": fields["price"].valueOf(),
                 "duration": fields["duration"].valueOf(),
-                "tags": createTagBodyArr(arr),
+                "tags": arr.map(tagValue => ({name: tagValue.value})),
+            }),
+        }
+    );
+
+}
+export const sendRequestUpdate = async (arr, fields) => {
+    return await fetch("/api/v1/gifts/"+fields["id"].valueOf(), {
+            method: "PATCH",
+            headers: {
+                "content-type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+            body: JSON.stringify({
+                "name": fields["name"].valueOf(),
+                "description": fields["description"].valueOf(),
+                "price": fields["price"].valueOf(),
+                "duration": fields["duration"].valueOf(),
+                "tags": arr.map(tagValue => ({name: tagValue.value})),
             }),
         }
     );
@@ -49,7 +58,7 @@ export const sendRequestCreate = async (arr, fields) => {
 
 export const sendTagRequest = async () => {
 
-    const response = await fetch("api/v1/tags", {
+    const response = await fetch("api/v1/tags?size=9999999&sort=name", {
         method: "GET",
         headers: {
             "content-type": "application/json",
@@ -97,7 +106,7 @@ export const sendSearchTagRequest = async (arr)=> {
                 "content-type": "application/json",
             },
             body: JSON.stringify(
-                 createTagBodyArr(arr)
+                arr.map(tagValue => ({name: tagValue.value}))
             ),
         }
     );
@@ -116,3 +125,4 @@ export const sendSearchNameOrDesrRequest = async (query)=> {
     );
     return await response.json();
 }
+

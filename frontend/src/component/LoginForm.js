@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-
+import {handleLoginValidation} from "./Utils";
 import "../static/css/userlogin.css";
 
 class LoginForm extends Component {
@@ -48,13 +48,12 @@ class LoginForm extends Component {
 
     loginSubmit(e) {
         e.preventDefault();
-
         if (this.handleValidation()) {
-            this.sendRequest()
+            this.sendLoginRequest()
         }
     }
 
-    async sendRequest() {
+    async sendLoginRequest() {
 
         let fields = this.state.fields;
         let errors = {};
